@@ -141,12 +141,16 @@
         <div class="exis_operation">
             <div class="like_block">
                 <?php $liked = \App\Post_likes::where(['post_id' => $post[$i]['id'], 'user_id' => $_SESSION['user_master']->id])->first();
+                $span = \App\Post_spam::where(['post_id' => $post[$i]['id'], 'user_id' => $_SESSION['user_master']->id])->first();
+                $dislike = \App\Post_unlikes::where(['post_id' => $post[$i]['id'], 'user_id' => $_SESSION['user_master']->id])->first();
                 ?>
-                @if(isset($liked) > 0)
+                @if(isset($liked))
+                    {{-- <div class="heart existing_happy" id="{{$post[$i]['id']}}" onclick="LikeUnlike(this);">❤</div>--}}
                     <div class="heart existing_happy" id="{{$post[$i]['id']}}" onclick="LikeUnlike(this);">
                         <i class="mdi mdi-heart"></i>
                     </div>
                 @else
+                    {{--  <div class="heart" id="{{$post[$i]['id']}}" onclick="LikeUnlike(this);">❤</div>--}}
                     <div class="heart" id="{{$post[$i]['id']}}" onclick="LikeUnlike(this);">
                         <i class="mdi mdi-heart"></i>
                     </div>
@@ -157,8 +161,26 @@
                       onclick="getLikeList('{{$post[$i]['id']}}');"
                       data-toggle="modal">{{count($post[$i]['like'])}}</span>
             </div>
-            <div class="comment_block"><i class="basic_icons mdi mdi-comment"></i>Comment
-                <span class="count_like"
+            @if(isset($dislike))
+                <div class="dislike_block you_dislike" id="{{$post[$i]['id']}}" onclick="DislikePost(this);"><i class="dislike_icon mdi mdi-thumb-down"></i>Dislike
+                    <span class="count_dislike">{{$post[$i]['dislike']}}</span>
+                </div>
+            @else
+                <div class="dislike_block" id="{{$post[$i]['id']}}" onclick="DislikePost(this);"><i class="dislike_icon mdi mdi-thumb-down"></i>Dislike
+                    <span class="count_dislike">{{$post[$i]['dislike']}}</span>
+                </div>
+            @endif
+            <div class="comment_block">
+                <span class="spam_icon {{isset($span)?'spam_already':''}} mdi mdi-emoticon-devil"
+                      id="{{$post[$i]['id']}}"
+                      onclick="mark_as_spam(this);"></span>
+                <span class="spam_txt"> Spam </span>
+                <span class="count_spam">{{" ".$post[$i]['spam']}}</span>
+            </div>
+
+            <div class="comment_block">
+                <i class="comment_icon_box {{count($post[$i]['comment'])>0?'comment_morethan':''}} mdi mdi-comment"></i>Comment
+                <span class="count_comment"
                       id="count_comment{{$post[$i]['id']}}">{{count($post[$i]['comment'])}}</span>{{--commentcount--}}
             </div>
             {{--<div id="socialShare" class="btn-group share-group pull-right glo-social-share">--}}
