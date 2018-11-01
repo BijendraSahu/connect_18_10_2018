@@ -774,6 +774,27 @@ class APIController extends Controller
         //ALTER TABLE `users` CHANGE `timezone` `token` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
     }
 
+    public function editcomment()
+    {
+        $comment_id = request('comment_id');
+        $des = json_decode($_GET['description']);
+        $comment = Comments::find($comment_id);
+        $comment->description = LaravelEmojiOneFacade::toShort($des->comment);
+        $comment->description2 = $des->comment;
+        $comment->save();
+        $ret['response'] = "Comment has been updated";
+        echo json_encode($ret);
+    }
+
+    public function deletecomment()
+    {
+        $comment_id = request('comment_id');
+        $des = json_decode($_GET['description']);
+        $comment = Comments::find($comment_id)->delete();
+        $ret['response'] = "Comment has been deleted";
+        echo json_encode($ret);
+    }
+
     public function postshare()
     {
         $post_id = request('post_id');
@@ -1836,9 +1857,10 @@ class APIController extends Controller
             $user->contact = $contact;
             $user->birthday = Carbon::parse(request('dob'))->format('Y-m-d');
             $user->password = md5(request('password'));
-            $user->city = request('city');
             $user->token = request('token');
-            $user->country_id = request('country');
+            $user->country_id = 91;
+            $user->city = request('city');
+            $user->state = request('state');
             $user->gender = request('gender');
             $user->otp = $otp;
             $user->rc = "rc" . $rc;

@@ -502,7 +502,7 @@ function PreviewImage() {
                 if (current_uploadfile < 10) {
                     //sizefile = Number(i.size);
                     var sizefile = _file.item(i).size;
-                    if (sizefile > 1048576*5) {
+                    if (sizefile > 1048576*3) {
                         oversize = true;
                         overfilesname += _file.item(i).name + ", ";
                     } else {
@@ -523,20 +523,20 @@ function PreviewImage() {
                         // });
                     }
                 } else {
-                    ShowErrorPopupMsg("Maximum 10 images post at a time");
+                    error_noti("Maximum 10 images post at a time");
                     break;
                 }
             }
         } else {
-            ShowErrorPopupMsg("Maximum 10 images post at a time");
+            error_noti("Maximum 10 images post at a time");
             return false;
         }
     } else {
-        ShowErrorPopupMsg("Maximum 10 images post at a time");
+        error_noti("Maximum 10 images post at a time");
         return false;
     }
     if (oversize == true) {
-        ShowErrorPopupMsg(overfilesname + " File size must not exceed 5 MB");
+        error_noti(overfilesname + " File size must not exceed 3 MB");
     }
 }
 
@@ -545,10 +545,10 @@ function PreviewVideo(dis) {
     var _file = document.getElementById("upload_file_video").files;
     for (var i = 0; i < total_file; i++) {
         var sizefile = _file.item(i).size;
-        if (sizefile > (1048576*10)) {
+        if (sizefile > (1048576*15)) {
             overfilesname += _file.item(i).name + ", ";
             $('#upload_file_video').val('');
-            ShowErrorPopupMsg(overfilesname + " File size must not exceed 10 MB");
+            error_noti(overfilesname + " File size must not exceed 15 MB");
         } else {
             var append_video = "<div class='upimg_box video_box'><i class='thumb_close mdi mdi-close' onclick='Remove_uploadvideo(this);'></i><span class='video_playicon'><i class='mdi mdi-play-circle-outline'></i></span><video autoplay='autoplay' poster='images/video_default.png' class='up_img'> <source src='" + window.URL.createObjectURL(event.target.files[i]) + "' type='video/mp4' /> </video></div>";
             $('#image_preview').find('.video_box').remove();

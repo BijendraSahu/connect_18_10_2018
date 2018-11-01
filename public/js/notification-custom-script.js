@@ -56,29 +56,29 @@ function success_noti(msg){
 
 /* Rounded corners Notifications */
 
-function round_default_noti(){
+function round_default_noti(msg){
     Lobibox.notify('default', {
         pauseDelayOnHover: true,
         size: 'mini',
         rounded: true,
         delayIndicator: false,
         continueDelayOnInactiveTab: false,
-        position: 'top right',
-        msg: 'Lorem ipsum dolor sit amet hears farmer indemnity inherent.'
+        position: 'top center',
+        msg: msg
     });
 }
 
 
-function round_info_noti(){
+function round_info_noti(msg){
     Lobibox.notify('info', {
-        pauseDelayOnHover: true,
+        // pauseDelayOnHover: true,
         size: 'mini',
         rounded: true,
         icon: 'fa fa-info-circle',
         delayIndicator: false,
         continueDelayOnInactiveTab: false,
-        position: 'top right',
-        msg: 'Lorem ipsum dolor sit amet hears farmer indemnity inherent.'
+        position: 'bottom left',
+        msg: msg
     });
 }
 
@@ -108,7 +108,7 @@ function round_error_noti(){
     });
 }
 
-function round_success_noti(){
+function round_success_noti(msg){
     Lobibox.notify('success', {
         pauseDelayOnHover: true,
         size: 'mini',
@@ -116,8 +116,8 @@ function round_success_noti(){
         icon: 'fa fa-check-circle',
         delayIndicator: false,
         continueDelayOnInactiveTab: false,
-        position: 'top right',
-        msg: 'Lorem ipsum dolor sit amet hears farmer indemnity inherent.'
+        position: 'top center',
+        msg: msg
     });
 }
 

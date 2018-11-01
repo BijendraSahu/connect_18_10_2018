@@ -355,6 +355,9 @@ Route::get('spam_post', 'APIController@spam_post');
 Route::get('savecomment', 'APIController@savecomment');
 Route::get('post_text', 'APIController@post_text');
 
+Route::get('editcomment', 'APIController@editcomment');
+Route::get('deletecomment', 'APIController@deletecomment');
+
 Route::get('products', 'ProductController@show');
 Route::post('create_product', 'ProductController@store');
 Route::get('create_product', 'ProductController@create');

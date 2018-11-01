@@ -833,6 +833,7 @@ $friendC = count($friendlist);
 
     /******************************************Bijendra**********************************************/
     $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
         /********Pinku***********/
         $("#earners_block").bootstrapNews({
             newsPerPage: 2,

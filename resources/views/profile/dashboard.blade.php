@@ -57,13 +57,15 @@
 
                                     <input class="profile-upload-pic" accept=".mp4, .3gp" type="file"
                                            id="upload_file_video" name="upload_file_video[]"
-                                           onchange="PreviewVideo(this);"/>
+                                           onchange="PreviewVideo(this);" data-toggle="tooltip" data-placement="bottom"
+                                           title="You can upload maximum 1 Video of 15 MB" />
                                     <i class="basic_icons mdi mdi-video"></i>Video
                                     Album
                                 </a>
                                 <a class="btn btn-primary post_btn_photo">
                                     <input class="profile-upload-pic" accept=".png,.jpg, .jpeg, .gif, media_type"
-                                           type="file"
+                                           type="file" data-toggle="tooltip" data-placement="bottom"
+                                           title="You can upload maximum 10 images of 3MB each"
                                            id="upload_file_image" name="upload_file[]" onchange="PreviewImage();"
                                            multiple/>
 
@@ -91,8 +93,7 @@
                                 <!--<div class="post_emoji"><i class="mdi mdi-emoticon"></i></div>-->
                             </div>
                             <div class="files_block" id="files_block">
-                                <div class="upload_limittxt">You can upload maximum 10 images at a time & 1 video at a
-                                    time. Video file size must not exceed 10 MB.
+                                <div class="upload_limittxt">You can Upload Maximum 10 images of 3MB each & 1 Video of 15 MB.
                                 </div>
                                 <!--   <div class="all_thumbcontainner style-scroll">-->
                                 <div class="upload_imgbox" id="image_preview">
@@ -538,7 +539,7 @@
                         if (okk) {
                             $.ajax({
                                 type: 'POST',
-                                url: "{{ url('userpost') }}",
+                            url: "{{ url('userpost') }}",
                                 data: new FormData(this),
                                 contentType: false,
                                 cache: false,
@@ -547,12 +548,13 @@
                                     $('#userpostForm').css("opacity", ".5");
                                     $("#publish").attr("disabled", "disabled");
                                     $('#loader').css('display', 'block');
+                                    round_info_noti("WE ARE UPLOADING YOUR POST QUICKLY");
                                 },
                                 success: function (data) {
                                     $('#loader').css('display', 'none');
                                     HideOnpageLoopader1();
 //                                    swal("Success!", "Your post has been uploaded...", "success");
-                                    success_noti("Your post has been uploaded...");
+                                    success_noti("SUCESSFULLY POSTED,KEEP GOING");
                                     // ShowSuccessPopupMsg('Your post has been uploaded...');
                                     $('#image_preview').text('');
                                     $('.emojionearea-editor').empty();

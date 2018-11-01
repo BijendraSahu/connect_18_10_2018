@@ -149,9 +149,7 @@
                                 <!--<div class="post_emoji"><i class="mdi mdi-emoticon"></i></div>-->
                             </div>
                             <div class="files_block" id="files_block">
-                                <div class="upload_limittxt">You can upload maximam 10 images & 1 video at a time. file
-                                    size
-                                    not be maximum 3 mb
+                                <div class="upload_limittxt">You can Upload Maximum 10 images of 3MB each & 1 Video of 15 MB.
                                 </div>
                                 <!--   <div class="all_thumbcontainner style-scroll">-->
                                 <div class="upload_imgbox" id="image_preview">
@@ -296,12 +294,13 @@
                                     $('#userpostForm').css("opacity", ".5");
                                     $(".btn_post").attr("disabled");
                                     $('#loader').css('display', 'block');
+                                    round_info_noti("WE ARE UPLOADING YOUR POST QUICKLY");
                                 },
                                 success: function (data) {
                                     $('#loader').css('display', 'none');
                                     HideOnpageLoopader1();
 //                                    swal("Success!", "Your post has been uploaded...", "success");
-                                    success_noti("Your post has been uploaded...");
+                                    success_noti("SUCESSFULLY POSTED,KEEP GOING");
                                     // ShowSuccessPopupMsg('Your post has been uploaded...');
                                     $('#image_preview').text('');
                                     $('#post_text').val('');
