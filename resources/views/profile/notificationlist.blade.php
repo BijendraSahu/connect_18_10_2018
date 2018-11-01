@@ -14,18 +14,39 @@
                 <div class="menu_popup_row {{$notification->seen == 0 ?'unseen':''}}">
                     <div class="menu_popup_imgbox"><img src="{{url('').'/'.$notify_by->profile_pic}}"
                                                         class="profile_img"></div>
-                    <div class="menu_popup_text">
-                        @if(isset($notification->post_id))
-                            <div class="popup_text" onclick="show_notification_post('{{$notification->post_id}}')"
-                                 data-toggle="modal"
-                                 data-target="#Mymodal_notification">{!! $notification->description !!}</div>
-                        @else
+                    {{--<div class="menu_popup_text">--}}
+                    {{--@if(isset($notification->post_id))--}}
+                    {{--<div class="popup_text" onclick="show_notification_post('{{$notification->post_id}}')"--}}
+                    {{--data-toggle="modal"--}}
+                    {{--data-target="#Mymodal_notification">{!! $notification->description !!}</div>--}}
+                    {{--@else--}}
+                    {{--<div class="popup_text">{!! $notification->description !!}</div>--}}
+                    {{--@endif--}}
+                    {{--<div class="popup_iconwithtime"><i--}}
+                    {{--class="mdi mdi-calendar-clock"></i> {{ date_format(date_create($notification->created_at), "d-M-Y h:i a")}}--}}
+                    {{--</div>--}}
+                    {{--</div>--}}
+
+                    @if(isset($notification->post_id))
+                        <div class="menu_popup_text" onclick="show_notification_post('{{$notification->post_id}}')"
+                             data-toggle="modal"
+                             data-target="#Mymodal_notification">
                             <div class="popup_text">{!! $notification->description !!}</div>
-                        @endif
-                        <div class="popup_iconwithtime"><i
-                                    class="mdi mdi-calendar-clock"></i> {{ date_format(date_create($notification->created_at), "d-M-Y h:i a")}}
+                            <div class="popup_iconwithtime"><i
+                                        class="mdi mdi-calendar-clock"></i> {{ date_format(date_create($notification->created_at), "d-M-Y h:i a")}}
+                            </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="menu_popup_text" title="view mode only">
+                            <div class="popup_text">{!! $notification->description !!}</div>
+                            <div class="popup_iconwithtime"><i
+                                        class="mdi mdi-calendar-clock"></i> {{ date_format(date_create($notification->created_at), "d-M-Y h:i a")}}
+                            </div>
+                        </div>
+
+                    @endif
+
+
                     <div class="noti_optionsbox">
                         <div class="btn-group dropleft">
                             <button type="button" class="btn noti_option_icon btn-secondary dropdown-toggle"

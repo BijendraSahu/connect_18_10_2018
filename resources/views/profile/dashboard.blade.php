@@ -80,7 +80,7 @@
                                 <div class="post_imgblock">
                                     <img src="{{url('').'/'.$user->profile_pic}}"/>
                                 </div>
-                                <div class="post_text_block emoji_div" placeholder="What's on your mind"
+                                <div class="post_text_block emoji_div" placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}...🙂"
                                      id="post_text_emoji">
                                     <!--<textarea class="post_textarea" id="ta1" placeholder="What's on your mind"></textarea>-->
                                     <!-- <div class="post_textarea txtwithemoji_block" contenteditable="true" id="ta"
@@ -524,7 +524,8 @@
                 var files = $('#upload_file_image').val();
                 var videos = $('#upload_file_video').val();
                 if (textval == '' && files == '' && videos == '') {
-                    swal("Required", "You can't post without any text or image or video", "info");
+//                    swal("Required", "You can't post without any text or image or video", "info");
+                    warning_noti("You can't post without any text or image or video");
                     HideOnpageLoopader1();
                 } else {
                     swal({
@@ -550,7 +551,8 @@
                                 success: function (data) {
                                     $('#loader').css('display', 'none');
                                     HideOnpageLoopader1();
-                                    swal("Success!", "Your post has been uploaded...", "success");
+//                                    swal("Success!", "Your post has been uploaded...", "success");
+                                    success_noti("Your post has been uploaded...");
                                     // ShowSuccessPopupMsg('Your post has been uploaded...');
                                     $('#image_preview').text('');
                                     $('.emojionearea-editor').empty();
@@ -567,7 +569,8 @@
                                     $('#err1').html(xhr.responseText);
                                     $('#userpostForm').css("opacity", "");
                                     $("#publish").removeAttr("disabled", "disabled");
-                                    swal("Oops!", "Post has not been finished...Please try again", "info");
+//                                    swal("Oops!", "Post has not been finished...Please try again", "info");
+                                    warning_noti("Post has not been finished...Please try again");
                                 }
                             });
                         }

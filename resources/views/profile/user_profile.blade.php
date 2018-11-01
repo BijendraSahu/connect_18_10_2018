@@ -260,7 +260,7 @@
                                 <div class="post_imgblock">
                                     <img src="{{url('').'/'.$user->profile_pic}}"/>
                                 </div>
-                                <div class="post_text_block emoji_div" placeholder="What's on your mind..."
+                                <div class="post_text_block emoji_div" placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}...🙂"
                                      id="post_text">
                                     <!--<textarea class="post_textarea" id="ta1" placeholder="What's on your mind"></textarea>-->
                                     <!-- <div class="post_textarea txtwithemoji_block" contenteditable="true" id="ta"

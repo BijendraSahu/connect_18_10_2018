@@ -31,6 +31,12 @@ if (is_null($_SESSION['admin_master'])) {
     <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
     <script src="{{url('js/sweetalert.min.js')}}"></script>
     <script src="{{url('js/Global.js')}}"></script>
+    {{---------------Notification---------------}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{url('css/lobibox.min.css')}}">
+    <script src="{{url('js/notifications.min.js')}}"></script>
+    <script src="{{url('js/notification-custom-script.js')}}"></script>
+    {{---------------Notification---------------}}
     <script type="text/javascript">
         $(document).ready(function () {
             $(function () {
@@ -246,15 +252,16 @@ if (is_null($_SESSION['admin_master'])) {
     <script type="text/javascript">
         setTimeout(function () {
             {{--            ShowSuccessPopupMsg('{{ session()->get('message') }}');--}}
-            swal("Success!", "{{ session()->get('message') }}", "success");
-
+            {{--swal("Success!", "{{ session()->get('message') }}", "success");--}}
+            success_noti("{{ session()->get('message') }}");
         }, 500);
     </script>
 @endif
 @if($errors->any())
     <script>
         setTimeout(function () {
-            swal("Oops!", "{{$errors->first()}}", "error");
+{{--            swal("Oops!", "{{$errors->first()}}", "error");--}}
+            warning_noti("{{$errors->first()}}");
             {{--ShowErrorPopupMsg('{{$errors->first()}}');--}}
         }, 500);
     </script>

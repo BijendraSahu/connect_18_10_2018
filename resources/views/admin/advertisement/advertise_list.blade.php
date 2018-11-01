@@ -126,20 +126,20 @@
         });
         $(".create-add").click(function () {
             $('#myModal').modal('show');
-            $('.modal-title').html('Add New Advertisement');
-            $('.modal-body').html('<img height="50px" class="center-block" src="{{url('assets/img/loading.gif')}}"/>');
+            $('#modal_title').html('Add New Advertisement');
+            $('#modal_body').html('<img height="50px" class="center-block" src="{{url('images/loading.gif')}}"/>');
             //alert(id);
             $.ajax({
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
                 url: "{{ url('advertisement/create') }}",
                 success: function (data) {
-                    $('.modal-body').html(data);
+                    $('#modal_body').html(data);
 //            $('#modelBtn').visible(disabled);
                 },
                 error: function (xhr, status, error) {
-                    $('.modal-body').html(xhr.responseText);
-                    //$('.modal-body').html("Technical Error Occured!");
+                    $('#modal_body').html(xhr.responseText);
+                    //$('#modal_body').html("Technical Error Occured!");
                 }
             });
 
@@ -147,8 +147,8 @@
 
         $(".edit-ads").click(function () {
             $('#myModal').modal('show');
-            $('.modal-title').html('Edit Advertisement');
-            $('.modal-body').html('<img height="50px" class="center-block" src="{{url('assets/img/loading.gif')}}"/>');
+            $('#modal_title').html('Edit Advertisement');
+            $('#modal_body').html('<img height="50px" class="center-block" src="{{url('images/loading.gif')}}"/>');
 
             var id = $(this).attr('id');
             var editurl = '{{ url('/') }}' + "/advertisement/" + id + "/edit";
@@ -158,11 +158,11 @@
                 url: editurl,
                 data: '{"data":"' + id + '"}',
                 success: function (data) {
-                    $('.modal-body').html(data);
+                    $('#modal_body').html(data);
                 },
                 error: function (xhr, status, error) {
-                    $('.modal-body').html(xhr.responseText);
-                    //$('.modal-body').html("Technical Error Occured!");
+                    $('#modal_body').html(xhr.responseText);
+                    //$('#modal_body').html("Technical Error Occured!");
                 }
             });
         });

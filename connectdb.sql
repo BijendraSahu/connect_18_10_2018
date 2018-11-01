@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2018 at 11:48 AM
+-- Generation Time: Nov 01, 2018 at 08:41 AM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.2
 
@@ -187,14 +187,14 @@ INSERT INTO `ads_clicked` (`id`, `user_id`, `ad_id`, `click_count`, `clicked_dat
 (2, 39, 5, 3, '2018-05-18', 1),
 (3, 39, 6, 3, '2018-05-18', 1),
 (4, 39, 7, 3, '2018-05-18', 1),
-(5, 2, 1, 41, '2018-10-03', 1),
-(6, 2, 5, 41, '2018-10-03', 1),
-(7, 2, 6, 41, '2018-10-03', 1),
-(8, 2, 7, 41, '2018-10-03', 1),
-(9, 4, 1, 44, '2018-10-15', 1),
-(10, 4, 5, 44, '2018-10-15', 1),
-(11, 4, 6, 44, '2018-10-15', 1),
-(12, 4, 7, 44, '2018-10-15', 1),
+(5, 2, 1, 42, '2018-10-17', 1),
+(6, 2, 5, 42, '2018-10-17', 1),
+(7, 2, 6, 42, '2018-10-17', 1),
+(8, 2, 7, 42, '2018-10-17', 1),
+(9, 4, 1, 48, '2018-10-30', 1),
+(10, 4, 5, 48, '2018-10-30', 1),
+(11, 4, 6, 48, '2018-10-30', 1),
+(12, 4, 7, 48, '2018-10-30', 1),
 (13, 10, 1, 2, '2018-08-17', 1),
 (14, 10, 5, 2, '2018-08-17', 1),
 (15, 10, 6, 2, '2018-08-17', 1),
@@ -1583,13 +1583,13 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `post_id`, `timeline_id`, `user_id`, `notified_by`, `seen`, `description`, `type`, `link`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, NULL, 2, 2, 4, 0, 'Bijendra is following you', 'follow', NULL, '2017-11-28 10:46:30', '2017-11-28 10:46:30', NULL),
-(2, NULL, 2, 2, 4, 0, 'Bijendra is unfollowing you', 'unfollow', NULL, '2017-11-28 10:46:33', '2017-11-28 10:46:33', NULL),
-(3, NULL, 2, 4, 2, 0, 'Bijendra is following you', 'follow', NULL, '2017-11-28 10:46:37', '2017-11-28 10:46:37', NULL),
-(4, NULL, 10, 4, 4, 0, 'ashish is following you', 'follow', NULL, '2017-11-28 10:47:23', '2017-11-28 12:15:40', NULL),
+(1, 1, 2, 2, 4, 0, 'Bijendra is following you', 'follow', NULL, '2017-11-28 10:46:30', '2017-11-28 10:46:30', NULL),
+(3, 3, 2, 2, 2, 0, 'Bijendra is following you', 'follow', NULL, '2017-11-28 10:46:37', '2017-11-28 10:46:37', NULL),
+(4, 4, 2, 2, 4, 0, 'ashish is following you', 'follow', NULL, '2017-11-28 10:47:23', '2017-11-28 12:15:40', NULL),
 (5, NULL, 10, 4, 5, 0, 'Himani is following you', 'follow', NULL, '2017-11-28 11:05:19', '2017-11-28 12:15:40', NULL),
 (6, NULL, 10, 4, 3, 1, 'Manish is following you', 'follow', NULL, '2017-11-28 12:10:30', '2017-11-28 12:15:40', NULL),
-(7, NULL, 10, 4, 1, 1, 'Admin is following you', 'follow', NULL, '2017-11-28 12:11:56', '2017-11-28 12:15:40', NULL);
+(7, NULL, 10, 4, 1, 1, 'Admin is following you', 'follow', NULL, '2017-11-28 12:11:56', '2017-11-28 12:15:40', NULL),
+(8, 1, 2, 2, 4, 1, 'Bijendra liked your post', 'follow', NULL, '2017-11-28 10:46:30', '2017-11-28 10:46:30', NULL);
 
 -- --------------------------------------------------------
 
@@ -1609,8 +1609,8 @@ CREATE TABLE `notification_clicked` (
 --
 
 INSERT INTO `notification_clicked` (`id`, `user_id`, `click_count`, `clicked_date`) VALUES
-(1, 4, 40, '2018-10-15'),
-(2, 2, 9, '2018-10-03'),
+(1, 4, 44, '2018-10-30'),
+(2, 2, 10, '2018-10-17'),
 (3, 3, 1, '2018-08-17');
 
 -- --------------------------------------------------------
@@ -1807,9 +1807,7 @@ CREATE TABLE `posts` (
 
 INSERT INTO `posts` (`id`, `description`, `description2`, `timeline_id`, `user_id`, `posted_by`, `post_created_by`, `active`, `soundcloud_title`, `soundcloud_id`, `youtube_title`, `youtube_video_id`, `location`, `type`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, '😃sada', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-21 08:31:51', NULL, NULL),
-(2, 'dsa', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-21 08:32:58', NULL, NULL),
 (3, 'csa', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-21 09:28:24', NULL, NULL),
-(4, 'vfgf', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 09:46:41', NULL, NULL),
 (5, 'fas😆', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 09:47:02', NULL, NULL),
 (6, 'csaccsa😂', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 10:35:50', NULL, NULL),
 (7, '😆das', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 10:42:43', NULL, NULL),
@@ -1962,7 +1960,10 @@ INSERT INTO `post_likes` (`id`, `post_id`, `user_id`, `created_at`, `updated_at`
 (198, 106, 4, '2018-08-25 05:50:59', NULL),
 (200, 107, 4, '2018-08-25 05:51:43', NULL),
 (201, 114, 2, '2018-10-03 08:29:48', NULL),
-(216, 112, 4, '2018-10-05 14:17:35', NULL);
+(216, 112, 4, '2018-10-05 14:17:35', NULL),
+(223, 114, 4, '2018-10-17 07:41:05', NULL),
+(224, 115, 4, '2018-10-17 07:41:22', NULL),
+(225, 115, 2, '2018-10-17 07:50:13', NULL);
 
 -- --------------------------------------------------------
 
@@ -2026,7 +2027,13 @@ INSERT INTO `post_media` (`id`, `post_id`, `is_deleted`, `media_url`, `media_typ
 (38, 105, 0, 'userposts/4/YWUgJ6_post_user_id_4_Adver_img2.jpg', 'img', NULL, NULL, NULL),
 (39, 105, 0, 'userposts/4/WEZ47B_post_user_id_4_Adver_img3.jpg', 'img', NULL, NULL, NULL),
 (40, 106, 0, 'userposts/4/9z9FNo_post_user_id_4_0D44M2_level.png', 'img', NULL, NULL, NULL),
-(41, 108, 0, 'userposts/4/05GzWu_post_user_id_4_SampleVideo_1280x720_5mb.mp4', 'vd', NULL, NULL, NULL);
+(41, 108, 0, 'userposts/4/05GzWu_post_user_id_4_SampleVideo_1280x720_5mb.mp4', 'vd', NULL, NULL, NULL),
+(42, 117, 0, 'userposts/4/TCJEjU_post_user_id_4_image-1.jpg', 'img', NULL, NULL, NULL),
+(43, 117, 0, 'userposts/4/0hfuVS_post_user_id_4_image-2.jpg', 'img', NULL, NULL, NULL),
+(44, 117, 0, 'userposts/4/OhJlWj_post_user_id_4_image-3.jpg', 'img', NULL, NULL, NULL),
+(45, 118, 0, 'userposts/4/DXIAQu_post_user_id_4_image-1.jpg', 'img', NULL, NULL, NULL),
+(46, 119, 0, 'userposts/4/dJ5djZ_post_user_id_4_image-1.jpg', 'img', NULL, NULL, NULL),
+(47, 120, 0, 'userposts/4/eI23GT_post_user_id_4_image-1.jpg', 'img', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2046,13 +2053,13 @@ CREATE TABLE `post_spam` (
 --
 
 INSERT INTO `post_spam` (`id`, `post_id`, `user_id`, `created_at`) VALUES
-(81, 115, 4, '2018-10-13 05:52:58'),
 (57, 113, 4, '2018-10-05 14:06:14'),
 (59, 112, 4, '2018-10-05 14:17:32'),
-(84, 114, 4, '2018-10-13 05:53:59'),
 (35, 111, 4, '2018-10-05 13:58:19'),
 (36, 110, 4, '2018-10-05 13:58:34'),
-(42, 108, 4, '2018-10-05 14:00:46');
+(42, 108, 4, '2018-10-05 14:00:46'),
+(85, 116, 4, '2018-10-16 14:05:07'),
+(86, 117, 4, '2018-10-16 14:14:48');
 
 -- --------------------------------------------------------
 
@@ -2081,6 +2088,13 @@ CREATE TABLE `post_unlike` (
   `user_id` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `post_unlike`
+--
+
+INSERT INTO `post_unlike` (`id`, `post_id`, `user_id`, `created_at`) VALUES
+(8, 115, 4, NULL);
 
 -- --------------------------------------------------------
 
@@ -2330,10 +2344,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `profile_pic`, `otp`, `rc`, `timeline_id`, `email`, `verification_code`, `verified`, `email_verified`, `remember_token`, `password`, `balance`, `birthday`, `city`, `country_id`, `gender`, `contact`, `contact_privacy`, `profession`, `profession_other`, `member_type`, `active`, `last_logged`, `theme_img`, `header_colour`, `address`, `created_time`, `token`, `affiliate_id`, `language`, `facebook_link`, `twitter_link`, `dribbble_link`, `instagram_link`, `youtube_link`, `linkedin_link`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'images/Male_default.png', '946205', 'rc1234', 1, 'bijendra@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-07', 'jbp', 99, 'male', '8989892827', 'public', 'Doctor', NULL, 'paid', 1, '2018-08-09 12:37:45', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 'profile/1534513255.png', '974209', 'rc4321', 2, 'amit@gmail.com', NULL, 1, NULL, NULL, '81dc9bdb52d04dc20036dbd8313ed055', 0.00, '1992-02-03', 'Jabalpur', 99, 'male', '8989892897', 'public', 'Doctor', NULL, 'paid', 1, '2018-10-02 07:39:39', NULL, '#561c1c', NULL, '2018-07-17 11:21:53', 'dctvAW9VK_Q:APA91bGBtNy2WbEUoM8eA0nyrjSAD2OHKCf63taxfLv71ByzO748xIJQsJU0r0GNYPEx6mVFsTY2jzPijnM4Lr-5njHAInTITdayYYd5_7k4mGaURVxFisrdHOMp6sCPGIbSLLplhwgc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(1, 'images/Male_default.png', '946205', 'rc1234', 1, 'bijendra@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-07', 'jbp', 99, 'male', '8989892827', 'public', 'Doctor', NULL, 'paid', 1, '2018-10-30 08:29:14', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'profile/1534513255.png', '974209', 'rc4321', 2, 'amit@gmail.com', NULL, 1, NULL, NULL, '81dc9bdb52d04dc20036dbd8313ed055', 0.00, '1992-02-03', 'Jabalpur', 99, 'male', '8989892897', 'public', 'Doctor', NULL, 'paid', 1, '2018-10-17 07:53:46', 'http://localhost:1000/images/theme_img_up2.jpg', '#000000', NULL, '2018-07-17 11:21:53', 'dctvAW9VK_Q:APA91bGBtNy2WbEUoM8eA0nyrjSAD2OHKCf63taxfLv71ByzO748xIJQsJU0r0GNYPEx6mVFsTY2jzPijnM4Lr-5njHAInTITdayYYd5_7k4mGaURVxFisrdHOMp6sCPGIbSLLplhwgc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (3, 'images/Male_default.png', '763859', 'refer1235', 3, 'anshu@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-05', 'Jabalpur', 99, 'female', '8989892828', 'private', 'Engineer', NULL, 'paid', 1, '2018-07-23 10:24:24', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 'images/Male_default.png', '463145', 'refer1236', 4, 'devansh@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-07', 'Jabalpur', NULL, 'female', '8989892866', 'private', 'Other', NULL, 'paid', 1, '2018-09-25 11:58:41', 'http://localhost:1000/images/theme_img_up2.jpg', '#000000', NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(4, 'images/Male_default.png', '463145', 'refer1236', 4, 'devansh@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-07', 'Jabalpur', NULL, 'female', '8989892866', 'private', 'Other', NULL, 'paid', 1, '2018-10-17 11:30:03', 'http://localhost:1000/images/theme_img_up2.jpg', '#000000', NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (5, 'images/Male_default.png', '842492', 'refer1234', 5, 'manish@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-05', 'Jbp', 99, 'male', '9876543210', 'public', 'Engineer', NULL, 'paid', 1, '2018-06-04 07:16:31', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (6, 'images/Male_default.png', '442297', 'dasf', 6, 'kaml@gmail.com', NULL, 0, NULL, NULL, '7f58341b9dceb1f1edca80dae10b92bc', 0.00, '2018-02-14', 'Jabalpur', 99, 'male', '9876543210', 'public', 'Engineer', NULL, 'paid', 1, '2018-06-02 13:57:02', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (7, 'images/Male_default.png', '907695', 'cdsaf', 7, 'ni@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-07', 'Jabalpur', 99, 'male', '9876543210', 'public', 'Engineer', NULL, 'paid', 1, '2018-10-13 06:17:34', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2874,7 +2888,7 @@ ALTER TABLE `notification`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `notification_clicked`
@@ -2934,19 +2948,19 @@ ALTER TABLE `post_follows`
 -- AUTO_INCREMENT for table `post_likes`
 --
 ALTER TABLE `post_likes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=217;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=226;
 
 --
 -- AUTO_INCREMENT for table `post_media`
 --
 ALTER TABLE `post_media`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `post_spam`
 --
 ALTER TABLE `post_spam`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT for table `post_tags`
@@ -2958,7 +2972,7 @@ ALTER TABLE `post_tags`
 -- AUTO_INCREMENT for table `post_unlike`
 --
 ALTER TABLE `post_unlike`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `redeem_masters`

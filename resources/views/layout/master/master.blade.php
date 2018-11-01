@@ -64,6 +64,12 @@ if (is_null($_SESSION['user_master'])) {
     {{--    <script src="{{url('js/login_validation.js') }}"></script>--}}
     {{--    <link rel="stylesheet" href="{{url('css/select2.min.css')}}">--}}
     {{--<script src="{{url('js/select2.min.js')}}"></script>--}}
+    {{---------------Notification---------------}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{url('css/lobibox.min.css')}}">
+    <script src="{{url('js/notifications.min.js')}}"></script>
+    <script src="{{url('js/notification-custom-script.js')}}"></script>
+    {{---------------Notification---------------}}
     <script src="{{url('js/TopEarners.js')}}" type="text/javascript"></script>
     <script>
         $.ajaxSetup({
@@ -1159,8 +1165,9 @@ $friendC = count($friendlist);
             success: function (data) {
 //                var curr_count = Number($('#unread_noti_id').text());
                 var json = jQuery.parseJSON(data);
+                var curr_count = Number($('#unread_noti_id').text());
                 if (json.response == 'Notification has been removed') {
-//                    $('#unread_noti_id').text(curr_count - 1);
+                    $('#unread_noti_id').text(curr_count - 1);
                     $(dis).parent().addClass('scalenoti');
                     $(dis).parent().parent().parent().parent().remove();
                     $(dis).remove();
@@ -1208,15 +1215,16 @@ $friendC = count($friendlist);
     <script type="text/javascript">
         setTimeout(function () {
             {{--            ShowSuccessPopupMsg('{{ session()->get('message') }}');--}}
-            swal("Success!", "{{ session()->get('message') }}", "success");
-
+{{--            swal("Success!", "{{ session()->get('message') }}", "success");--}}
+            success_noti("{{ session()->get('message') }}");
         }, 500);
     </script>
 @endif
 @if($errors->any())
     <script>
         setTimeout(function () {
-            swal("Oops!", "{{$errors->first()}}", "error");
+            {{--swal("Oops!", "{{$errors->first()}}", "error");--}}
+                        warning_noti("{{$errors->first()}}");
             {{--ShowErrorPopupMsg('{{$errors->first()}}');--}}
         }, 500);
     </script>

@@ -19,8 +19,14 @@
     <script src="{{ asset('js/Global.js') }}"></script>
     <script src="{{url('js/sweetalert.min.js')}}"></script>
     <!--Google Font-->
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet"/>
+    {{--<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">--}}
+    {{--<link href="https://fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet"/>--}}
+    {{---------------Notification---------------}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{url('css/lobibox.min.css')}}">
+    <script src="{{url('js/notifications.min.js')}}"></script>
+    <script src="{{url('js/notification-custom-script.js')}}"></script>
+    {{---------------Notification---------------}}
     <style type="text/css">
         .errorClass {
             border: 1px solid red !important;
@@ -114,7 +120,11 @@
                                         <span class="input-group-addon"><i class="mdi mdi-lock mdi-16px"></i></span>
                                         <input name="password" placeholder="Password*" tabindex="2" maxlength="25"
                                                class="form-control required" minlength="4"
-                                               type="password"/>
+                                               type="password" id="login_pass_show"/>
+                                        <div class="view_password"
+                                             onclick="ShowPassword('password_icon','login_pass_show');">
+                                            <i class="mdi mdi-eye" id="password_icon"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -178,7 +188,8 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="mdi mdi-account mdi-16px"></i></span>
-                                    <input name="first_name" onpaste="return false;" placeholder="First Name*"
+                                    <input name="first_name" autocomplete="off" onpaste="return false;"
+                                           placeholder="First Name*"
                                            maxlength="50"
                                            class="form-control textWithSpace fname required"
                                            type="text"/>
@@ -189,7 +200,8 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="mdi mdi-account mdi-16px"></i></span>
-                                    <input name="Last_name" onpaste="return false;" placeholder="Last Name*"
+                                    <input name="Last_name" autocomplete="off" onpaste="return false;"
+                                           placeholder="Last Name*"
                                            maxlength="50"
                                            class="form-control textWithSpace lname required"
                                            type="text"/>
@@ -244,6 +256,19 @@
                                            id="show_password"
                                            class="form-control password required"/>
                                     <div class="view_password" onclick="ShowPassword('password_icon','show_password');">
+                                        <i class="mdi mdi-eye" id="password_icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="mdi mdi-lock mdi-16px"></i></span>
+                                    <input type="password" name="confirm_show_password" autocomplete="off" maxlength="25" minlength="4" placeholder="Confirm Password*" onpaste="return false;"
+                                           id="confirm_show_password"
+                                           class="form-control password required"/>
+                                    <div class="view_password" onclick="ShowPassword('password_icon','confirm_show_password');">
                                         <i class="mdi mdi-eye" id="password_icon"></i>
                                     </div>
                                 </div>
@@ -474,14 +499,14 @@
             $('#myModal_varify_otp_email').modal('show');
         }
         setTimeout(function () {
-            swal("Success!", "{{ session()->get('message') }}", "success");
+            success_noti("{{ session()->get('message') }}");
         }, 500);
     </script>
 @endif
 @if($errors->any())
     <script>
         setTimeout(function () {
-            swal("Oops...!", "{{$errors->first()}}", "info");
+            warning_noti("{{$errors->first()}}");
         }, 500);
     </script>
 @endif
@@ -560,7 +585,8 @@
         $('#frmReg .required').each(function () {
             if ($(this).val().length == 0) {
                 $(this).addClass('errorClass');
-                swal("Oops....", "You must have enter required fields", "info");
+//                swal("Oops....", "You must have enter required fields", "info");
+                warning_noti("You must have enter required fields");
                 return false;
             }
             else {
@@ -578,7 +604,8 @@
         if (fname == '') {
             return false;
         } else if ($('.password').val().length < 4) {
-            swal("Oops...!", "Password must have atleast 4 digits", "info");
+//            swal("Oops...!", "Password must have atleast 4 digits", "info");
+            warning_noti("Password must have atleast 4 digits");
             return false;
         } else {
             $.ajax({
@@ -592,12 +619,14 @@
                         $('#myModal_varify_otp_email').hide();
                         $('#myModal_varify_otp_email').modal('hide');
                         HideOnpageLoopader1();
-                        swal("Oops...!", "Email already exist please use different email", "info");
+//                        swal("Oops...!", "Email already exist please use different email", "info");
+                        warning_noti("Email already exist please use different email");
                     } else if (data == 'Contact already') {
                         $('#myModal_varify_otp_email').hide();
                         $('#myModal_varify_otp_email').modal('hide');
                         HideOnpageLoopader1();
-                        swal("Oops...!", "Contact already exist please use different contact no", "info");
+//                        swal("Oops...!", "Contact already exist please use different contact no", "info");
+                        warning_noti("Contact already exist please use different contact no");
                     }
 
                     // $('#err').html(data);
@@ -712,6 +741,12 @@
     }
 
     $(document).ready(function () {
+        $('#frmReg').attr('autocomplete', 'off');
+        $('[data-toggle="tooltip"]').tooltip();
+        $('#rcode').tooltip({
+            'trigger': 'focus',
+            'title': 'Use Your Friend Refferal Code or Promo Code You Recieved on Succesful Completion of the Survey'
+        });
         $('#rcode').focusout(function () {
             var txt_val = $(this).val();
             var formData = '_token=' + $('.token').val();
@@ -866,18 +901,27 @@
     });
 </script>
 <script type="text/javascript">
-    $('#email_id').focusout(function () {
-        var domains = ["gmail.com", "hotmail.com", "msn.com", "yahoo.com", "yahoo.in", "yahoo.com", "aol.com", "hotmail.co.uk", "yahoo.co.in", "live.com", "rediffmail.com", "outlook.com", "hotmail.it", "googlemail.com", "mail.com"]; //update ur domains here
-        var idx1 = this.value.indexOf("@");
-        if (idx1 > -1) {
-            var splitStr = this.value.split("@");
-            var sub = splitStr[1].split(".");
-            if ($.inArray(splitStr[1], domains) == -1) {
-                swal("Oops....", "Email must have correct domain name Eg: @gmail.com", "info");
-                this.value = "";
-            }
+    $('#confirm_show_password').focusout(function () {
+        var password = $('#show_password').val();
+        var c_password = $(this).val();
+        if(password != c_password){
+            $(this).val('');
+            error_noti("Password and confirm password mismatch");
         }
     });
+    {{--$('#email_id').focusout(function () {--}}
+        {{--var domains = ["gmail.com", "hotmail.com", "msn.com", "yahoo.com", "yahoo.in", "yahoo.com", "aol.com", "hotmail.co.uk", "yahoo.co.in", "live.com", "rediffmail.com", "outlook.com", "hotmail.it", "googlemail.com", "mail.com"]; //update ur domains here--}}
+        {{--var idx1 = this.value.indexOf("@");--}}
+        {{--if (idx1 > -1) {--}}
+            {{--var splitStr = this.value.split("@");--}}
+            {{--var sub = splitStr[1].split(".");--}}
+            {{--if ($.inArray(splitStr[1], domains) == -1) {--}}
+                {{--warning_noti("Email must have correct domain name Eg: @gmail.com");--}}
+                {{--swal("Oops....", "Email must have correct domain name Eg: @gmail.com", "info");--}}
+                {{--this.value = "";--}}
+            {{--}--}}
+        {{--}--}}
+    {{--});--}}
 </script>
 <script src="{{ asset('js/login_validation.js') }}"></script>
 </html>
