@@ -98,7 +98,6 @@
                 }
             });
         }
-
         function CheckFileValidation(dis) {
             var sizefile = Number(dis.files[0].size);
             if (sizefile > 1048576 * 2) {
@@ -134,7 +133,6 @@
                 }
             }
         }
-
         $(document).ready(function () {
             var result = $('.result'),
                 img_result = $('.img-result'),
