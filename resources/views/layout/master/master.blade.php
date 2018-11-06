@@ -450,6 +450,10 @@ if (is_null($_SESSION['user_master'])) {
                             <td class="width_65" id="adver_type">-</td>
                         </tr>
                         <tr>
+                            <td class="width_35 title-more">Selling Price :</td>
+                            <td class="width_65" id="adver_price">-</td>
+                        </tr>
+                        <tr>
                             <td class="width_35 title-more">City :</td>
                             <td class="width_65" id="adver_city">-</td>
                         </tr>
@@ -529,9 +533,14 @@ if (is_null($_SESSION['user_master'])) {
                     <div class="advertise_details_box">
                         <div class="latest_update_title" id="adver_title_lb"></div>
                         <div class="latest_updatetxt" id="adver_details_lb"></div>
-                        <div class="latest_otr_details" id="otr_lb_details">
+                        <div class="latest_updatetxt">
+                            <span><i class="mdi mdi-currency-inr"></i> <span id="adver_price_lb"></span></span>
                             <span><i class="mdi mdi-map-marker"></i> <span id="adver_city_lb"></span></span>
-                            <span><i class="mdi mdi-home-automation"></i><span id="adver_type_lb"></span></span>
+                            <span><i class="mdi mdi-home-automation basic_icon_margin"></i><span id="adver_type_lb"></span></span>
+                        </div>
+                        <div class="latest_otr_details" id="otr_lb_details">
+                            <span><i class="mdi mdi-phone-incoming basic_icon_margin"></i><span id="adver_contact_lb"></span></span>
+                            <span><i class="mdi mdi-email basic_icon_margin"></i><span id="adver_email_lb"></span></span>
                         </div>
                     </div>
                     <div class="latest_updateimg">
@@ -834,15 +843,15 @@ $friendC = count($friendlist);
     /******************************************Bijendra**********************************************/
     $(document).ready(function () {
         /********Pinku***********/
-        $("#earners_block").bootstrapNews({
-            newsPerPage: 2,
-            autoplay: true,
-            pauseOnHover: true,
-            direction: 'up',
-            newsTickerInterval: 1500,
-            onToDo: function () {
-            }
-        });
+//        $("#earners_block").bootstrapNews({
+//            newsPerPage: 15,
+//            autoplay: true,
+//            pauseOnHover: true,
+//            direction: 'up',
+//            newsTickerInterval: 1500,
+//            onToDo: function () {
+//            }
+//        });
 
         $("#advertise_block").bootstrapNews({
             newsPerPage: 1,
@@ -1189,7 +1198,7 @@ $friendC = count($friendlist);
         });
     }
 
-    function show_notification_post(post_id) {
+    function show_notification_post(post_id, dis) {
         $('#Mymodal_notification').modal('show');
         $('#notif_title').html('View Post');
         $('#notif_body').html('<img height="50px" class="center-block" src="{{url('assets/img/loading.gif')}}"/>');
@@ -1201,10 +1210,33 @@ $friendC = count($friendlist);
             data: {post_id: post_id},//'{"data":"' + id + '"}',
             success: function (data) {
                 $('#notif_body').html(data);
+                ViewMarkRead(post_id ,dis);
             },
             error: function (xhr, status, error) {
                 $('#notif_body').html(xhr.responseText);
                 //$('.modal-body').html("Technical Error Occured!");
+            }
+        });
+    }
+    function ViewMarkRead(post_id ,dis) {
+        var editurl = '{{ url('make_as_read_noti') }}';
+        $.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            url: editurl,
+            data: {notification_id: post_id},//'{"data":"' + id + '"}',
+            success: function (data) {
+                var json = jQuery.parseJSON(data);
+                var curr_count = Number($('#unread_noti_id').text());
+                if (json.response == 'Notification marked as read') {
+                    $('#unread_noti_id').text(curr_count - 1);
+                    $(dis).parent().removeClass('unseen');
+                    $(dis).parent().find('.markread').remove();
+                }
+            },
+            error: function (xhr, status, error) {
+//                $('#notif_body').html(xhr.responseText);
+//                $('.modal-body').html("Technical Error Occured!");
             }
         });
     }
@@ -1221,7 +1253,7 @@ $friendC = count($friendlist);
     </script>
 @endif
 @if($errors->any())
-    <script>
+    <script type="text/javascript">
         setTimeout(function () {
             {{--swal("Oops!", "{{$errors->first()}}", "error");--}}
                         warning_noti("{{$errors->first()}}");

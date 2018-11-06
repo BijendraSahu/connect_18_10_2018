@@ -3,7 +3,7 @@
     <div class="total_count">{{count($friendrqst)}}</div>
 @endif
 <div class="menu_basic_popup effect scale0 notification_popbox">
-    <div class="menu_popup_head">Messages</div>
+    <div class="menu_popup_head">Messages <div class="basic_popup_close" onclick="Hidepopup('hide');"><i class="mdi mdi-close"></i></div></div>
 
     <div class="menu_popup_containner  chat_scroll style-scroll">
         @if(count($friendrqst)>0)

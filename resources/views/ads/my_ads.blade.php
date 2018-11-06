@@ -1,7 +1,95 @@
 @extends('layout.master.master')
 
 @section('title', 'My Advertisement')
+<style type="text/css">
+    .upload_file_box {
+        width: 100%;
+        margin-top: 15px;
+        display: inline-block;
+    }
 
+    .upload_result_img {
+        margin-top: 10px;
+    }
+    .result {
+        width: 100%;
+        min-height: 200px;
+    }
+    .cropper-container
+    {
+        width: 100% !important;
+        min-height:150px;
+    }
+</style>
+<link href="{{url('css/cropper.min.css')}}" type="text/css" rel="stylesheet"/>
+<style type="text/css">
+    .page {
+        max-width: 768px;
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .box {
+        width: 100%;
+        margin: 5px 5px 10px 5px;
+    }
+
+    .box-2 {
+        padding: 0.5em;
+        width: calc(100% / 2 - 0em);
+    }
+
+    .options label,
+    .options input {
+        width: 4em;
+        padding: 0.5em 1em;
+    }
+
+    .note_forcrop {
+        width: 100%;
+        margin: 10px 0px;
+        color: #666666;
+        font-size: 12px;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    .center_btnmargin {
+        margin: 0px 10px;
+    }
+
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+
+    .basic_icon_margin {
+        margin-right: 5px;
+    }
+
+    .content_block {
+        margin-top: 0px;
+    }
+
+</style>
 @section('head')
     <section class="container-fluid overall_containner notofication_containner">
         <div class="row">
@@ -40,15 +128,19 @@
                         <div class="col-xs-12 head_caption">Our Advertise List
                             {{--  <a href="javascript:void(0);" onclick="create_add()" class="btn btn-warning btn-sm add-ouradd" id="add-Newouradd"><i class="mdi basic_icon_margin mdi-plus"></i>Create</a>--}}
                             <div class="grid_header_btnbox">
-                            <div class="btn-group" onclick="create_add()" id="add-Newouradd">
-                                <button type="button" class="btn btn-primary btn-sm action-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Create
-                                </button>
-                                <button type="button" class="btn btn-primary btn-sm action-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="mdi mdi-plus"></span></button>
-                            </div>
-                            <div class="btn-group gridbtn-group pull-right" id="TotalRecords">
-                                <span class="grid-counter-text">Counter</span><span class="btn btn-counter btn-sm">{{count($ads)}}</span>
+                                <div class="btn-group" onclick="create_add()" id="add-Newouradd">
+                                    <button type="button" class="btn btn-primary btn-sm action-btn"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Create
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-sm action-btn"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span
+                                                class="mdi mdi-plus"></span></button>
+                                </div>
+                                <div class="btn-group gridbtn-group pull-right total_record_btnbox" id="TotalRecords">
+                                    <span class="grid-counter-text">Counter</span><span
+                                            class="btn btn-counter btn-sm">{{count($ads)}}</span>
 
-                            </div>
+                                </div>
                             </div>
                         </div>
 
@@ -57,9 +149,11 @@
                         <table class="table table-bordered table-condensed table-hover table-responsive grid-table">
                             <tbody>
                             <tr class="tr-header globe-header-tr">
-                                <th class="width_25">Advertise Title</th>
-                                <th class="width_15">Type</th>
-                                <th class="width_20">City</th>
+                                <th class="width_17">Advertise Title</th>
+                                <th class="width_8">Type</th>
+                                <th class="width_8">Price</th>
+                                <th class="width_12">City</th>
+                                <th class="width_15">Contact / Email</th>
                                 <th class="width_16">Date</th>
                                 <th class="width_12">Status</th>
                                 <th class="width_12">Action</th>
@@ -69,7 +163,7 @@
                             @if(count($ads) > 0)
                                 @foreach($ads as $ad)
                                     <tr id="row_{{$ad->id}}">
-                                        <td class="tab-grid width_25 col1" data-line="Advertise Title"
+                                        <td class="tab-grid width_17 col1" data-line="Advertise Title"
                                             id="admin_adverlist_title">
                                             <?php $cat_img = \App\AdsImages::where(['ad_id' => $ad->id])->first(); ?>
                                             @if(isset($cat_img->image_url))
@@ -79,14 +173,21 @@
                                                 <img class="always_display_none" id="admin_adverlist_img"
                                                      src="{{url('images/Adver_mainimg1.jpg')}}"/>
                                             @endif
-                                      <div class="always_display_none" id="admin_adverlist_contact">{{$ad->user->contact}}</div>
+                                            <div class="always_display_none"
+                                                 id="admin_adverlist_contact">{{$ad->user->contact}}</div>
                                             {{$ad->ad_title}}
                                         </td>
-                                        <td class="tab-grid width_15 col2"
+                                        <td class="tab-grid width_8 col2"
                                             data-line="Type"
                                             id="admin_adverlist_category">{{isset($ad->ad_category_id)?$ad->ad_cat->category:'-'}}</td>
-                                        <td class="tab-grid width_20 col3" data-line="City"
+                                        <td class="tab-grid width_8 col2 text-right"
+                                            data-line="Price"
+                                            id="admin_adverlist_price">1500.00
+                                        </td>
+                                        <td class="tab-grid width_12 col3" data-line="City"
                                             id="admin_adverlist_city">{{$ad->city}}</td>
+                                        <td class="tab-grid width_15 col3" data-line="Contact / Email"
+                                            id="admin_adverlist_contact">{{$ad->city}}</td>
                                         <td class="tab-grid width_16 col5"
                                             data-line="Date"
                                             id="admin_adverlist_date">{{ date_format(date_create($ad->created_time), "d-M-Y h:i A")}}</td>
@@ -110,12 +211,16 @@
                                                 <button type="button" class="btn btn-primary btn-sm action-btn"
                                                         data-toggle="dropdown" aria-haspopup="true"
                                                         aria-expanded="true"><span class="caret"></span><span
-                                                            class="sr-only">Toggle Dropdown</span></button>
+                                                            class="sr-only"></span></button>
                                                 <ul class="dropdown-menu dropdown-menu-right grid-dropdown">
                                                     <li><a data-toggle="modal"
                                                            onclick="ShowAdvertiseDetails_user(row_{{$ad->id}});"
                                                            data-target="#Modal_ViewDetails_advertiselist"><i
                                                                     class="mdi mdi-more optiondrop_icon"></i>More</a>
+                                                    </li>
+                                                    <li>
+                                                        <a onclick="ShowConformationPopupMsg('Are You Sure To close this Advertisement.');"><i
+                                                                    class="mdi mdi-close optiondrop_icon"></i>Close</a>
                                                     </li>
                                                     <li>
                                                         <a id="{{$ad->id}}"
@@ -177,9 +282,13 @@
                 </div>
             </div>
         </div>
+
+        @php
+            $cities = DB::select("select * from cities where City IS NOT NULL order by City ASC");
+        @endphp
         <div id="Modal_NewAdd" class="modal fade" data-easein="bounceIn" role="dialog">
             {!! Form::open(['url' => 'buys', 'class' => 'form-horizontal', 'id'=>'user_master', 'files'=>true]) !!}
-            <div class="modal-dialog survey_model">
+            <div class="modal-dialog modal-lg">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
@@ -188,72 +297,164 @@
                         <h4 class="modal-title">Add New Advertisement</h4>
                     </div>
                     <div class="modal-body" id="Add_newAdvertise">
-                        <div class="basic_lb_row">
-                            <div class="col-sm-3">
-                                <div class="Lb-title-txt" id="_TypeName">Advertise Title :</div>
+                        <div class="basic_lb_row row">
+                            <div class="col-sm-6">
+                                <div class="col-sm-12">
+                                    <div class="advertise_lefttxt" id="_TypeName">Advertise Title :</div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <input type="text" name="title" class="form-control required"
+                                           placeholder="Enter title" data-validate="Btn_advertise" maxlength="250"
+                                           autocomplete="off">
+                                </div>
                             </div>
-                            <div class="col-sm-9">
-                                <input type="text" name="title" class="form-control required" placeholder="Enter title"
-                                       data-validate="Btn_advertise"
-                                       maxlength="250" autocomplete="off">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="advertise_lefttxt" id="_TypeName">Advertise Type :</div>
+                                </div>
+                                <div class="row">
+                                    <select class="form-control requiredDD" name="ddcategory">
+                                        <option value="0">Select</option>
+                                        @foreach($ad_category as $category)
+                                            <option value="{{$category->id}}">{{$category->category}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="basic_lb_row">
-                            <div class="col-sm-3">
-                                <div class="Lb-title-txt" id="_TypeName">Advertise Type :</div>
+                        <div class="basic_lb_row row">
+                            <div class="col-sm-6">
+                                <div class="col-sm-12">
+                                    <div class="advertise_lefttxt" id="_TypeName">Email Id :</div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <input type="text" name="email" class="form-control" placeholder="Enter Email id"
+                                           data-validate="Btn_advertise" maxlength="250" autocomplete="off">
+                                </div>
                             </div>
-                            <div class="col-sm-9">
-                                <?php  $cats = \App\AdCategory::GetCategoryDropdown(); ?>
-                                {!! Form::select('ddcategory', $cats, null,['class' => 'form-control requiredDD']) !!}
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="advertise_lefttxt">Contact No. :</div>
+                                </div>
+                                <div class="row">
+                                    <input type="text" name="title" class="form-control required"
+                                           placeholder="Enter contact no." data-validate="Btn_advertise" maxlength="250"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="basic_lb_row row">
+                            <div class="col-sm-6">
+                                <div class="col-sm-12">
+                                    <div class="advertise_lefttxt" id="_TypeName">City :</div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <select class="form-control" id="a_city"
+                                            name="city">
+                                        {{--<option value="0"> --Please Select*--</option>--}}
+                                        @foreach($cities as $city)
+                                            <option value="{{$city->CID}}">{{$city->City}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="advertise_lefttxt">Selling Price :</div>
+                                </div>
+                                <div class="row">
+                                    <input type="number" name="selling_cost" class="form-control amount"
+                                           placeholder="Enter Selling Price" data-validate="Btn_advertise"
+                                           maxlength="50" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="basic_lb_row row">
+                            <div class="col-sm-6">
+                                <div class="col-sm-12">
+                                    <div class="advertise_lefttxt" id="_TypeName">Advertise Details :</div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <textarea cols="1" rows="4" name="add_details"
+                                              class="form-control txt_resize required" placeholder="Enter Details"
+                                              data-validate="Btn_advertise" maxlength="500"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="advertise_lefttxt">Location :</div>
+                                </div>
+                                <div class="row">
+                                    <textarea cols="1" rows="4" name="add_address" class="form-control txt_resize"
+                                              placeholder="Enter Location" data-validate="Btn_advertise"
+                                              maxlength="500"></textarea>
+                                </div>
                             </div>
                         </div>
                         <div class="basic_lb_row other_hide" id="adver_otherbox">
                             <div class="col-sm-3">
-                                <div class="Lb-title-txt" id="_TypeName">Other Category :</div>
+                                <div class="advertise_lefttxt" id="_TypeName">Other Category :</div>
                             </div>
                             <div class="col-sm-9">
                                 <input type="text" name="other" class="form-control" placeholder="Enter Category"
-                                       data-validate="Btn_advertise"
-                                       maxlength="250" autocomplete="off">
+                                       data-validate="Btn_advertise" maxlength="250" autocomplete="off">
                             </div>
                         </div>
-                        <div class="basic_lb_row">
-                            <div class="col-sm-3">
-                                <div class="Lb-title-txt" id="_TypeDesc">Advertise Details :</div>
-                            </div>
-                            <div class="col-sm-9">
-                         <textarea cols="1" rows="4" name="add_details" class="form-control txt_resize required"
-                                   placeholder="Enter Details"
-                                   data-validate="Btn_advertise" maxlength="500"></textarea>
-                            </div>
-                        </div>
-                        <div class="basic_lb_row">
-                            <div class="col-sm-3">
-                                <div class="Lb-title-txt" id="_TypeName">City :</div>
-                            </div>
-                            <div class="col-sm-9">
-                                <input type="text" name="city" class="form-control required" placeholder="Enter City"
-                                       data-validate="Btn_advertise"
-                                       maxlength="250" autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="basic_lb_row">
-                            <div class="col-sm-3">
-                                <div class="Lb-title-txt">Upload Image :</div>
-                            </div>
-                            <div class="col-sm-9">
-                                <div class="com-block file_upload_box">
-                                    <input type="file" name="ad_img" accept=".png,.jpg, .jpeg, .gif" class="file_upload"
-                                           id="advertise_Image"
-                                           onchange="ShowAdverImage(this, adver_uploadimg, advertise_close);"/>
-                                    <div class="view-uploaded-file">
-                                        <img src="{{url('images/NoPreview_Img.png')}}" id="adver_uploadimg">
-                                        <div class="upload_imgclose mdi mdi-close" id="advertise_close"
-                                             onclick="RemoveAdvertise(this, adver_uploadimg, advertise_Image)"></div>
+                        <div class="basic_lb_row row">
+                            <div class="col-sm-6">
+                                {{--<input id="browse" type="file" onchange="UploadImage(this);" multiple/>--}}
+                                <div class="col-sm-12">
+                                    <div class="advertise_lefttxt">Upload Image :</div>
+                                    <div class="upload_limittxt">You can upload maximum 8 images for Advertisement.
+                                    </div>
+                                    {{--<div class="com-block file_upload_box">--}}
+                                    {{--<input type="file" name="ad_img" accept=".png,.jpg, .jpeg, .gif"--}}
+                                    {{--class="file_upload"--}}
+                                    {{--id="advertise_Image"--}}
+                                    {{--onchange="UploadImage(this);"/>--}}
+                                    {{--</div>--}}
+                                    <div class="upload_file_box">
+                                        <div class="input-group">
+            <span class="input-group-btn">
+                <span class="btn btn-default btn-file">Browse…
+                    <input type="file" name="ad_img" accept=".png,.jpg, .jpeg, .gif"
+                           class="file_upload contact_file" maxlength="8" id="advertise_Image"
+                           onchange="UploadImage(this);" multiple/>
+                </span>
+            </span>
+                                            <input type="text" id="file_upload_count"
+                                                   placeholder="Upload Advertise Images"
+                                                   class="form-control" readonly="">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-6">
+                                <div id="preview" class="row upload_result_img"></div>
+                            </div>
                         </div>
+                        {{--<div class="basic_lb_row row">--}}
+                        {{--<div class="col-sm-6">--}}
+                        {{--<div class="col-sm-12">--}}
+                        {{--<div class="advertise_lefttxt">Upload Image :</div>--}}
+                        {{--</div>--}}
+                        {{--<div class="col-sm-12">--}}
+                        {{--<div class="com-block file_upload_box">--}}
+                        {{--<input type="file" name="ad_img" accept=".png,.jpg, .jpeg, .gif"--}}
+                        {{--class="file_upload"--}}
+                        {{--id="advertise_Image"--}}
+                        {{--onchange="ShowAdverImage(this, adver_uploadimg, advertise_close);"/>--}}
+                        {{--<div class="view-uploaded-file">--}}
+                        {{--<img src="{{url('images/NoPreview_Img.png')}}" id="adver_uploadimg">--}}
+                        {{--<div class="upload_imgclose mdi mdi-close" id="advertise_close"--}}
+                        {{--onclick="RemoveAdvertise(this, adver_uploadimg, advertise_Image)"></div>--}}
+                        {{--</div>--}}
+                        {{--</div>--}}
+                        {{--</div>--}}
+                        {{--</div>--}}
+                        {{--<div class="col-sm-6">--}}
+                        {{--</div>--}}
+                        {{--</div>--}}
                     </div>
                     <div class="modal-footer">
                         {{--<button type="submit" class="btn btn-primary" data-dismiss="modal">Submit</button>--}}
@@ -267,14 +468,327 @@
             {!! Form::close() !!}
         </div>
     </section>
+    <div id="modal_crop" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Crop and Download your image</h4>
+                </div>
+                <div class="modal-body">
+                    <main class="page">
+                        <div class="box" style="display:none">
+                            <div class="input-group">
+            <span class="input-group-btn">
+                <span class="btn btn-default btn-file">
+                    Browse… <input type="file" id="file-input"/>
+                </span>
+            </span>
+                                <input type="text" id="file_text_crop" class="form-control" readonly=""/>
+                            </div>
+                            <p class="note_forcrop">
+                                You can easily rotate, move and crop the image. double click are used to change the
+                                event like move to 360 degree. ( image and crop frame )
+                            </p>
+                        </div>
+                        <div class="box-2">
+                            <div class="result">
+                                <img class="cropped" id="image_frout" src="{{url('images/NoPreview_CropImg.png')}}"
+                                     alt="">
+                            </div>
+                        </div>
+                        <div class="box-2 img-result hide">
+                            <img class="cropped" id="image_frout" src="" alt="">
+                        </div>
+                        <div class="box" id="cropbtn_setting">
+                            {{--<div class="options hide">--}}
+                                {{--<label> Width</label>--}}
+                                {{--<input type="text" class="img-w" value="300" min="100" max="1200"/>--}}
+                            {{--</div>--}}
+                            <button class="btn btn-info btn-sm" disabled="disabled" id="btn_RotateLeft">
+                                <i class="mdi mdi-format-rotate-90 basic_icon_margin"></i>Rotate Left
+                            </button>
+                            <button class="btn btn-warning btn-sm center_btnmargin" disabled="disabled"
+                                    id="btn_RotateRight">
+                                <i class="mdi mdi-rotate-right basic_icon_margin"></i>Rotate Right
+                            </button>
+                            <button class="btn btn-danger btn-sm" disabled="disabled" id="btn_RotateReset">
+                                <i class="mdi mdi-rotate-3d basic_icon_margin"></i>Reset
+                            </button>
+                            <!-- <button class="btn btn-success" id="btn_getRounded">
+                                 <i class="mdi mdi-rotate-3d basic_icon_margin"></i>Rounded</button>-->
+                        </div>
+                    </main>
+                </div>
+                <div class="modal-footer">
+                    <a href="" target="_blank" class="btn btn-default download" disabled="disabled"
+                       id="btncrop_download" download="imagename.png">
+                        <i class="mdi mdi-folder-download basic_icon_margin"></i>Download</a>
+                    <button class="btn btn-primary save" id="save" disabled="disabled"><i
+                                class="mdi mdi-crop basic_icon_margin"></i>Cropped
+                    </button>
+                    <button class="btn btn-success upload-result" disabled="disabled" id="save_toserver" data-dismiss="modal"
+                            onclick="UpdateImage();"><i class="mdi mdi-account-check basic_icon_margin"></i>
+                        Save
+                    </button>
+                </div>
+            </div>
 
-    {{--@if(session()->has('message'))--}}
-        {{--<script type="text/javascript">--}}
-            {{--setTimeout(function () {--}}
-                {{--ShowSuccessPopupMsg('{{ session()->get('message') }}');--}}
-            {{--}, 500);--}}
-        {{--</script>--}}
-    {{--@endif--}}
+        </div>
+    </div>
+    <script type="text/javascript" src="{{url('js/cropper.min.js')}}"></script>
+    <script type="text/javascript">
+
+        function CheckFileValidation(dis) {
+            var sizefile = Number(dis.files[0].size);
+            if (sizefile > 1048576 * 2) {
+                var finalfilesize = parseFloat(dis.files[0].size / 1048576).toFixed(2);
+                ShowErrorPopupMsg('Your file size ' + finalfilesize + ' MB. File size should not exceed 2 MB');
+                $(dis).val("");
+                return false;
+            }
+            var validfile = ["png", "jpg", "jpeg"];
+            var source = $(dis).val();
+            var current_filename = $(dis).val().replace(/\\/g, '/').replace(/.*\//, '');
+            var ext = source.substring(source.lastIndexOf(".") + 1, source.length).toLowerCase();
+            for (var i = 0; i < validfile.length; i++) {
+                if (validfile[i] == ext) {
+                    break;
+                }
+            }
+            if (i >= validfile.length) {
+                ShowErrorPopupMsg('Only following file extension is allowed, png, jpg, jpeg ');
+                $(dis).val("");
+                return false;
+            }
+            else {
+                var input = dis;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        // $(changepicid).attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                    $('#file_text_crop').val(current_filename);
+                    return true;
+                }
+            }
+        }
+        $(document).ready(function () {
+//            var result = $('.result'),
+//                img_result = $('.img-result'),
+//                img_w = $('.img-w'),
+//                img_h = $('.img-h'),
+//                options = $('.options'),
+//                save = $('.save'),
+//                cropped = $('.cropped'),
+//                dwn = $('.download'),
+////                upload = $('#file-input'),
+//                cropper = '';
+         //   var roundedCanvas;
+
+            $('#file-input').change(function (e) {
+                if (CheckFileValidation(this)) {
+                    if (e.target.files.length) {
+                        // start file reader
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            if (e.target.result) {
+                                // create new image
+                                var img = document.createElement('img');
+                                img.id = 'image';
+                                img.src = e.target.result;
+                                // clean result before
+                                //result.innerHTML = '';
+                                result.children().remove();
+                                // append new image
+                                result.append(img);
+                                $('#image_frout').attr('src', '');
+                                // show save btn and options
+                                // save.removeClass('hide');
+                                //options.removeClass('hide');
+                                // init cropper
+                                cropper = new Cropper(img);
+                                // cropbtn setting enabled
+                                $('#cropbtn_setting').find('.btn').removeAttr("disabled");
+                                $('#btncrop_download').attr("disabled", "true");
+                                $('#save_toserver').attr("disabled", "true");
+                                save.removeAttr("disabled");
+
+                                $('#btn_RotateLeft').click(function () {
+                                    cropper.rotate(90);
+                                });
+                                $('#btn_RotateRight').click(function () {
+                                    cropper.rotate(-90);
+                                });
+                                $('#btn_RotateReset').click(function () {
+                                    cropper.reset();
+                                });
+                                $('#btn_Compresed').click(function () {
+                                    debugger;
+                                    /*     cropper.(UMD, compressed);*/
+                                });
+                            }
+                        };
+                        reader.readAsDataURL(e.target.files[0]);
+                    }
+                }
+            });
+            $('#save').click(function (e) {
+                //e.preventDefault();
+                // get result to data uri
+                var imgSrc = cropper.getCroppedCanvas({
+                    width: img_w.value // input value
+                }).toDataURL();
+                // remove hide class of img
+                cropped.removeClass('hide');
+                img_result.removeClass('hide');
+                // show image cropped
+                cropped.attr('src', imgSrc);
+                dwn.removeClass('hide');
+                //dwn.download = 'imagename.png';
+                dwn.attr('href', imgSrc);
+                // download button enabled
+                $('#btncrop_download').removeAttr("disabled");
+                $('#save_toserver').removeAttr("disabled");
+            });
+        });
+
+    </script>
+    <script type="text/javascript">
+       // window.URL = window.URL || window.webkitURL;
+        useBlob = false && window.URL;
+       var result = $('.result'),
+                img_result = $('.img-result'),
+                img_w = $('.img-w'),
+                img_h = $('.img-h'),
+                options = $('.options'),
+                save = $('.save'),
+                cropped = $('.cropped'),
+                dwn = $('.download'),
+//                upload = $('#file-input'),
+                cropper = '';
+        function readImage(file) {
+            var reader = new FileReader();
+            var image_src = "";
+            reader.addEventListener("load", function () {
+                var image = new Image();
+                image.addEventListener("load", function () {
+//                    var imageInfo = file.name + ' ' +
+//                        image.width + '×' +
+//                        image.height + ' ' +
+//                        file.type + ' ' +
+//                        Math.round(file.size / 1024) + 'KB';
+                    // elPreview.appendChild(this);
+                    //elPreview.insertAdjacentHTML("beforeend", imageInfo + '<br>');
+                    if (useBlob) {
+                        image_src = window.URL.revokeObjectURL(image.src);
+                    }
+                });
+                // image.src = useBlob ? window.URL.createObjectURL(file) : reader.result;
+                image_src = useBlob ? window.URL.createObjectURL(file) : reader.result;
+                var append_image = "<div class='upimg_box'>" +
+                    "<i class='thumb_edit mdi mdi-pencil' data-toggle='modal' data-target='#modal_crop' " +
+                    "onclick='EditImage(this)'></i>" +
+                    "<i class='thumb_close mdi mdi-close' onclick='Remove_uploadimg_advertise(this);'></i>" +
+                    "<img class='up_img' src='" + image_src + "' /></div>";//
+                $('#preview').append(append_image);
+            });
+            getfilelength();
+            reader.readAsDataURL(file);
+        }
+        function Remove_uploadimg_advertise(dis) {
+            Remove_uploadimg(dis);
+            getfilelength();
+        }
+        function getfilelength() {
+            debugger;
+            setTimeout(
+                function () {
+                   var pen_length = $('.upimg_box').length;
+//                    if(pen_length <= 8) {
+                        $('#file_upload_count').val(pen_length + " Files Selected");
+                    //}
+                }, 300);
+        }
+        function UploadImage(dis) {
+            var files = dis.files;
+            var errors = "";
+            if (!files) {
+                errors += "File upload not supported by your browser.";
+            }
+            if (files && files[0]) {
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    if ((/\.(png|jpeg|jpg|gif)$/i).test(file.name)) {
+                        debugger;
+                        // SUCCESS! It's an image!
+                        // Send our image `file` to our `readImage` function!
+                        var img_length=Number($('.upimg_box').length);
+                        console.log(img_length);
+                        if(img_length < 8) {
+                            readImage(file);
+                           // getfilelength();
+                        }else {
+                           // getfilelength();
+                            ShowErrorPopupMsg("You can upload maximum 8 images for Advertisement");
+                        }
+                    } else {
+                        errors += file.name + " Unsupported Image extension\n";
+                    }
+                }
+            }
+            if (errors) {
+                alert(errors);
+            }
+            $(dis).val('');
+        }
+        function EditImage(dis) {
+            var getimag_src =$(dis).parent().find('.up_img').attr('src');
+            $('.up_img').removeClass('edit_this');
+            $(dis).parent().find('.up_img').addClass('edit_this');
+           // $('#image_frout').attr('src', img_src);
+
+            var img = document.createElement('img');
+            img.id = 'image';
+            img.src = getimag_src;
+            // clean result before
+            //result.innerHTML = '';
+            result.children().remove();
+            // append new image
+            result.append(img);
+            // show save btn and options
+            // save.removeClass('hide');
+            options.removeClass('hide');
+            $('#image_frout').attr('src', '');
+           // $('.cropped').attr('src', getimag_src);
+            cropper = new Cropper(img);
+
+            // cropbtn setting enabled
+            $('#cropbtn_setting').find('.btn').removeAttr("disabled");
+            $('#btncrop_download').attr("disabled", "true");
+            $('#save_toserver').attr("disabled", "true");
+            save.removeAttr("disabled");
+            $('#btn_RotateLeft').click(function () {
+                cropper.rotate(90);
+            });
+            $('#btn_RotateRight').click(function () {
+                cropper.rotate(-90);
+            });
+            $('#btn_RotateReset').click(function () {
+                cropper.reset();
+            });
+            $('#btn_Compresed').click(function () {
+                /*     cropper.(UMD, compressed);*/
+            });
+        }
+        function UpdateImage() {
+            var update_imgsrc=$('#image_frout').attr('src');
+            $('.edit_this').attr('src', update_imgsrc);
+            $('.up_img').removeClass('edit_this');
+        }
+    </script>
     <script type="text/javascript">
         $('.btnDelete').click(function () {
                     {{--$('#ConfirmBtn').html('<a class="popup_submitbtn conformation_bg conformation_btn" href="{{ url('myads') }}/' + id +--}}
@@ -318,6 +832,7 @@
             $('#adver_date').text($(dis).find('#admin_adverlist_date').text());
             $('#adver_status').text($(dis).find('#admin_adverlist_status').text());
             $('#adver_contact').text($(dis).find('#admin_adverlist_contact').text());
+            $('#adver_price').text($(dis).find('#admin_adverlist_price').text());
             $('#adver_image').attr('src', $(dis).find('#admin_adverlist_img').attr('src'));
             //globalloaderhide();
         }

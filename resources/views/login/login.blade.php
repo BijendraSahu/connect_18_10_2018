@@ -65,8 +65,7 @@
                         <li><a target="_blank" href="{{url('terms')}}">Terms & Condition</a></li>
                         <li><a href="https://goo.gl/tCA2o8" target="_blank"><i class="mdi mdi-google-play"></i> Get it
                                 on the Play Store</a></li>
-                        <li><a href="#" data-toggle="tooltip" data-placement="top"
-                               title="connectingoneenterprises@gmail.com"> Contact Us</a></li>
+                        <li><a href="{{'contact'}}" target="_blank"> Contact Us</a></li>
                     </ul>
                 </div>
             </div>
@@ -265,10 +264,13 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="mdi mdi-lock mdi-16px"></i></span>
-                                    <input type="password" name="confirm_show_password" autocomplete="off" maxlength="25" minlength="4" placeholder="Confirm Password*" onpaste="return false;"
+                                    <input type="password" name="confirm_show_password" autocomplete="off"
+                                           maxlength="25" minlength="4" placeholder="Confirm Password*"
+                                           onpaste="return false;"
                                            id="confirm_show_password"
                                            class="form-control password required"/>
-                                    <div class="view_password" onclick="ShowPassword('password_icon','confirm_show_password');">
+                                    <div class="view_password"
+                                         onclick="ShowPassword('password_icon','confirm_show_password');">
                                         <i class="mdi mdi-eye" id="password_icon"></i>
                                     </div>
                                 </div>
@@ -297,7 +299,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             <div class="radio">
                                 <input id="radio-1" value="male" class="gender" name="gender_radio" type="radio"
                                        checked>
@@ -321,13 +323,24 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-6">
+                            <div class="checkbox login_accept">
+                                <label>
+                                    <input class="glo_checkbox" id="accepted_check" type="checkbox"
+                                           onchange="AcceptTerms_Frount(this);">
+                                    <span class="cr"><i class="cr-icon mdi mdi-check"></i></span>
+                                    <span class="checkbox_txt"> Accepts Terms &amp; Conditions</span>
+                                </label>
+                                <a class="badge" target="_blank" href="{{url('terms')}}">?
+                                </a>
+                            </div>
+                        </div>
                         <div class="col-sm-12">
-                            <div class="btn_block">
+                            <div class="btn_block disable_check disable_submit_btn">
                                 <button class="glo_button mdi" onclick="submitForm()"
                                         id="Registration_submit"></button>
                             </div>
                         </div>
-
                     </div>
                     {{--</form>--}}
                     {!! Form::close() !!}
@@ -339,6 +352,7 @@
         </div>
     </div>
 </div>
+
 
 <div id="particles-js" class="canvas_block"></div>
 </body>
@@ -904,23 +918,23 @@
     $('#confirm_show_password').focusout(function () {
         var password = $('#show_password').val();
         var c_password = $(this).val();
-        if(password != c_password){
+        if (password != c_password) {
             $(this).val('');
             error_noti("Password and confirm password mismatch");
         }
     });
     {{--$('#email_id').focusout(function () {--}}
-        {{--var domains = ["gmail.com", "hotmail.com", "msn.com", "yahoo.com", "yahoo.in", "yahoo.com", "aol.com", "hotmail.co.uk", "yahoo.co.in", "live.com", "rediffmail.com", "outlook.com", "hotmail.it", "googlemail.com", "mail.com"]; //update ur domains here--}}
-        {{--var idx1 = this.value.indexOf("@");--}}
-        {{--if (idx1 > -1) {--}}
-            {{--var splitStr = this.value.split("@");--}}
-            {{--var sub = splitStr[1].split(".");--}}
-            {{--if ($.inArray(splitStr[1], domains) == -1) {--}}
-                {{--warning_noti("Email must have correct domain name Eg: @gmail.com");--}}
-                {{--swal("Oops....", "Email must have correct domain name Eg: @gmail.com", "info");--}}
-                {{--this.value = "";--}}
-            {{--}--}}
-        {{--}--}}
+    {{--var domains = ["gmail.com", "hotmail.com", "msn.com", "yahoo.com", "yahoo.in", "yahoo.com", "aol.com", "hotmail.co.uk", "yahoo.co.in", "live.com", "rediffmail.com", "outlook.com", "hotmail.it", "googlemail.com", "mail.com"]; //update ur domains here--}}
+    {{--var idx1 = this.value.indexOf("@");--}}
+    {{--if (idx1 > -1) {--}}
+    {{--var splitStr = this.value.split("@");--}}
+    {{--var sub = splitStr[1].split(".");--}}
+    {{--if ($.inArray(splitStr[1], domains) == -1) {--}}
+    {{--warning_noti("Email must have correct domain name Eg: @gmail.com");--}}
+    {{--swal("Oops....", "Email must have correct domain name Eg: @gmail.com", "info");--}}
+    {{--this.value = "";--}}
+    {{--}--}}
+    {{--}--}}
     {{--});--}}
 </script>
 <script src="{{ asset('js/login_validation.js') }}"></script>

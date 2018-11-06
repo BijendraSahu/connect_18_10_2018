@@ -229,10 +229,10 @@
 /*---Zoom Effect End*/
 
 /*--------------------Animation Text--------------------*/
-.brics_icon i { display:inline-block; animation:float .8s ease-in-out infinite; }
+.brics_icon i { display:inline-block; animation:float .9s ease-in-out infinite; }
 @keyframes float {
     0%,100%{ transform:none; }
-    33%{ transform:translateY(-1px) rotate(-2deg); }
+    33%{ transform:translateY(-1px) rotate(-1deg); }
     66%{ transform:translateY(1px) rotate(2deg); }
 }
 
@@ -285,6 +285,17 @@
     50% {
         opacity: 0.3;
         transform: scale(2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+@keyframes pulse_logintxt {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(.912);
     }
     100% {
         transform: scale(1);

@@ -1,7 +1,8 @@
 @extends('layout.master.master')
 
 @section('title', 'My Profile')
-
+<link href="{{url('css/cropper.min.css')}}" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="{{url('js/cropper.min.js')}}"></script>
 @section('head')
     <section class="member_profileblk">
         <div class="container">
@@ -108,6 +109,9 @@
                     <div class="post_block">
                         {{--<form role="form" name="userpostForm" id="userpostForm" action="" method="post"--}}
                         {{--enctype="multipart/form-data">--}}
+                        <style>
+                            #preview img{ height:100px; }
+                        </style>
                         <form enctype="multipart/form-data" id="userpostForm">
                             <div class="post_head">
 
@@ -122,7 +126,7 @@
                                 </button>
                                 <button class="btn btn-primary post_btn_photo">
                                     <input class="profile-upload-pic" accept=".png,.jpg, .jpeg, .gif" type="file"
-                                           id="upload_file_image" name="upload_file[]" onchange="PreviewImage();"
+                                           id="upload_file_image" name="upload_file[]" onchange="prrr(this);"
                                            multiple/>
 
 
@@ -154,7 +158,7 @@
                                     not be maximum 3 mb
                                 </div>
                                 <!--   <div class="all_thumbcontainner style-scroll">-->
-                                <div class="upload_imgbox" id="image_preview">
+                                <div class="upload_imgbox" id="image_preview123">
                                     <!--<div class='upimg_box'><i class='mdi mdi-close' onclick='Remove_uploadimg(this);'></i><img class='up_img' src='images/NoPreview_Img.png' /></div>-->
 
                                 </div>

@@ -3,6 +3,10 @@
 @section('title', 'Dashboard')
 
 @section('head')
+    {{--<link href="http://widgets.freestockcharts.com/WidgetServer/WBITickerblue.css"--}}
+    {{--rel="stylesheet" type="text/css"/>--}}
+    <script src="http://widgets.freestockcharts.com/script/WBIHorizontalTicker2.js?ver=12334"
+            type="text/javascript"></script>
     <style type="text/css">
         .exis_msg {
             margin-left: -15px;
@@ -10,7 +14,7 @@
     </style>
     <section class="container-fluid overall_containner">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 dashboard_fixed">
                 <div class="profile_basic_menu_block">
                     <div class="profile_img_block">
                         <img src="{{url('').'/'.$user->profile_pic}}"/>
@@ -42,214 +46,282 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-7">
-                <div class="dynamic_overlay overlay_all">
-                    <div class="post_block">
-                        <form enctype="multipart/form-data" id="userpostForm">
-                            <div class="post_head">
-
-
-                                <span class="post_title"><i class="mdi mdi-pencil"></i>Make Post</span>
-                                <a class="btn btn-primary post_btn_video">
-                                    {{--<input class="profile-upload-pic" accept=".mp4, .3gp, .ogg, .avi, .wmv, media_type " type="file"
-                                           id="upload_file_video" name="upload_file_video[]"
-                                           onchange="PreviewVideo(this);"/>--}}
-
-                                    <input class="profile-upload-pic" accept=".mp4, .3gp" type="file"
-                                           id="upload_file_video" name="upload_file_video[]"
-                                           onchange="PreviewVideo(this);"/>
-                                    <i class="basic_icons mdi mdi-video"></i>Video
-                                    Album
-                                </a>
-                                <a class="btn btn-primary post_btn_photo">
-                                    <input class="profile-upload-pic" accept=".png,.jpg, .jpeg, .gif, media_type"
-                                           type="file"
-                                           id="upload_file_image" name="upload_file[]" onchange="PreviewImage();"
-                                           multiple/>
-
-
-                                    <i class="basic_icons mdi mdi-image"></i>Photo
-                                </a>
-                                {{--<input class="-upload-pic" accept=".png,.jpg, .jpeg, .gif" type="file"--}}
-                                {{--id="post_file_image" name="post_upload_file[]"--}}
-                                {{--multiple/>--}}
-                                {{--<input class="profile-" accept=".png,.jpg, .jpeg, .gif" type="file"--}}
-                                {{--id="upload_file_image" name="upload_file[]" onchange="PreviewImage();" multiple>--}}
-                            </div>
-                            <div class="post_textblock">
-                                <div class="post_imgblock">
-                                    <img src="{{url('').'/'.$user->profile_pic}}"/>
-                                </div>
-                                <div class="post_text_block emoji_div" placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}...🙂"
-                                     id="post_text_emoji">
-                                    <!--<textarea class="post_textarea" id="ta1" placeholder="What's on your mind"></textarea>-->
-                                    <!-- <div class="post_textarea txtwithemoji_block" contenteditable="true" id="ta"
-                                          placeholder="What's on your mind">
-                                     </div>-->
-                                </div>
-                                <input type="hidden" name="posttext" id="posttext">
-                                <!--<div class="post_emoji"><i class="mdi mdi-emoticon"></i></div>-->
-                            </div>
-                            <div class="files_block" id="files_block">
-                                <div class="upload_limittxt">You can upload maximum 10 images at a time & 1 video at a
-                                    time. Video file size must not exceed 10 MB.
-                                </div>
-                                <!--   <div class="all_thumbcontainner style-scroll">-->
-                                <div class="upload_imgbox" id="image_preview">
-                                    <!--<div class='upimg_box'><i class='mdi mdi-close' onclick='Remove_uploadimg(this);'></i><img class='up_img' src='images/NoPreview_Img.png' /></div>-->
-
-                                </div>
-                            </div>
-                            <div class="post_footer_btn">
-                                {{--<button class="btn btn-primary btn_post" onclick="publish()">Publish</button>--}}
-                                <input type="submit" name="submit" class="btn btn-primary btn_post" id="publish"
-                                       value="Publish"/>
-
-                            </div>
-                            <span id="err1"></span>
-                        </form>
-                    </div>
+            <div class="col-sm-8 small_padding">
+                <div class="col-sm-12 dashboard_fixed_first">
+                    <script type="text/javascript">
+                        var gainTicker = new WBIHorizontalTicker('gainers');
+                        gainTicker.start();
+                    </script>
                 </div>
-                <div class="advertise_category dashbord_category" id="advertise_category_block">
-                    <a href="{{url('buy')}}" class="category_more btn btn-danger">
-                        <i class="mdi mdi-more"></i> More</a>
-                    @foreach($ad_category as $category)
-                        <a class="adver_brics" href="{{url('bsc').'/'.(encrypt($category->id))}}">
+                <div class="col-md-8">
+                    <div class="dynamic_overlay overlay_all">
+                        <div class="post_block">
+                            <form enctype="multipart/form-data" id="userpostForm">
+                                <div class="post_head">
+                                    <span class="post_title"><i class="mdi mdi-pencil"></i>Make Post</span>
+                                    <a class="btn btn-primary post_btn_video">
+                                        {{--<input class="profile-upload-pic" accept=".mp4, .3gp, .ogg, .avi, .wmv, media_type " type="file"
+                                               id="upload_file_video" name="upload_file_video[]"
+                                               onchange="PreviewVideo(this);"/>--}}
+
+                                        <input class="profile-upload-pic" accept=".mp4, .3gp" type="file"
+                                               id="upload_file_video" name="upload_file_video[]"
+                                               onchange="PreviewVideo(this);"/>
+                                        <i class="basic_icons mdi mdi-video"></i>Video
+                                        Album
+                                    </a>
+                                    <a class="btn btn-primary post_btn_photo">
+                                        <input class="profile-upload-pic" accept=".png,.jpg, .jpeg, .gif, media_type"
+                                               type="file"
+                                               id="upload_file_image" name="upload_file[]" onchange="PreviewImage();"
+                                               multiple/>
+
+
+                                        <i class="basic_icons mdi mdi-image"></i>Photo
+                                    </a>
+                                    {{--<input class="-upload-pic" accept=".png,.jpg, .jpeg, .gif" type="file"--}}
+                                    {{--id="post_file_image" name="post_upload_file[]"--}}
+                                    {{--multiple/>--}}
+                                    {{--<input class="profile-" accept=".png,.jpg, .jpeg, .gif" type="file"--}}
+                                    {{--id="upload_file_image" name="upload_file[]" onchange="PreviewImage();" multiple>--}}
+                                </div>
+                                <div class="post_textblock">
+                                    <div class="post_imgblock">
+                                        <img src="{{url('').'/'.$user->profile_pic}}"/>
+                                    </div>
+                                    <div class="post_text_block emoji_div"
+                                         placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}...🙂"
+                                         id="post_text_emoji">
+                                        <!--<textarea class="post_textarea" id="ta1" placeholder="What's on your mind"></textarea>-->
+                                        <!-- <div class="post_textarea txtwithemoji_block" contenteditable="true" id="ta"
+                                              placeholder="What's on your mind">
+                                         </div>-->
+                                    </div>
+                                    <input type="hidden" name="posttext" id="posttext">
+                                    <!--<div class="post_emoji"><i class="mdi mdi-emoticon"></i></div>-->
+                                </div>
+                                <div class="files_block" id="files_block">
+                                    <div class="upload_limittxt">You can upload maximum 10 images at a time & 1 video at
+                                        a
+                                        time. Video file size must not exceed 10 MB.
+                                    </div>
+                                    <!--   <div class="all_thumbcontainner style-scroll">-->
+                                    <div class="upload_imgbox" id="image_preview">
+                                        <!--<div class='upimg_box'><i class='mdi mdi-close' onclick='Remove_uploadimg(this);'></i><img class='up_img' src='images/NoPreview_Img.png' /></div>-->
+
+                                    </div>
+                                </div>
+                                <div class="post_footer_btn">
+                                    {{--<button class="btn btn-primary btn_post" onclick="publish()">Publish</button>--}}
+                                    <input type="submit" name="submit" class="btn btn-primary btn_post" id="publish"
+                                           value="Publish"/>
+
+                                </div>
+                                <span id="err1"></span>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="advertise_category dashbord_category" id="advertise_category_block">
+                        <a href="{{url('buy')}}" class="category_more btn btn-danger">
+                            <i class="mdi mdi-more"></i> More</a>
+                        @foreach($ad_category as $category)
+                            <a class="adver_brics" href="{{url('bsc').'/'.(encrypt($category->id))}}">
                                 <span class="brics_icon"><i><img src="{{url('').'/'.$category->icon_url}}"
                                                                  alt=""></i></span>
-                            <span class="brics_txt">{{$category->category}}</span>
-                        </a>
-                    @endforeach
-                </div>
-                <div class="post_existing_slider">
-                    <div class="row">
-                        <div class="col-sm-12 mob_width100">
-                            <div id="carousel-main" class="carousel slide dash_adver_mainslider" data-ride="carousel"
-                                 data-interval="5000">
-                                <!-- Carousel items1 -->
-                                <div class="carousel-inner">
-                                    <?php $counter = 0; ?>
-                                    @foreach($homeslider as $slider)
-                                        @if($counter ==0)
-                                            <div class="active item">
-                                                <img src="{{url('').'/'.$slider->ad_img}}"
-                                                     class="img-responsive adver_mainslider_img"/>
-                                                <a href="#Modal_ViewDetails_LatestNews" data-toggle="modal">
-                                                    <div class="adver_txtblock"
-                                                         onclick="ShowAdminAdvertiseDetails(this);">
-                                                        {{$slider->ad_title}}
-                                                    </div>
-                                                    <input type="hidden" class="list_description"
-                                                           value=" @if(isset($slider->ad_description))
-                                                           {{$slider->ad_description}}
-                                                           @else
-                                                                   -
-                                                               @endif"/>
-
-                                                </a>
-                                            </div>
-                                            <?php $counter++; ?>
-                                        @else
-                                            <div class="item">
-                                                <img src="{{url('').'/'.$slider->ad_img}}"
-                                                     class="img-responsive adver_mainslider_img"/>
-                                                <a href="#Modal_ViewDetails_LatestNews" data-toggle="modal">
-                                                    <div class="adver_txtblock"
-                                                         onclick="ShowAdminAdvertiseDetails(this);">
-                                                        {{$slider->ad_title}}
-                                                    </div>
-                                                    <input type="hidden" class="list_description"
-                                                           value=" @if(isset($slider->ad_description))
-                                                           {{$slider->ad_description}}
-                                                           @else
-                                                                   -
-                                                               @endif"/>
-                                                </a>
-                                            </div>
-                                        @endif
-                                    @endforeach
-
-                                </div>
-                                <!-- Controls -->
-                                <a class="carousel_arrow left_arrow" href="#carousel-main" role="button"
-                                   data-slide="prev">
-                                    <span class="mdi mdi-chevron-left" aria-hidden="true"></span>
-                                </a>
-                                <a class="carousel_arrow right_arrow" href="#carousel-main" role="button"
-                                   data-slide="next">
-                                    <span class="mdi mdi-chevron-right" aria-hidden="true"></span>
-                                </a>
-                            </div>
-                        </div>
+                                <span class="brics_txt">{{$category->category}}</span>
+                            </a>
+                        @endforeach
                     </div>
-                </div>
+                    <div class="post_existing_slider">
+                        <div class="row">
+                            <div class="col-sm-12 mob_width100">
+                                <div id="carousel-main" class="carousel slide dash_adver_mainslider"
+                                     data-ride="carousel"
+                                     data-interval="5000">
+                                    <!-- Carousel items1 -->
+                                    <div class="carousel-inner">
+                                        <?php $counter = 0; ?>
+                                        @foreach($homeslider as $slider)
+                                            @if($counter ==0)
+                                                <div class="active item">
+                                                    <img src="{{url('').'/'.$slider->ad_img}}"
+                                                         class="img-responsive adver_mainslider_img"/>
+                                                    <a href="#Modal_ViewDetails_LatestNews" data-toggle="modal">
+                                                        <div class="adver_txtblock"
+                                                             onclick="ShowAdminAdvertiseDetails(this);">
+                                                            {{$slider->ad_title}}
+                                                        </div>
+                                                        <input type="hidden" class="list_description"
+                                                               value=" @if(isset($slider->ad_description))
+                                                               {{$slider->ad_description}}
+                                                               @else
+                                                                       -
+                                                                   @endif"/>
 
-                {{--------------------Load Dashboard Post------------------------}}
-                <div id="dashboard_post">
-                    {{--@include('post.new_dashboard_posts')--}}
-                </div>
-                {{--------------------Load Dashboard Post------------------------}}
-                <input type="hidden" id="see_id" value="1"/>
-                {{--<button class="more_btn btn btn-warning" onclick="getmorepost();">See more</button>--}}
-            </div>
-            <div class="col-sm-4 col-md-3">
-                <div class="all_right_block">
-                    <div class="panel top_earner_block panel-default">
-                        <div class="panel-heading basic_headgradian">
-                            <b>Top 10 Earners</b>
-                            <div class="button_head glo_headbtn" id="earner_clkbtn"></div>
-                        </div>
-                        <div class="panel-body">
-                            <ul id="earners_block" class="news-ticker-images earner_ui">
-                                {!!$top10earners_list!!}
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="followers_block">
-                        <div class="panel panel-default" style="margin-bottom: 5px;">
-                            <div class="panel-heading basic_headgradian"><b>Our Followers </b></div>
-                        </div>
-                        <div class="panel-body folllowers_body">
-                            <div class="follower_box">
-                                <a class="follow_a engi_color" href="{{url('member-profession/Engineer')}}"><i
-                                            class="mdi mdi-domain"></i><span
-                                            class="engi_arrow engi_color">Engineer</span></a>
-                                <a class="follow_a doctor_color" href="{{url('member-profession/Doctor')}}"><i
-                                            class="mdi mdi-hospital"></i><span
-                                            class="doctor_arrow doctor_color">Doctor</span></a>
-                                <a class="follow_a enterprise_color" href="{{url('member-profession/Entreprener')}}"><i
-                                            class="mdi mdi-account-star"></i><span
-                                            class="enterprise_color enterprise_arrow">Entrepreneur</span></a>
-                                <a class="follow_a other_color" href="{{url('member-profession/Others')}}"><i
-                                            class="mdi mdi-link-variant"></i><span
-                                            class="other_color other_arrow">Others</span></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="advertiseall_block">
-                        <div class="panel panel-default">
-                            <div class="panel-heading basic_headgradian">
-                                <b>Advertisement</b>
-                                <div class="button_head glo_headbtn" id="adver_clkbtn">
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                @php
-                                    $affiliates = DB::table('affiliates')->get();
-                                @endphp
-                                <ul id="advertise_block" class="news-ticker-images advertise_ui">
-                                    @if(count($affiliates)>0)
-                                        @foreach($affiliates as $affiliate)
-                                            <li>
-                                                <div class="adver_imgbox">
-                                                    {!! $affiliate->affiliate_link !!}
+                                                    </a>
                                                 </div>
-                                            </li>
+                                                <?php $counter++; ?>
+                                            @else
+                                                <div class="item">
+                                                    <img src="{{url('').'/'.$slider->ad_img}}"
+                                                         class="img-responsive adver_mainslider_img"/>
+                                                    <a href="#Modal_ViewDetails_LatestNews" data-toggle="modal">
+                                                        <div class="adver_txtblock"
+                                                             onclick="ShowAdminAdvertiseDetails(this);">
+                                                            {{$slider->ad_title}}
+                                                        </div>
+                                                        <input type="hidden" class="list_description"
+                                                               value=" @if(isset($slider->ad_description))
+                                                               {{$slider->ad_description}}
+                                                               @else
+                                                                       -
+                                                                   @endif"/>
+                                                    </a>
+                                                </div>
+                                            @endif
                                         @endforeach
-                                    @endif
-                                </ul>
+
+                                    </div>
+                                    <!-- Controls -->
+                                    <a class="carousel_arrow left_arrow" href="#carousel-main" role="button"
+                                       data-slide="prev">
+                                        <span class="mdi mdi-chevron-left" aria-hidden="true"></span>
+                                    </a>
+                                    <a class="carousel_arrow right_arrow" href="#carousel-main" role="button"
+                                       data-slide="next">
+                                        <span class="mdi mdi-chevron-right" aria-hidden="true"></span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
+                    </div>
+
+                    {{--------------------Load Dashboard Post------------------------}}
+                    <div id="dashboard_post">
+                        {{--@include('post.new_dashboard_posts')--}}
+                    </div>
+                    {{--------------------Load Dashboard Post------------------------}}
+                    <input type="hidden" id="see_id" value="1"/>
+                    {{--<button class="more_btn btn btn-warning" onclick="getmorepost();">See more</button>--}}
+                </div>
+                <div class="col-sm-4 dashboard_fixed_second">
+                    <div class="all_right_block">
+                        <div class="panel top_earner_block panel-default">
+                            <div class="panel-heading basic_headgradian">
+                                <b>Online Servey</b>
+                                <div class="button_head glo_headbtn"></div>
+                            </div>
+                            <div class="panel-body servey_ul style-scroll">
+                                <ul>
+                                    <li>
+                                        <div class="servey_row" data-toggle="modal" data-target="#Modal_serveydetails">
+                                            <div class="servey_title">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज
+                                                साधु-संत?
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-success progress-bar-striped"
+                                                     role="progressbar"
+                                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                                     style="width:40%">
+                                                    40% (yes)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="servey_row" data-toggle="modal" data-target="#Modal_serveydetails">
+                                            <div class="servey_title">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज
+                                                साधु-संत?
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-success progress-bar-striped"
+                                                     role="progressbar"
+                                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                                     style="width:40%">
+                                                    40% (yes)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="servey_row" data-toggle="modal" data-target="#Modal_serveydetails">
+                                            <div class="servey_title">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज
+                                                साधु-संत?
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-success progress-bar-striped"
+                                                     role="progressbar"
+                                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                                     style="width:40%">
+                                                    40% (yes)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                        <div class="followers_block panel panel-default">
+                            <div class="panel panel-default" style="margin-bottom: 5px;">
+                                <div class="panel-heading basic_headgradian"><b>Our Followers </b></div>
+                            </div>
+                            <div class="panel-body folllowers_body">
+                                <div class="follower_box">
+                                    <a class="follow_a engi_color" href="{{url('member-profession/Engineer')}}"><i
+                                                class="mdi mdi-domain"></i><span
+                                                class="engi_arrow engi_color">Engineer</span></a>
+                                    <a class="follow_a doctor_color" href="{{url('member-profession/Doctor')}}"><i
+                                                class="mdi mdi-hospital"></i><span
+                                                class="doctor_arrow doctor_color">Doctor</span></a>
+                                    <a class="follow_a enterprise_color"
+                                       href="{{url('member-profession/Entreprener')}}"><i
+                                                class="mdi mdi-account-star"></i><span
+                                                class="enterprise_color enterprise_arrow">Entrepreneur</span></a>
+                                    <a class="follow_a other_color" href="{{url('member-profession/Others')}}"><i
+                                                class="mdi mdi-link-variant"></i><span
+                                                class="other_color other_arrow">Others</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="advertiseall_block">
+                            <div class="panel panel-default">
+                                <div class="panel-heading basic_headgradian">
+                                    <b>Advertisement</b>
+                                    <div class="button_head glo_headbtn" id="adver_clkbtn">
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    @php
+                                        $affiliates = DB::table('affiliates')->get();
+                                    @endphp
+                                    <ul id="advertise_block" class="news-ticker-images advertise_ui">
+                                        @if(count($affiliates)>0)
+                                            @foreach($affiliates as $affiliate)
+                                                <li>
+                                                    <div class="adver_imgbox">
+                                                        {!! $affiliate->affiliate_link !!}
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        @endif
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2 dashboard_fixed">
+                <div class="panel top_earner_block panel-default">
+                    <div class="panel-heading basic_headgradian">
+                        <b>Top Earners</b>
+                        <div class="button_head glo_headbtn" id="earner_clkbtn"></div>
+                    </div>
+                    <div class="panel-body earn_body style-scroll">
+                        <ul id="earners_block" class="news-ticker-images earner_ui">
+                            {!!$top10earners_list!!}
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -324,7 +396,39 @@
             </div>
         </div>
     </div>
+    <div class="modal fade-scale in" id="Modal_serveydetails" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lb" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Please share your opinion</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="servey_question"><i class="mdi mdi-help-circle basic_icon_margin"></i>
+                        क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज साधु-संत?
+                    </div>
+                    <div class="servey_ans">
 
+                        <div class="radio">
+                            <input id="radio-1" value="yes" class="gender" name="servey_radio" type="radio" checked="">
+                            <label for="radio-1" class="radio-label">Yes</label>
+                        </div>
+                        <div class="radio">
+                            <input id="radio-2" value="no" class="gender" name="servey_radio" type="radio">
+                            <label for="radio-2" class="radio-label">No</label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     @php $clicks = \App\AdsClick::where(['user_id' => $user->id, 'clicked_date' => date_format(date_create(\Carbon\Carbon::now()), "Y-m-d")])->get();
           $announcement = \App\NotificationClicked::where(['user_id' => $user->id, 'clicked_date' => date_format(date_create(\Carbon\Carbon::now()), "Y-m-d")])->get();
     @endphp
@@ -506,14 +610,16 @@
             if (chk_scroll > 70) {
                 $('.top_manubar').addClass('top_manubar_fixed');
 //                    $('.overall_containner').addClass('overall_margin');
-                $('.profile_basic_menu_block').addClass('left_menu_fixed');
-                $('.all_right_block').addClass('right_menu_fixed');
+                // $('.profile_basic_menu_block').addClass('left_menu_fixed');
+                // $('.all_right_block').addClass('right_menu_fixed');
             }
             if ($(window).scrollTop() + $(window).height() == $(document).height()) {
                 if (parseFloat($('#see_id').val()) <= parseFloat($('#pcount').val())) {
                     getmorepost();
                 }
             }
+
+
         });
         $(document).ready(function () {
             // globalloadershow();
@@ -574,13 +680,20 @@
                                 }
                             });
                         }
-                    });
+                    }
+                )
+                    ;
 
                 }
             });
             dashboardpostload();
-            //debugger;
-
+//            $('.scrollingtext span').each(function () {
+//                debugger;
+//                var checktxt = $(this).text();
+//                if (checktxt == "Add this widget to your site") {
+//                    $(this).remove();
+//                }
+//            });
         });
     </script>
 @stop
