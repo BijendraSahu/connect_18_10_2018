@@ -11,6 +11,7 @@
         }
         body{
             font-family: poppins;
+            overflow-x: hidden;
         }
 
         .about_us_first_p{    padding-top: 17px;}

@@ -3,7 +3,7 @@
     <div class="total_count">{{count($friends)}}</div>
 @endif
 <div class="menu_basic_popup effect scale0 fr_request_popbox">
-    <div class="menu_popup_head">Friend Requests</div>
+    <div class="menu_popup_head">Friend Requests <div class="basic_popup_close" onclick="Hidepopup('hide');"><i class="mdi mdi-close"></i></div></div>
 
     <div id="request_list" class="menu_popup_containner  chat_scroll style-scroll">
         @if(count($friends)>0)

@@ -65,8 +65,7 @@
                         <li><a target="_blank" href="{{url('terms')}}">Terms & Condition</a></li>
                         <li><a href="https://goo.gl/tCA2o8" target="_blank"><i class="mdi mdi-google-play"></i> Get it
                                 on the Play Store</a></li>
-                        <li><a href="#" data-toggle="tooltip" data-placement="top"
-                               title="connectingoneenterprises@gmail.com"> Contact Us</a></li>
+                        <li><a href="{{'contact'}}" target="_blank"> Contact Us</a></li>
                     </ul>
                 </div>
             </div>
@@ -311,7 +310,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             <div class="radio">
                                 <input id="radio-1" value="male" class="gender" name="gender_radio" type="radio"
                                        checked>
@@ -335,13 +334,24 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-6">
+                            <div class="checkbox login_accept">
+                                <label>
+                                    <input class="glo_checkbox" id="accepted_check" type="checkbox"
+                                           onchange="AcceptTerms_Frount(this);">
+                                    <span class="cr"><i class="cr-icon mdi mdi-check"></i></span>
+                                    <span class="checkbox_txt"> Accepts Terms &amp; Conditions</span>
+                                </label>
+                                <a class="badge" target="_blank" href="{{url('terms')}}">?
+                                </a>
+                            </div>
+                        </div>
                         <div class="col-sm-12">
-                            <div class="btn_block">
+                            <div class="btn_block disable_check disable_submit_btn">
                                 <button class="glo_button mdi" onclick="submitForm()"
                                         id="Registration_submit"></button>
                             </div>
                         </div>
-
                     </div>
                     {{--</form>--}}
                     {!! Form::close() !!}
@@ -353,6 +363,7 @@
         </div>
     </div>
 </div>
+
 
 <div id="particles-js" class="canvas_block"></div>
 </body>

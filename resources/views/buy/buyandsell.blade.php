@@ -93,7 +93,7 @@
                         {{--<span class="brics_txt">Other</span>--}}
                         {{--</a>--}}
                     </div>
-                    <div class="advertise_list_containner" id="list_container" >
+                    <div class="advertise_list_containner" id="list_container">
 
                         @if(count($ads) > 0)
                             @foreach($ads as $ad)
@@ -102,9 +102,39 @@
                                         <?php $cat_img = \App\AdsImages::where(['ad_id' => $ad->id])->first(); ?>
                                         @if(isset($cat_img->image_url))
                                             <img src="{{url('').'/'.$cat_img->image_url}}"/>
+                                            <div class="pics_counter_box"><i class="mdi mdi-camera"></i>
+                                                <span class="addver_cunter">+3</span>
+                                                <a class="example-image-link"
+                                                   href="{{url('').'/'.$cat_img->image_url}}"
+                                                   data-lightbox="feed_post{{$ad->id}}">
+                                                    <img class="example-image"
+                                                         src="{{url('').'/'.$cat_img->image_url}}"></a>
+                                                <a class="example-image-link"
+                                                   href="{{url('images/Adver_mainimg1.jpg')}}"
+                                                   data-lightbox="feed_post{{$ad->id}}">
+                                                    <img class="example-image"
+                                                         src="{{url('images/Adver_mainimg1.jpg')}}"></a>
+                                                <a class="example-image-link"
+                                                   href="{{url('images/Adver_mainimg3.jpg')}}"
+                                                   data-lightbox="feed_post{{$ad->id}}">
+                                                    <img class="example-image"
+                                                         src="{{url('images/Adver_mainimg3.jpg')}}"></a>
+                                            </div>
                                         @else
                                             <img src="{{url('images/Adver_mainimg1.jpg')}}"/>
                                         @endif
+                                        {{--<ul class="lightgallery list-unstyled" lg-uid="lg6">--}}
+                                        {{--<li data-src="http://lagnphere.com/user_images/uuimg.png"--}}
+                                        {{--lg-event-uid="&amp;7">--}}
+                                        {{--<img src="http://lagnphere.com/uuimg1.png">--}}
+                                        {{--</li>--}}
+                                        {{--</ul>--}}
+
+                                        {{--<a class="example-image-link"--}}
+                                        {{--href="{{url('').'/'.$media->media_url}}"--}}
+                                        {{--data-lightbox="feed_post{{$post[$i]['id']}}">--}}
+                                        {{--<img class="example-image"--}}
+                                        {{--src="{{url('').'/'.$media->media_url}}"></a>--}}
                                     </div>
                                     <div class="list_details">
                                         <div class="list_title" onclick="ShowAdvertiseDetails(this);"
@@ -115,6 +145,7 @@
                                                 -
                                             @endif
                                         </div>
+                                        <div class="list_price"><i class="mdi mdi-currency-inr"></i>15000</div>
                                         <div class="list_description">
                                             @if(isset($ad->ad_description))
                                                 {{$ad->ad_description}}
@@ -123,7 +154,17 @@
                                             @endif
                                         </div>
                                         <div class="list_address"><i
-                                                    class="mdi mdi-map-marker"></i>{{$ad->city}}</div>
+                                                    class="mdi mdi-map-marker"></i>
+                                            @if(isset($ad->city))
+                                                {{$ad->city}}
+                                            @else
+                                                -
+                                            @endif
+                                            </div>
+                                        <div class="list_contact"><i
+                                                    class="mdi mdi-phone-incoming basic_icon_margin"></i>9589883533 </div>
+                                        <div class="list_email"><i
+                                                    class="mdi mdi-email basic_icon_margin"></i>pinkukesharwani89@gmail.com</div>
                                         <input type="hidden" class="list_adver_type"
                                                value=" @if(isset($ad->ad_category_id))
                                                {{$ad->ad_cat->category}}
@@ -194,10 +235,10 @@
     </section>
     <script type="text/javascript">
         var append_norecord = '<div class="adver_list_row no_block" id="no_record_found_block"><span class="list_no_record">' +
-        '< No Record Available ></span></div>';
+            '< No Record Available ></span></div>';
         function getBuyItem() {
             var check_rowcount = $('.adver_list_row').length;
-            if(check_rowcount > 0) {
+            if (check_rowcount > 0) {
                 var input = document.getElementById("Search");
                 var filter = input.value.toLowerCase();
                 var nodes = document.getElementsByClassName('target');
@@ -209,12 +250,11 @@
                         nodes[i].style.display = "none";
                     }
                 }
-                if($('.target:visible').length == 0)
-                {
+                if ($('.target:visible').length == 0) {
                     $('.no_block').remove();
                     $('#list_container').append(append_norecord);
-                }else {
-                   $('#list_container').find('.no_block').remove();
+                } else {
+                    $('#list_container').find('.no_block').remove();
                 }
             }
         }

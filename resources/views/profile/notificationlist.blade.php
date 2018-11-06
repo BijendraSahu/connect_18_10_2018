@@ -3,7 +3,7 @@
     <div class="total_count" id="unread_noti_id">{{count($unread_notifications)}}</div>
 @endif
 <div class="menu_basic_popup effect scale0 notification_popbox">
-    <div class="menu_popup_head">Notification</div>
+    <div class="menu_popup_head">Notification <div class="basic_popup_close" onclick="Hidepopup('hide');"><i class="mdi mdi-close"></i></div></div>
 
     <div class="menu_popup_containner chat_scroll style-scroll" id="noti_row_container">
         @if(count($notifications)>0)
@@ -28,7 +28,7 @@
                     {{--</div>--}}
 
                     @if(isset($notification->post_id))
-                        <div class="menu_popup_text" onclick="show_notification_post('{{$notification->post_id}}')"
+                        <div class="menu_popup_text" onclick="show_notification_post('{{$notification->post_id}}', this)"
                              data-toggle="modal"
                              data-target="#Mymodal_notification">
                             <div class="popup_text">{!! $notification->description !!}</div>
@@ -56,7 +56,7 @@
                             </button>
                             <div class="dropdown-menu show notifi_options scalenoti">
                                 @if($notification->seen == 0)
-                                    <div class="noti_opti_row" id="{{$notification->id}}" onclick="MarkRead(this);"><i
+                                    <div class="noti_opti_row markread" id="{{$notification->id}}" onclick="MarkRead(this);"><i
                                                 class="mdi mdi-eye basic_icon_margin" style="color: #07d;"></i>Mark as
                                         read
                                     </div>

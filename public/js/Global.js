@@ -193,6 +193,7 @@ $(document).ready(function () {
     $('.emoji_div').text('');
 
     $('.glo_menuclick').click(function (e) {
+        debugger;
         var chkopen = $(this).find('.menu_basic_popup').attr('class');
         $('#setting_box_slide').removeClass('show_setting');
         if (chkopen != 'menu_basic_popup effect') {
@@ -208,10 +209,7 @@ $(document).ready(function () {
         e.stopPropagation();
     });
     $("#countdown").dsCountDown(options);
-    $(document).click(function (e) {
-        $('.menu_basic_popup').addClass('scale0');
-        e.stopPropagation();
-    });
+
     window.onload = function () {
         // var announce_txt = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
         // setTimeout(ShowAnnouncement(announce_txt), 8000);
@@ -221,7 +219,20 @@ $(document).ready(function () {
         }, 1000);
     }
 });
-
+$(document).click(function (e) {
+    $('.menu_basic_popup').addClass('scale0');
+    e.stopPropagation();
+});
+function Hidepopup(ins) {
+    event.stopPropagation();
+    switch (ins) {
+        case 'hide':
+            $('.menu_basic_popup').addClass('scale0');
+            return false;
+            break;
+    }
+}
+//var current_event=0;
 function ShowPrevAccDetails(dis) {
     $('#acc_lbtxt_amt').val($(dis).find('.hidden_acc_amount').val());
     $('#acc_lbtxt_name').val($(dis).find('.hidden_acc_name').val());
@@ -274,16 +285,21 @@ function ShowAdvertiseDetails(dis) {
     var getdetails = $(dis).parent().find('.list_description').text().trim();
     var getlocation = $(dis).parent().find('.list_address').text().trim();
     var gettype = $(dis).parent().find('.list_adver_type').val().trim();
+    var getcontact = $(dis).parent().find('.list_contact').text().trim();
+    var getemail = $(dis).parent().find('.list_email').text().trim();
+    var getprice = $(dis).parent().find('.list_price').text().trim();
     $('#adver_img_lb').attr('src', getimgsrc);
     $('#adver_title_lb').text(gettitle);
     $('#adver_details_lb').text(getdetails);
     $('#adver_city_lb').text(getlocation);
     $('#adver_type_lb').text(gettype);
+    $('#adver_contact_lb').text(getcontact);
+    $('#adver_email_lb').text(getemail);
+    $('#adver_price_lb').text(getprice);
     globalloaderhide();
 }
 
 function ShowAdminAdvertiseDetails(dis) {
-    debugger;
     ShowOnpageLoopader();
     $('#otr_lb_details').hide();
     var getimgsrc = $(dis).parent().parent().find('img').attr('src');
@@ -457,7 +473,6 @@ function Show_About() {
 }
 
 function GlobalHideTranparent() {
-    debugger;
     $('.overlay_res').fadeOut();
     $('.basic_thumb').removeClass('basic_thumb_show');
     $('.profile_basic_menu_block').removeClass('profile_basic_menu_block_show');
@@ -506,14 +521,37 @@ function PreviewImage() {
                         oversize = true;
                         overfilesname += _file.item(i).name + ", ";
                     } else {
-                        // debugger;
+                        debugger;
 
                         var currentfile = _file[i].name;
                         var tmppath = window.URL.createObjectURL(fileInput.files[i]);
+
                         // var convertFunction = convertFileToDataURLviaFileReader;
                         // convertFunction(currentfile, function(base64Img) {
                         //     alert(base64Img);
-                        //var src = window.URL.createObjectURL(event.target.files[i]);
+                        // var src = window.URL.createObjectURL(event.target.files[i]);
+                        // })
+
+                        //var FR= new FileReader();
+                       // tour_dates = new Array();
+
+                        FR.addEventListener("load", function(e) {
+                            // document.getElementById("img").src       = e.target.result;
+                            //document.getElementById("b64").innerHTML = e.target.result;
+                           //  alert("First Alert"+e.target.result);
+                           // console.log(e.target.result);
+                            //tour_dates.push(e.target.result);
+                            // tmppath=e.target.result;
+                        });
+                       /// var tids = tour_dates;
+                        //var base= FR.readAsDataURL(_file[i]);
+                        // alert(" Alert"+base);
+                        // var selectedFile = _file[i];
+                        // selectedFile.convertToBase64(function(base64){
+                        //     alert(base64);
+                        // })
+
+
                         var append_image = "<div class='upimg_box'><i class='thumb_close mdi mdi-close' onclick='Remove_uploadimg(this);'></i>" +
                             "<img class='up_img' src='" + tmppath + "' />" +
                             "<input class='profile-upload-pic dynamic_fileappend' type='file' val='" + _file.item(i).name + "'  /></div>";
@@ -667,6 +705,14 @@ function AcceptTerms(dis) {
         $('.btn_terms').removeAttr('disabled', 'disabled');
     } else {
         $('.btn_terms').attr('disabled', 'disabled');
+    }
+}
+
+function AcceptTerms_Frount(dis) {
+    if ($(dis).prop("checked")) {
+        $('.disable_check').removeClass('disable_submit_btn');
+    } else {
+        $('.disable_check').addClass('disable_submit_btn');
     }
 }
 
