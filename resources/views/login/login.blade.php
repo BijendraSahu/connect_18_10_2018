@@ -164,6 +164,10 @@
                         </div>
                         {{--                        {!! Form::close() !!}--}}
                     </form>
+                    @php
+                        $states = DB::select("select * from cities where City IS NULL order by State ASC");
+
+                    @endphp
                     {!! Form::open(['url' => 'register', 'id'=>'frmReg']) !!}
                     {{--                    <form id="frmReg" action="{{url('register')}}">--}}
                     <div class="regis_block main_scale0">
@@ -265,10 +269,13 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="mdi mdi-lock mdi-16px"></i></span>
-                                    <input type="password" name="confirm_show_password" autocomplete="off" maxlength="25" minlength="4" placeholder="Confirm Password*" onpaste="return false;"
+                                    <input type="password" name="confirm_show_password" autocomplete="off"
+                                           maxlength="25" minlength="4" placeholder="Confirm Password*"
+                                           onpaste="return false;"
                                            id="confirm_show_password"
                                            class="form-control password required"/>
-                                    <div class="view_password" onclick="ShowPassword('password_icon','confirm_show_password');">
+                                    <div class="view_password"
+                                         onclick="ShowPassword('password_icon','confirm_show_password');">
                                         <i class="mdi mdi-eye" id="password_icon"></i>
                                     </div>
                                 </div>
@@ -279,9 +286,13 @@
                                 <div class="input-group">
                                     <span class="input-group-addon"><i
                                                 class="mdi mdi-format-list-bulleted mdi-16px"></i></span>
-                                    {{--                                    {!! Form::select('country', $country, null,['class' => 'form-control country requiredDD']) !!}--}}
-                                    <select name="country" id="" class="form-control country requiredDD" disabled>
-                                        <option value="99">India</option>
+                                    {{--                                    {!! Form::select('states', $states, null,['class' => 'form-control country requiredDD']) !!}--}}
+                                    <select name="state" onchange="getCity(this);" id=""
+                                            class="form-control country requiredDD">
+                                        <option value="0">Select State</option>
+                                        @foreach($states as $state)
+                                            <option value="{{$state->State}}">{{$state->State}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -291,9 +302,12 @@
                                 <div class="input-group">
                                         <span class="input-group-addon"><i
                                                     class="mdi mdi-format-list-checks mdi-16px"></i></span>
-                                    <input name="city" placeholder="City*" onpaste="return false;" autocomplete="off"
-                                           class="form-control city textWithSpace required" maxlength="30"
-                                           type="text"/>
+                                    <select id="city_by_state" class="form-control">
+                                        <option value="0" selected>Select City</option>
+                                    </select>
+                                    {{--<input name="city" placeholder="City*" onpaste="return false;" autocomplete="off"--}}
+                                    {{--class="form-control city textWithSpace required" maxlength="30"--}}
+                                    {{--type="text"/>--}}
                                 </div>
                             </div>
                         </div>
@@ -901,26 +915,41 @@
     });
 </script>
 <script type="text/javascript">
+    function getCity(dis) {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            url: "{{ url('getStateCity') }}",
+            data: {state: $(dis).val()},
+            success: function (data) {
+                $('#city_by_state').html(data);
+            },
+            error: function (xhr, status, error) {
+                $('#city_by_state').html(xhr.responseText);
+            }
+        });
+    }
+
     $('#confirm_show_password').focusout(function () {
         var password = $('#show_password').val();
         var c_password = $(this).val();
-        if(password != c_password){
+        if (password != c_password) {
             $(this).val('');
             error_noti("Password and confirm password mismatch");
         }
     });
     {{--$('#email_id').focusout(function () {--}}
-        {{--var domains = ["gmail.com", "hotmail.com", "msn.com", "yahoo.com", "yahoo.in", "yahoo.com", "aol.com", "hotmail.co.uk", "yahoo.co.in", "live.com", "rediffmail.com", "outlook.com", "hotmail.it", "googlemail.com", "mail.com"]; //update ur domains here--}}
-        {{--var idx1 = this.value.indexOf("@");--}}
-        {{--if (idx1 > -1) {--}}
-            {{--var splitStr = this.value.split("@");--}}
-            {{--var sub = splitStr[1].split(".");--}}
-            {{--if ($.inArray(splitStr[1], domains) == -1) {--}}
-                {{--warning_noti("Email must have correct domain name Eg: @gmail.com");--}}
-                {{--swal("Oops....", "Email must have correct domain name Eg: @gmail.com", "info");--}}
-                {{--this.value = "";--}}
-            {{--}--}}
-        {{--}--}}
+    {{--var domains = ["gmail.com", "hotmail.com", "msn.com", "yahoo.com", "yahoo.in", "yahoo.com", "aol.com", "hotmail.co.uk", "yahoo.co.in", "live.com", "rediffmail.com", "outlook.com", "hotmail.it", "googlemail.com", "mail.com"]; //update ur domains here--}}
+    {{--var idx1 = this.value.indexOf("@");--}}
+    {{--if (idx1 > -1) {--}}
+    {{--var splitStr = this.value.split("@");--}}
+    {{--var sub = splitStr[1].split(".");--}}
+    {{--if ($.inArray(splitStr[1], domains) == -1) {--}}
+    {{--warning_noti("Email must have correct domain name Eg: @gmail.com");--}}
+    {{--swal("Oops....", "Email must have correct domain name Eg: @gmail.com", "info");--}}
+    {{--this.value = "";--}}
+    {{--}--}}
+    {{--}--}}
     {{--});--}}
 </script>
 <script src="{{ asset('js/login_validation.js') }}"></script>

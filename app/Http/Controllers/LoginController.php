@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Cities;
 use App\Country;
 use App\FirebaseModel;
 use App\PHPMailer;
@@ -33,27 +34,29 @@ class LoginController extends Controller
         $password = request('password');
         $user = UserModel::where(['email' => $username, 'password' => md5($password)])->first();
         if ($user != null) {
-            if ($user->active == 1) {
-                if ($user->verified == 1) {
-                    $_SESSION['user_master'] = $user;
-                    $timeline = Timeline::find($user->timeline_id);
-                    $user = new UserModel();
-                    $_SESSION["UID"] = $user::select('id')->where('email', $username)->get()->first()->id;
-                    // This Session is used in making Payment
-                    $_SESSION['user_timeline'] = $timeline;
-                    return redirect('dashboard');
+//            if ($user->active == 1) {
+            if ($user->verified == 1) {
+                $_SESSION['user_master'] = $user;
+                $user->active = 1;
+                $user->save();
+                $timeline = Timeline::find($user->timeline_id);
+                $user = new UserModel();
+                $_SESSION["UID"] = $user::select('id')->where('email', $username)->get()->first()->id;
+                // This Session is used in making Payment
+                $_SESSION['user_timeline'] = $timeline;
+                return redirect('dashboard');
 //            return redirect('profile/' . str_slug($timeline->fname . " " . $timeline->lname));
-                } else {
-                    $otp = rand(100000, 999999);
-                    $user_master = UserModel::find($user->id);
-                    $user_master->otp = $otp;
-                    $user_master->save();
+            } else {
+                $otp = rand(100000, 999999);
+                $user_master = UserModel::find($user->id);
+                $user_master->otp = $otp;
+                $user_master->save();
 //                    file_get_contents("http://63.142.255.148/api/sendmessage.php?usr=connectingone&apikey=A0F25813739CF5A748C8&sndr=CONONE&ph=$user->contact&message=Dear%20user,%20verification%20code%20to%20login%20into%20connectingone%20is%20$otp");
-                    file_get_contents("http://api.msg91.com/api/sendhttp.php?sender=CONONE&route=4&mobiles=$user_master->contact&authkey=213418AONRGdnQ5ae96f62&country=91&message=Dear%20user,%20verification%20code%20to%20login%20into%20connectingone%20is%20$otp");
-                    return Redirect::back()->with('message', 'Verification code has send to your registered mobile number...');
-                }
-            } else
-                return Redirect::back()->withInput()->withErrors(array('message' => 'Your account has been deactivated by Administrator'));
+                file_get_contents("http://api.msg91.com/api/sendhttp.php?sender=CONONE&route=4&mobiles=$user_master->contact&authkey=213418AONRGdnQ5ae96f62&country=91&message=Dear%20user,%20verification%20code%20to%20login%20into%20connectingone%20is%20$otp");
+                return Redirect::back()->with('message', 'Verification code has send to your registered mobile number...');
+            }
+//            } else
+//                return Redirect::back()->withInput()->withErrors(array('message' => 'Your account has been deactivated by Administrator'));
 
         } else
             return Redirect::back()->withInput()->withErrors(array('message' => 'Email or password Invalid'));
@@ -95,6 +98,7 @@ class LoginController extends Controller
             $user->birthday = Carbon::parse(request('dob'))->format('Y-m-d');
             $user->password = md5(request('password'));
             $user->city = request('city');
+            $user->state = request('state');
             $user->country_id = request('country');
             $user->gender = request('gender');
             $user->otp = $otp;
@@ -298,5 +302,18 @@ class LoginController extends Controller
             echo 'Incorrect';
     }
 
+    public function getStateCity()
+    {
+        $state = request('state');
+        $cities = DB::select("select * from cities where State = '$state' and City IS NOT NULL order by City ASC");
+        return view('city_list')->with(['cities' => $cities]);
+    }
 
+    public function selectedgetStateCity()
+    {
+        $state = request('state');
+        $cities = DB::select("select * from cities where State = '$state' and City IS NOT NULL order by City ASC");
+        $scity = request('city');
+        return view('city_list')->with(['cities' => $cities, 'scity' => $scity]);
+    }
 }

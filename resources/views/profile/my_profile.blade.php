@@ -190,7 +190,6 @@
             }
         }
 
-
         /**********Bijendra************/
         var append_loading_img = '<div class="feed_loadimg_block" id="load_img">' +
             '<img height="50px" class="center-block" src="{{ url('images/loading.gif') }}"/></div>';

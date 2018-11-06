@@ -542,28 +542,48 @@ class PostController extends Controller
         $comment->save();
 
         /******Notification*******/
-        $post = Posts::find(request('post_id'));
-        $user_post_by = UserModel::find($post->posted_by);
-        if (isset($user_post_by->token) && $user->id != $post->posted_by) {
-            $user_comment = UserModel::find($user->id);
-            $comment_by = $user_comment->timeline->name;
-            $title = "Post Comment";
-            $message = "$comment_by is commented on your post";
-            $token = $user_post_by->token;
-            $data = $post;
-            $user_notification = new UserNotifications();
-            $user_notification->post_id = $post->id;
-            $user_notification->user_id = $post->posted_by;
-            $user_notification->notified_by = $user->id;
-            $user_notification->description = "<b>$comment_by</b> is commented on your post";
-            $user_notification->created_at = Carbon::now('Asia/Kolkata');
-            $user_notification->save();
-            //event(new StatusLiked($post->posted_by));
-            AdminModel::getNotification($token, $title, $message, $data);
-        }
+//        $post = Posts::find(request('post_id'));
+//        $user_post_by = UserModel::find($post->posted_by);
+//        if (isset($user_post_by->token) && $user->id != $post->posted_by) {
+//            $user_comment = UserModel::find($user->id);
+//            $comment_by = $user_comment->timeline->name;
+//            $title = "Post Comment";
+//            $message = "$comment_by is commented on your post";
+//            $token = $user_post_by->token;
+//            $data = $post;
+//            $user_notification = new UserNotifications();
+//            $user_notification->post_id = $post->id;
+//            $user_notification->user_id = $post->posted_by;
+//            $user_notification->notified_by = $user->id;
+//            $user_notification->description = "<b>$comment_by</b> is commented on your post";
+//            $user_notification->created_at = Carbon::now('Asia/Kolkata');
+//            $user_notification->save();
+//            //event(new StatusLiked($post->posted_by));
+//            AdminModel::getNotification($token, $title, $message, $data);
+//        }
         /******Notification*******/
 
         return view('post.comment_list')->with(['comment' => $comment]);
+    }
+
+    public
+    function get_post_comment()
+    {
+        $user = $_SESSION['user_master'];
+        $comment = Comments::find(request('comment_id'));
+        return view('post.edit_comment')->with(['comment' => $comment, 'user' => $user]);
+    }
+
+    public
+    function edit_post_comment()
+    {
+//        $user = $_SESSION['user_master'];
+        $comment = Comments::find(request('comment_id'));
+        $comment->description = LaravelEmojiOneFacade::toShort(request('commenttext'));
+        $comment->description2 = request('commenttext');
+        $comment->save();
+        echo LaravelEmojiOneFacade::shortnameToImage($comment->description);
+//        return view('post.comment_list')->with(['comment' => $comment]);
     }
 
     public

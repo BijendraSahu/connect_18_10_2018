@@ -312,15 +312,16 @@
                                     {{--</div>--}}
                                     {{--</div>--}}
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                        <span class="input-group-addon"><i
-                                                    class="mdi mdi-format-list-bulleted mdi-16px"></i></span>
-                                                <select name="country" id="" class="form-control country requiredDD"
-                                                        disabled>
-                                                    <option value="99">India</option>
-                                                </select>
-                                            </div>
+                                        <div class="radio">
+                                            <input id="radio-1" value="male" class="gender" name="gender_radio"
+                                                   type="radio" {{$user->gender == 'male'?'checked':''}} >
+                                            <label for="radio-1" class="radio-label">Male</label>
+                                        </div>
+
+                                        <div class="radio">
+                                            <input id="radio-2" value="female" class="gender" name="gender_radio"
+                                                   type="radio" {{$user->gender == 'female'?'checked':''}}>
+                                            <label for="radio-2" class="radio-label">Female</label>
                                         </div>
                                     </div>
                                 </div>
@@ -364,32 +365,39 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="radio">
-                                            <input id="radio-1" value="male" class="gender" name="gender_radio"
-                                                   type="radio" {{$user->gender == 'male'?'checked':''}} >
-                                            <label for="radio-1" class="radio-label">Male</label>
-                                        </div>
 
-                                        <div class="radio">
-                                            <input id="radio-2" value="female" class="gender" name="gender_radio"
-                                                   type="radio" {{$user->gender == 'female'?'checked':''}}>
-                                            <label for="radio-2" class="radio-label">Female</label>
-                                        </div>
-                                    </div>
+                                    @php
+                                        $states = DB::select("select * from cities where City IS NULL order by State ASC");
+                                    @endphp
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <div class="input-group">
                                 <span class="input-group-addon"><i
                                             class="mdi mdi-format-list-checks mdi-16px"></i></span>
-                                                <input name="city" onpaste="return false;" placeholder="City"
-                                                       value="{{$user->city}}"
-                                                       class="form-control txt textWithSpace required city"
-                                                       type="text"/>
+                                                {{--<input name="city" onpaste="return false;" placeholder="City"--}}
+                                                {{--value="{{$user->city}}"--}}
+                                                {{--class="form-control txt textWithSpace required city"--}}
+                                                {{--type="text"/>--}}
+                                                <select name="state" onchange="getSelectCity(this);" id="edit_state"
+                                                        class="form-control country requiredDD">
+                                                    @foreach($states as $state)
+                                                        <option value="{{$state->State}}" {{$state->State == $user->state?'selected':''}}>{{$state->State}}</option>
+                                                    @endforeach
+                                                </select>
 
                                             </div>
 
-
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i
+                                                            class="mdi mdi-clipboard-account mdi-16px"></i></span>
+                                                <select id="city_by_state_edit" class="form-control">
+                                                    <option value="0" selected>Select City</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -440,6 +448,7 @@
                         {{--</form>--}}
                         {!! Form::close() !!}
                         <p id="err"></p>
+                        <button class="mdi" onclick="deactivate_account()">Deactivate Account</button>
                     </div>
                 </div>
             </div>
@@ -516,6 +525,35 @@
         </div>
     </div>
     <script type="text/javascript">
+        function getSelectCity(dis) {
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: "{{ url('getStateCity') }}",
+                data: {state: $(dis).val()},
+                success: function (data) {
+                    $('#city_by_state_edit').html(data);
+                },
+                error: function (xhr, status, error) {
+                    $('#city_by_state_edit').html(xhr.responseText);
+                }
+            });
+        }
+        function selectedgetSelectCity(dis) {
+            var city = '{{$user->city}}';
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: "{{ url('getStateCity') }}",
+                data: {state: dis, 'city': city},
+                success: function (data) {
+                    $('#city_by_state_edit').html(data);
+                },
+                error: function (xhr, status, error) {
+                    $('#city_by_state_edit').html(xhr.responseText);
+                }
+            });
+        }
         function removeProfile() {
             var user_id = $('#user_master_id').val();
             swal({
@@ -525,30 +563,71 @@
                 buttons: true,
                 dangerMode: true,
             }).then((okk) => {
-                if (okk) {
-                    $.ajax({
-                        type: "get",
-                        contentType: "application/json; charset=utf-8",
-                        url: "{{ url('removeProfile') }}",
-                        data: {user_id: user_id},
-                        success: function (data) {
+                    if (okk) {
+                        $.ajax({
+                            type: "get",
+                            contentType: "application/json; charset=utf-8",
+                            url: "{{ url('removeProfile') }}",
+                            data: {user_id: user_id},
+                            success: function (data) {
 //                            alert(jQuery.parseJSON(data).response);
-                            swal("Success!", jQuery.parseJSON(data).response, "success");
-                            setTimeout(function () {
-                                window.location.reload();
-                            }, 2000);
-                        },
-                        error: function (xhr, status, error) {
-                            alert(error);
-                            swal("Server Issue", "Something went wrong", "info");
+                                swal("Success!", jQuery.parseJSON(data).response, "success");
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 2000);
+                            },
+                            error: function (xhr, status, error) {
+                                alert(error);
+                                swal("Server Issue", "Something went wrong", "info");
 
-                        }
-                    });
+                            }
+                        });
+                    }
+
                 }
+            );
+        }
 
-            });
+        function deactivate_account() {
+            var user_id = $('#user_master_id').val();
+            swal({
+                title: "Confirmation",
+                text: "Are you sure you want to deactivate your account?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((okk) => {
+                    if (okk) {
+                        $.ajax({
+                            type: "get",
+                            contentType: "application/json; charset=utf-8",
+                            url: "{{ url('deactivate_account') }}",
+                            data: {user_id: user_id},
+                            success: function (data) {
+                                if (jQuery.parseJSON(data).response == "Account has been deactivated") {
+                                    window.location.href = '{{url('/')}}';
+                                }
+//                            alert(jQuery.parseJSON(data).response);
+//                            swal("Success!", jQuery.parseJSON(data).response, "success");
+//                            setTimeout(function () {
+//                            }, 2000);
+                            },
+                            error: function (xhr, status, error) {
+                                alert(error);
+                                swal("Server Issue", "Something went wrong", "info");
+
+                            }
+                        });
+                    }
+
+                }
+            );
         }
         $(document).ready(function () {
+            var state = '{{$user->state}}';
+            if (state != '') {
+                selectedgetSelectCity(state);
+            }
             $('#date_of_birth').datepicker({
                 format: 'dd-M-yyyy', autoclose: true,
                 endDate: '-18y'

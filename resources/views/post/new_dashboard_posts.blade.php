@@ -151,11 +151,13 @@
                       data-toggle="modal">{{count($post[$i]['like'])}}</span>
             </div>
             @if(isset($dislike))
-                <div class="dislike_block you_dislike" id="{{$post[$i]['id']}}" onclick="DislikePost(this);"><i class="dislike_icon mdi mdi-thumb-down"></i>Dislike
+                <div class="dislike_block you_dislike" id="{{$post[$i]['id']}}" onclick="DislikePost(this);"><i
+                            class="dislike_icon mdi mdi-thumb-down"></i>Dislike
                     <span class="count_dislike">{{$post[$i]['dislike']}}</span>
                 </div>
             @else
-                <div class="dislike_block" id="{{$post[$i]['id']}}" onclick="DislikePost(this);"><i class="dislike_icon mdi mdi-thumb-down"></i>Dislike
+                <div class="dislike_block" id="{{$post[$i]['id']}}" onclick="DislikePost(this);"><i
+                            class="dislike_icon mdi mdi-thumb-down"></i>Dislike
                     <span class="count_dislike">{{$post[$i]['dislike']}}</span>
                 </div>
             @endif
@@ -213,10 +215,14 @@
         {{--Comments--}}
         <div class="exis_comments_msgbox chat_scroll style-scroll" data-content="{{$post[$i]['id']}}"
              id="commentlist{{$post[$i]['id']}}">
-            <div>
-                @if(count($post[$i]['comment']) >0 )
-                    <div class="existing_msg_block" id="commentbox{{$post[$i]['id']}}">
-                        @foreach($post[$i]['comment'] as $comment)
+            @if(count($post[$i]['comment']) >0 )
+                <div id="commentbox{{$post[$i]['id']}}">
+
+                    @foreach($post[$i]['comment'] as $comment)
+                        @php
+                            $uni_id = rand(100000, 999999);
+                        @endphp
+                        <div class="existing_msg_block" id="comment_row_id_{{$uni_id}}">
                             <div class="post_imgblock">
                                 <img src="{{url('').'/'.$comment->profile_pic}}">
                             </div>
@@ -225,18 +231,44 @@
                                 {{--<div class="exis_msg" id="container1{{$comment->id}}">--}}
                                 {{--{!! $comment->description  !!}--}}
                                 {{--</div>--}}
-                                <div class="exis_txtblock">{!! \ChristofferOK\LaravelEmojiOne\LaravelEmojiOneFacade::shortnameToImage($comment->description) !!}</div>
-
-
+                                <div class="exis_txtblock" id="comment_id{{$comment->id}}">{!! \ChristofferOK\LaravelEmojiOne\LaravelEmojiOneFacade::shortnameToImage($comment->description) !!}</div>
+                                @if($comment->user_id == $_SESSION['user_master']->id)
+                                    <div class="noti_optionsbox">
+                                        <div class="btn-group dropleft">
+                                            <button type="button"
+                                                    class="btn noti_option_icon btn-secondary dropdown-toggle"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                    onclick="showhide_notioption(this);">
+                                                <i class="mdi mdi-dots-horizontal"></i>
+                                            </button>
+                                            <div class="dropdown-menu show notifi_options scalenoti">
+                                                <div class="noti_opti_row"
+                                                     onclick="EditPostComment(comment_row_id_{{$uni_id}}, count_comment{{$post[$i]['id']}}, {{$comment->id}});">
+                                                    <i
+                                                            class="mdi mdi-pencil basic_icon_margin"
+                                                            style="color: #07d;"></i>Edit
+                                                </div>
+                                                <div class="noti_opti_row"
+                                                     onclick="DeletePostComment(comment_row_id_{{$uni_id}}, count_comment{{$post[$i]['id']}}, {{$comment->id}});">
+                                                    <i class="mdi mdi-delete color_red basic_icon_margin"
+                                                       style="color: #ff0000;"></i>Delete
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
-                        @endforeach
-                    </div>
-                @else
-                    <div class="existing_msg_block" id="commentbox{{$post[$i]['id']}}">
+                        </div>
+                        @php
+                            $uni_id++;
+                        @endphp
+                    @endforeach
+                </div>
+            @else
+                <div id="commentbox{{$post[$i]['id']}}">
 
-                    </div>
-                @endif
-            </div>
+                </div>
+            @endif
         </div>
         {{--Comments--}}
 
@@ -259,7 +291,58 @@
 <input type="hidden" id="pcount" value="{{$count_post}}"/>
 {{--<input type="hidden" id="p_count" value="{{$p_count}}"/>--}}
 <script type="text/javascript">
-
+    function DeletePostComment(row_id, comment_counter_id, comment_id) {
+        swal({
+            title: "Are you sure?",
+            text: "You want to delete this comment...!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((okk) => {
+            if (okk) {
+                $.ajax({
+                    type: "get",
+                    contentType: "application/json; charset=utf-8",
+                    url: "{{ url('deletecomment') }}",
+                    data: {comment_id: comment_id},
+                    success: function (data) {
+                        var json = jQuery.parseJSON(data);
+                        if (json.response == 'Comment has been deleted') {
+                            success_noti("Comment has been deleted");
+                            var curr_count = Number($(comment_counter_id).text());
+                            $(comment_counter_id).text(curr_count - 1);
+                            $(row_id).remove();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+//                    alert('xhr.responseText');
+                        $('#rcerr').html(xhr.responseText);
+                    }
+                });
+            }
+        });
+    }
+    function EditPostComment(row_id, comment_counter_id, comment_id) {
+        $('#myModal').modal('show');
+        $('#modal_type').removeClass('modal-lg');
+        $('#modal_type').addClass('modal-md');
+        $('#modal_title').html('Edit Comment');
+        $('#modal_body').html('<img height="50px" class="center-block" src="{{url('images/loading.gif')}}"/>');
+        var editurl = '{{ url('get_post_comment') }}';
+        $.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            url: editurl,
+            data: {comment_id: comment_id},
+            success: function (data) {
+                $('#modal_body').html(data);
+            },
+            error: function (xhr, status, error) {
+                $('#modal_body').html(xhr.responseText);
+                //$('#modal_body').html("Technical Error Occured!");
+            }
+        });
+    }
     function playvideo(dis) {
         $(dis).hide();
         $(dis).parent().find('.slider_video').attr('controls', 'controls');

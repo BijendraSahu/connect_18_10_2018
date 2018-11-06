@@ -201,6 +201,7 @@ Route::get('postlikelist', 'PostController@postlikelist');
 
 Route::get('getcommentlist', 'PostController@getcommentlist');
 Route::post('post_comment', 'PostController@post_comment');
+Route::post('edit_post_comment', 'PostController@edit_post_comment');
 
 
 Route::get('post/{id}/delete', 'PostController@post_delete');
@@ -279,6 +280,10 @@ Route::post('success', 'CartController@payment_success');
 Route::post('e_atom_payment', 'CartController@e_atom_payment');
 Route::post('failed', 'CartController@payment_failed');
 
+
+Route::get('getStateCity', 'LoginController@getStateCity');
+Route::get('selectedgetStateCity', 'LoginController@selectedgetStateCity');
+Route::get('get_post_comment', 'PostController@get_post_comment');
 ////////////*Ecommerse
 
 
@@ -315,6 +320,8 @@ Route::get('adsbycategory', 'APIController@adsbycategory'); //adsbycat
 Route::get('clist', 'APIController@commentlist'); //comment_list
 Route::get('pllist', 'APIController@postlikelist'); //Like_list
 Route::POST('addads', 'APIController@addads'); //user ad_list
+Route::POST('editads', 'APIController@editads'); //Edit ad
+Route::get('deleteads', 'APIController@deleteads'); //user ad_list
 Route::get('uadsdelete', 'APIController@myadsdelete'); //user ad_list
 Route::get('pdelete', 'APIController@post_delete'); //user ad_list
 Route::get('notice', 'APIController@notice'); //show notification
@@ -353,10 +360,12 @@ Route::get('like_post', 'APIController@like_post');
 Route::get('unlike_post', 'APIController@unlike_post');
 Route::get('spam_post', 'APIController@spam_post');
 Route::get('savecomment', 'APIController@savecomment');
+Route::get('savecomment_new', 'APIController@savecomment_new');
 Route::get('post_text', 'APIController@post_text');
 
 Route::get('editcomment', 'APIController@editcomment');
 Route::get('deletecomment', 'APIController@deletecomment');
+Route::get('deactivate_account', 'APIController@deactivate_account');
 
 Route::get('products', 'ProductController@show');
 Route::post('create_product', 'ProductController@store');

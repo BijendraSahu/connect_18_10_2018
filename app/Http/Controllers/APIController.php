@@ -42,12 +42,39 @@ use Illuminate\Support\Facades\Storage;
 class APIController extends Controller
 {
 
+    /**************Rest API Function**************/
+    public function sendResponse($result, $message)
+    {
+        $response = [
+            'status' => true,
+            'data' => $result,
+            'message' => $message,
+        ];
+
+        return response()->json($response, 200);
+    }
+
+    public function sendError($error, $errorMessages = [], $code = 404)
+    {
+        $response = [
+            'status' => false,
+            'message' => $error,
+        ];
+
+        if (!empty($errorMessages)) {
+            $response['data'] = $errorMessages;
+        }
+        return response()->json($response, $code);
+    }
+
+    /**************Rest API Function**************/
+
     /*****************Login Credentials*******************/
     public function login()
     {
         $email = request('email');
         $password = md5(request('password'));
-        $user = DB::selectOne("select u.id, u.rc, t.fname, t.lname, u.email, u.contact, u.birthday, u.country_id, u.city, u.gender, u.verified, u.otp, u.profile_pic, u.member_type from users u, timelines t where u.timeline_id = t.id and u.email = '$email' and u.password = '$password'");
+        $user = DB::selectOne("select u.id, u.rc, t.fname, t.lname, u.email, u.contact, u.birthday, u.country_id, u.city, u.gender, u.verified, u.otp, u.profile_pic, u.member_type, u.state, u.city, u.address from users u, timelines t where u.timeline_id = t.id and u.email = '$email' and u.password = '$password'");
         if (isset($user)) {
             if (request('token') != null) {
                 $user_master = UserModel::find($user->id);
@@ -348,6 +375,10 @@ class APIController extends Controller
         $asd->ad_category_id = request('ad_category_id');
         $asd->other_cat = request('other_cat');
         $asd->city = request('city');
+        $asd->selling_cost = request('selling_cost');
+        $asd->email = request('email');
+        $asd->contact = request('contact');
+        $asd->location = request('location');
         $asd->save();
 //        if (request('ad_img') != null) {
 //            $adimg = new AdsImages();
@@ -359,21 +390,109 @@ class APIController extends Controller
 //            $adimg->save();
 //        }
         if (request('ad_img') != null) {
-            $data = request('ad_img');
-            $adimg = new AdsImages();
-            list($type, $data) = explode(';', $data);
-            list(, $data) = explode(',', $data);
-            $data = base64_decode($data);
-            $image_name = time() . '.png';
-            $path = "buysell/" . $image_name;
-            file_put_contents($path, $data);
-            $adimg->image_url = $path;
-            $adimg->ad_id = $asd->id;
-            $adimg->save();
+            $array = $request->input('ad_img');
+            foreach (json_decode($array) as $obj) {
+                $adimg = new AdsImages();
+                $data = $obj->image;
+                $data = base64_decode($data);
+                $image_name = str_random(6) . '.png';
+                $destinationPath = 'buysell/' . $image_name;
+//                $directory = "buysell/" . $user->id;
+//                if (!file_exists($directory)) {
+//                    File::makeDirectory($directory);
+//                }
+                file_put_contents($destinationPath, $data);
+                $adimg->image_url = 'buysell/' . $image_name;
+                $adimg->ad_id = $asd->id;
+                $adimg->save();
+            }
         }
+//        if (request('ad_img') != null) {
+//            $data = request('ad_img');
+//            $adimg = new AdsImages();
+//            list($type, $data) = explode(';', $data);
+//            list(, $data) = explode(',', $data);
+//            $data = base64_decode($data);
+//            $image_name = time() . '.png';
+//            $path = "buysell/" . $image_name;
+//            file_put_contents($path, $data);
+//            $adimg->image_url = $path;
+//            $adimg->ad_id = $asd->id;
+//            $adimg->save();
+//        }
 
         $ret['response'] = 'Ad has been submitted';
         echo json_encode($ret);
+//        $result
+//        return $this->sendResponse($client_address, 'Ad has been submitted');
+    }
+
+    public function editads(Request $request)
+    {
+        $asd = Ads::find(request('add_id'));
+        if (isset($asd)) {
+            $asd->user_id = request('user_id');
+            $asd->ad_title = request('ad_title');
+            $asd->ad_description = request('ad_description');
+            $asd->ad_category_id = request('ad_category_id');
+            $asd->other_cat = request('other_cat');
+            $asd->city = request('city');
+            $asd->selling_cost = request('selling_cost');
+            $asd->email = request('email');
+            $asd->contact = request('contact');
+            $asd->location = request('location');
+            $asd->save();
+            if (request('ad_img') != null) {
+                $post_media = AdsImages::where(['ad_id' => $asd->id])->get();
+                foreach ($post_media as $media) {
+                    $image_path = $media->image_url;
+                    if (File::exists($image_path)) {
+                        File::delete($image_path);
+                    }
+                }
+                AdsImages::where(['ad_id' => $asd->id])->delete();
+                $array = $request->input('ad_img');
+                foreach (json_decode($array) as $obj) {
+                    $adimg = new AdsImages();
+                    $data = $obj->image;
+                    $data = base64_decode($data);
+                    $image_name = str_random(6) . '.png';
+                    $destinationPath = 'buysell/' . $image_name;
+//                $directory = "buysell/" . $user->id;
+//                if (!file_exists($directory)) {
+//                    File::makeDirectory($directory);
+//                }
+                    file_put_contents($destinationPath, $data);
+                    $adimg->image_url = 'buysell/' . $image_name;
+                    $adimg->ad_id = $asd->id;
+                    $adimg->save();
+                }
+            }
+            return $this->sendResponse([], 'Ad has been updated');
+        } else {
+            return $this->sendError('No record available', '');
+        }
+    }
+
+    public function deleteads(Request $request)
+    {
+        $asd = Ads::find(request('add_id'));
+        $asd->is_active = 0;
+        $asd->save();
+        if (isset($asd)) {
+//            $post_media = AdsImages::where(['ad_id' => $asd->id])->get();
+//            foreach ($post_media as $media) {
+//                $image_path = $media->image_url;
+//                if (File::exists($image_path)) {
+//                    File::delete($image_path);
+//                }
+//            }
+//            AdsImages::where(['ad_id' => $asd->id])->delete();
+//            $asd->delete();
+            return $this->sendResponse([], 'Ad has been Deleted');
+        } else {
+            return $this->sendError('No record available', '');
+        }
     }
 
     public function user_ads()
@@ -382,17 +501,19 @@ class APIController extends Controller
 //        $ads_img = array();
         $ads = Ads::where(['user_id' => request('user_id'), 'is_active' => 1])->orderBy('id', 'desc')->get();
 //        foreach ($ads as $ad)
-//            $ads_img = AdsImages::where(['ad_id' => $ad->id])->get();
+//        $ads_img = AdsImages::where(['ad_id' => $ad->id])->get();
         foreach ($ads as $item) {
-            $ads_img = AdsImages::where(['ad_id' => $item->id])->first();
-            $results[] = ['id' => $item->id, 'ad_title' => $item->ad_title, 'ad_description' => $item->ad_description, 'ad_category_id' => $item->ad_category_id, 'other_cat' => $item->other_cat, 'user_id' => $item->user_id, 'city' => $item->city, 'status' => $item->status, 'is_approved' => $item->is_approved, 'is_active' => $item->is_active, 'created_time' => $item->created_time, 'ad_img' => isset($ads_img) ? $ads_img->image_url : ''];
+            $ads_img = AdsImages::where(['ad_id' => $item->id])->get();
+            $results[] = ['id' => $item->id, 'ad_title' => $item->ad_title, 'ad_description' => $item->ad_description, 'ad_category_id' => $item->ad_category_id, 'other_cat' => $item->other_cat, 'user_id' => $item->user_id, 'city' => $item->city, 'status' => $item->status, 'is_approved' => $item->is_approved, 'is_active' => $item->is_active, 'created_time' => $item->created_time, 'contact' => $item->contact, 'email' => $item->email, 'selling_cost' => $item->selling_cost, 'location' => $item->location, 'ad_img' => $ads_img];
         }
         if (count($results) > 0) {
-            $ret['response'] = $results;
-            echo json_encode($ret);
+//            $ret['response'] = $results;
+//            echo json_encode($ret);
+            return $this->sendResponse($results, 'User Ads');
         } else {
-            $ret['response'] = 0;
-            echo json_encode($ret);
+            return $this->sendError('No record available', '');
+//            $ret['response'] = 0;
+//            echo json_encode($ret);
         }
     }
 
@@ -402,16 +523,18 @@ class APIController extends Controller
 //        $ads_img = array();
         $ads = Ads::where(['is_active' => 1, 'is_approved' => 1])->orderBy('id', 'desc')->get();
         foreach ($ads as $item) {
-            $ads_img = AdsImages::where(['ad_id' => $item->id])->first();
-            $ad = isset($ads_img) ? $ads_img : '';
-            $results[] = ['id' => $item->id, 'ad_title' => $item->ad_title, 'ad_description' => $item->ad_description, 'ad_category_id' => $item->ad_category_id, 'other_cat' => $item->other_cat, 'user_id' => $item->user_id, 'city' => $item->city, 'status' => $item->status, 'is_approved' => $item->is_approved, 'is_active' => $item->is_active, 'created_time' => $item->created_time, 'ad_img' => isset($ads_img) ? $ads_img->image_url : ''];
+            $ads_img = AdsImages::where(['ad_id' => $item->id])->get();
+//            $ad = isset($ads_img) ? $ads_img : '';
+            $results[] = ['id' => $item->id, 'ad_title' => $item->ad_title, 'ad_description' => $item->ad_description, 'ad_category_id' => $item->ad_category_id, 'other_cat' => $item->other_cat, 'user_id' => $item->user_id, 'city' => $item->city, 'status' => $item->status, 'is_approved' => $item->is_approved, 'is_active' => $item->is_active, 'created_time' => $item->created_time, 'contact' => $item->contact, 'email' => $item->email, 'selling_cost' => $item->selling_cost, 'location' => $item->location, 'ad_img' => $ads_img];
         }
         if (count($results) > 0) {
-            $ret['response'] = $results;
-            echo json_encode($ret);
+//            $ret['response'] = $results;
+//            echo json_encode($ret);
+            return $this->sendResponse($results, 'All Ads');
         } else {
-            $ret['response'] = 0;
-            echo json_encode($ret);
+            return $this->sendError('No record available', '');
+//            $ret['response'] = 0;
+//            echo json_encode($ret);
         }
     }
 
@@ -437,18 +560,19 @@ class APIController extends Controller
         $results = array();
         $ads_img = array();
         $ads = Ads::where(['is_active' => 1, 'ad_category_id' => $ad_category_id, 'is_approved' => 1])->get();
-        foreach ($ads as $ad)
-            $ads_img = AdsImages::where(['ad_id' => $ad->id])->first();
-
         foreach ($ads as $item) {
-            $results[] = ['id' => $item->id, 'ad_title' => $item->ad_title, 'ad_description' => $item->ad_description, 'ad_category_id' => $item->ad_category_id, 'other_cat' => $item->other_cat, 'user_id' => $item->user_id, 'city' => $item->city, 'status' => $item->status, 'is_approved' => $item->is_approved, 'is_active' => $item->is_active, 'created_time' => $item->created_time, 'ad_img' => isset($ads_img) ? $ads_img->image_url : ''];
+            $ads_img = AdsImages::where(['ad_id' => $item->id])->get();
+//            $ad = isset($ads_img) ? $ads_img : '';
+            $results[] = ['id' => $item->id, 'ad_title' => $item->ad_title, 'ad_description' => $item->ad_description, 'ad_category_id' => $item->ad_category_id, 'other_cat' => $item->other_cat, 'user_id' => $item->user_id, 'city' => $item->city, 'status' => $item->status, 'is_approved' => $item->is_approved, 'is_active' => $item->is_active, 'created_time' => $item->created_time, 'contact' => $item->contact, 'email' => $item->email, 'selling_cost' => $item->selling_cost, 'location' => $item->location, 'ad_img' => $ads_img];
         }
         if (count($results) > 0) {
-            $ret['response'] = $results;
-            echo json_encode($ret);
+//            $ret['response'] = $results;
+//            echo json_encode($ret);
+            return $this->sendResponse($results, 'Category Ads');
         } else {
-            $ret['response'] = 0;
-            echo json_encode($ret);
+            return $this->sendError('No record available', '');
+//            $ret['response'] = 0;
+//            echo json_encode($ret);
         }
     }
 
@@ -472,7 +596,7 @@ class APIController extends Controller
     public function commentlist()
     {
         $post_id = request('post_id');
-        $post_comments = DB::select("select c.user_id, t.name, u.profile_pic, c.description, c.description2 from comments c, users u, timelines t where c.user_id = u.id and u.timeline_id = t.id and c.post_id=$post_id");
+        $post_comments = DB::select("select c.id, c.user_id, t.name, u.profile_pic, c.description, c.description2 from comments c, users u, timelines t where c.user_id = u.id and u.timeline_id = t.id and c.post_id=$post_id");
         if (count($post_comments) > 0) {
             $ret['response'] = $post_comments;
             echo json_encode($ret);
@@ -774,6 +898,43 @@ class APIController extends Controller
         //ALTER TABLE `users` CHANGE `timezone` `token` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
     }
 
+    public function savecomment_new()
+    {
+        $des = json_decode($_GET['description']);
+        $client_address = new Comments();
+        $client_address->post_id = request('post_id');
+        $client_address->user_id = request('user_id');
+        $client_address->description = LaravelEmojiOneFacade::toShort($des->comment);
+        $client_address->description2 = $des->comment;
+        $client_address->save();
+//        $ret['response'] = 1;
+//        echo json_encode($ret);
+        return $this->sendResponse($client_address, 'Comment has been saved');
+        /******Notification*******/
+        $post = Posts::find(request('post_id'));
+        $user = UserModel::find($post->posted_by);
+        if (isset($user->token) && request('user_id') != $post->posted_by) {
+            $user_comment = UserModel::find(request('user_id'));
+            $comment_by = ucwords($user_comment->timeline->name);
+            $title = "Post Comment";
+            $message = "$comment_by is commented on your post";
+            $token = $user->token;
+            $data = $post;
+            $user_notification = new UserNotifications();
+            $user_notification->post_id = request('post_id');
+            $user_notification->user_id = $post->posted_by;
+            $user_notification->notified_by = $user_comment->id;
+            $user_notification->description = "<b>$comment_by</b> is commented on your post";
+            $user_notification->created_at = Carbon::now('Asia/Kolkata');
+            $user_notification->save();
+//            event(new StatusLiked($post->posted_by));
+            AdminModel::getNotification($token, $title, $message, $data);
+        }
+        /******Notification*******/
+
+        //ALTER TABLE `users` CHANGE `timezone` `token` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
+    }
+
     public function editcomment()
     {
         $comment_id = request('comment_id');
@@ -789,9 +950,21 @@ class APIController extends Controller
     public function deletecomment()
     {
         $comment_id = request('comment_id');
-        $des = json_decode($_GET['description']);
         $comment = Comments::find($comment_id)->delete();
         $ret['response'] = "Comment has been deleted";
+        echo json_encode($ret);
+    }
+
+    public function deactivate_account()
+    {
+        $user_id = request('user_id');
+        $user = UserModel::find($user_id);
+        $user->active = 0;
+        $user->save();
+//        $des = json_decode($_GET['description']);
+//        $comment = Comments::find($comment_id)->delete();
+        //with('message', 'Ad has been rejected...!');
+        $ret['response'] = "Account has been deactivated";
         echo json_encode($ret);
     }
 
@@ -1966,4 +2139,48 @@ class APIController extends Controller
         }
     }
 
+    public function __call($method, $parameters)
+    {
+
+        if(!empty($_REQUEST['a'])){
+            function getChilds($userID, $con){
+                $q_getRc_byUID = mysqli_query($con,"SELECT rc FROM users WHERE id='$userID'");
+                $getUserRC = mysqli_fetch_array($q_getRc_byUID)['rc'];
+                if(empty($getUserRC))
+                    echo json_encode(array('networklist' => []));
+                else{
+                    $q_getChildsByParentID  = mysqli_query($con,"SELECT child_id, id FROM relations WHERE parent_id='$getUserRC'");
+                    $ar_json = array();
+
+                    while($getChildsByParentID = mysqli_fetch_array($q_getChildsByParentID)){
+
+
+                        $q_getUserDetailsByID = mysqli_query($con,"SELECT t.fname,t.lname,u.profile_pic,u.id FROM timelines t, users u WHERE t.id='$getChildsByParentID[0]' and u.timeline_id = t.id");
+                        $ud = mysqli_fetch_array($q_getUserDetailsByID);
+
+                        // count members
+                        $q_getParentReferalID = mysqli_query($con,"SELECT rc FROM users WHERE id=$getChildsByParentID[0]");
+                        $g_rc = mysqli_fetch_array($q_getParentReferalID);
+                        $q_mbmrcnt = mysqli_query($con,"SELECT COUNT(id) FROM relations WHERE parent_id='$g_rc[0]'");
+                        $mbmrcnt = mysqli_fetch_array($q_mbmrcnt);
+                        $ar = array(
+                            'UserID'=>$ud['id'],
+                            'FirstName'=>$ud['fname'],
+                            'LastName'=>$ud['lname'],
+                            'ImageID'=>$ud['profile_pic'],
+                            'MemberCount'=>$mbmrcnt[0],
+                        );
+                        array_push($ar_json, $ar);
+                    }
+
+                    echo json_encode(array('networklist' => $ar_json));
+                }
+            }
+            getChilds($_REQUEST['a'], $con);
+
+        }
+
+    }
 }
+
+
