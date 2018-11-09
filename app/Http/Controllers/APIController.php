@@ -38,6 +38,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use File;
 use Illuminate\Support\Facades\Storage;
+use Validator;
 
 class APIController extends Controller
 {
@@ -554,8 +555,18 @@ class APIController extends Controller
         }
     }
 
-    public function adsbycategory()
+    public function adsbycategory(Request $request)
     {
+
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'ad_category_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
         $ad_category_id = request('ad_category_id');
         $results = array();
         $ads_img = array();
@@ -652,7 +663,7 @@ class APIController extends Controller
         }
 //            }
 //        }
-        $ret['response'] = 'Post has been submitted' . $posts->id;
+        $ret['response'] = 'Successfully posted, keep going' . $posts->id;
         echo json_encode($ret);
     }
 
@@ -672,6 +683,8 @@ class APIController extends Controller
         $posts->created_at = Carbon::now('Asia/Kolkata');
         $posts->timeline_id = $user->timeline_id;
         $posts->posted_by = request('user_id');
+        $posts->checkin = request('checkin');
+        $posts->post_privacy = request('post_privacy');
         $posts->save();
         if (request('post_file') != null) {
             $array = $request->input('post_file');
@@ -692,7 +705,7 @@ class APIController extends Controller
                 $post_media->save();
             }
         }
-        $ret['response'] = 'Post has been submitted';
+        $ret['response'] = 'Successfully posted, keep going';
         echo json_encode($ret);
     }
 
@@ -898,8 +911,18 @@ class APIController extends Controller
         //ALTER TABLE `users` CHANGE `timezone` `token` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
     }
 
-    public function savecomment_new()
+    public function savecomment_new(Request $request)
     {
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'user_id' => 'required',
+            'post_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
         $des = json_decode($_GET['description']);
         $client_address = new Comments();
         $client_address->post_id = request('post_id');
@@ -1066,8 +1089,13 @@ class APIController extends Controller
     public function getPost_new()
     {
         $user = UserModel::find(request('user_id'));
+        $f_user = UserModel::find(request('friend_id'));
+        $friend = DB::selectOne("select f.id, f.status as status from friends f where f.status = 'friends' and (f.user_id = $user->id and f.friend_id = $f_user->id or f.user_id = $f_user->id and f.friend_id = $user->id)");
         $user_id = $user->id;
-        $posts1 = DB::select("select p.id as id, p.description,p.description2, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active, (select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, post_created_by from posts p where  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC");
+
+        $public = "select p.id as id, p.description,p.description2, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active, (select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, post_created_by from posts p where p.post_privacy = 'public' and p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC";
+        $friend_public = "select p.id as id, p.description,p.description2, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active, (select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, post_created_by from posts p where (p.post_privacy = 'public' or p.post_privacy = 'friends') and  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC";
+        $posts1 = isset($friend) ? DB::select($friend_public) : DB::select($public);
         $numrows = count($posts1);
         $rowsperpage = 10;
         $totalpages = ceil($numrows / $rowsperpage);
@@ -1084,9 +1112,11 @@ class APIController extends Controller
         $offset = ($currentpage - 1) * $rowsperpage;
 
         $results = array();
-        $s = "select p.id as id, p.description,p.description2, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active, (select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, post_created_by from posts p where  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
+        $s = "select p.id as id, p.description,p.description2, p.checkin, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active, (select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, p.post_created_by from posts p where p.post_privacy = 'public' and  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
+        $q = "select p.id as id, p.description,p.description2, p.checkin, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active, (select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, p.post_created_by from posts p where (p.post_privacy = 'public' or p.post_privacy = 'friends') and  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
 //        echo $s;
-        $posts = DB::select($s);
+        $n_s = isset($friend) ? $s : $q;
+        $posts = DB::select($n_s);
 
         if (count($posts) > 0) {
             foreach ($posts as $post) {
@@ -1107,7 +1137,7 @@ class APIController extends Controller
 
                 /*********Change in 5th oct 18**********/
 
-                $results[] = ['id' => $post->id, 'description' => $post->description, 'description2' => $post->description2, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'post_created_by_name' => $post->post_created_by_name, 'post_created_by' => $post->post_created_by, 'media' => $media_re, 'comment' => count($comment_re), 'like' => count($like_re), 'spam' => count($spam_re), 'dislike' => count($dislike), 'is_like' => isset($is_like) ? '1' : '0', 'is_spam' => isset($is_spam) ? '1' : '0', 'is_dislike' => isset($is_dislike) ? '1' : '0'];
+                $results[] = ['id' => $post->id, 'description' => $post->description, 'description2' => $post->description2, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'post_created_by_name' => $post->post_created_by_name, 'post_created_by' => $post->post_created_by, 'checkin' => $post->checkin, 'media' => $media_re, 'comment' => count($comment_re), 'like' => count($like_re), 'spam' => count($spam_re), 'dislike' => count($dislike), 'is_like' => isset($is_like) ? '1' : '0', 'is_spam' => isset($is_spam) ? '1' : '0', 'is_dislike' => isset($is_dislike) ? '1' : '0'];
             }
             $ret['response'] = $results;
             echo json_encode($ret);
@@ -1198,7 +1228,7 @@ class APIController extends Controller
         $offset = ($currentpage - 1) * $rowsperpage;
 
         $results = array();
-        $s = "select p.id as id, p.description, p.description2, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active,(select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, post_created_by from posts p where  p.active = 1 and p.user_id=$user_id or  p.user_id in  (select fr.user_id from friends fr, users unn where fr.status='friends' and fr.friend_id=$user_id and unn.id=fr.user_id and unn.active = 1) or p.user_id in (select f.friend_id from friends f, users un where f.status='friends' and f.user_id=$user_id and un.id= f.friend_id and un.active = 1) ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
+        $s = "select p.id as id, p.description, p.description2, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active,(select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, post_created_by,p.checkin from posts p where  p.active = 1 and p.user_id=$user_id or  p.user_id in  (select fr.user_id from friends fr, users unn where fr.status='friends' and fr.friend_id=$user_id and unn.id=fr.user_id and unn.active = 1) or p.user_id in (select f.friend_id from friends f, users un where f.status='friends' and f.user_id=$user_id and un.id= f.friend_id and un.active = 1) ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
 //        echo $s;
         $posts = DB::select($s);
 
@@ -1220,7 +1250,7 @@ class APIController extends Controller
                 $is_dislike = Post_unlikes::where(['user_id' => $user_id, 'post_id' => $post->id])->first();
                 /*********Change in 5th oct 18**********/
 
-                $results[] = ['id' => $post->id, 'description' => $post->description, 'description2' => $post->description2, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'post_created_by_name' => $post->post_created_by_name, 'post_created_by' => $post->post_created_by, 'media' => $media_re, 'comment' => count($comment_re), 'like' => count($like_re), 'spam' => count($spam), 'dislike' => count($dislike), 'is_like' => isset($is_like) ? '1' : '0', 'is_spam' => isset($is_spam) ? '1' : '0', 'is_dislike' => isset($is_dislike) ? '1' : '0'];
+                $results[] = ['id' => $post->id, 'description' => $post->description, 'description2' => $post->description2, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'post_created_by_name' => $post->post_created_by_name, 'post_created_by' => $post->post_created_by, 'checkin' => $post->checkin, 'media' => $media_re, 'comment' => count($comment_re), 'like' => count($like_re), 'spam' => count($spam), 'dislike' => count($dislike), 'is_like' => isset($is_like) ? '1' : '0', 'is_spam' => isset($is_spam) ? '1' : '0', 'is_dislike' => isset($is_dislike) ? '1' : '0'];
             }
             $ret['response'] = $results;
             echo json_encode($ret);
@@ -1249,7 +1279,7 @@ class APIController extends Controller
             $is_dislike = Post_unlikes::where(['post_id' => $post->id])->first();
             /*********Change in 5th oct 18**********/
 
-            $results[] = ['id' => $post->id, 'description' => $post->description, 'description2' => $post->description2, 'name' => $post->timeline->name, 'profile_pic' => $post->user->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'post_created_by_name' => $post->post_created_by_name, 'post_created_by' => $post->post_created_by, 'media' => $media_re, 'comment' => count($comment_re), 'like' => count($like_re), 'spam' => count($spam), 'dislike' => count($dislike), 'is_like' => isset($is_like) ? '1' : '0', 'is_spam' => isset($is_spam) ? '1' : '0', 'is_dislike' => isset($is_dislike) ? '1' : '0'];
+            $results[] = ['id' => $post->id, 'description' => $post->description, 'description2' => $post->description2, 'name' => $post->timeline->name, 'profile_pic' => $post->user->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'post_created_by_name' => $post->post_created_by_name, 'post_created_by' => $post->post_created_by, 'checkin' => $post->checkin, 'media' => $media_re, 'comment' => count($comment_re), 'like' => count($like_re), 'spam' => count($spam), 'dislike' => count($dislike), 'is_like' => isset($is_like) ? '1' : '0', 'is_spam' => isset($is_spam) ? '1' : '0', 'is_dislike' => isset($is_dislike) ? '1' : '0'];
             $ret['response'] = $results;
             echo json_encode($ret);
         } else {
@@ -2139,47 +2169,52 @@ class APIController extends Controller
         }
     }
 
-    public function __call($method, $parameters)
+    public function user_network(Request $request)
     {
+        $input = $request->all();
 
-        if(!empty($_REQUEST['a'])){
-            function getChilds($userID, $con){
-                $q_getRc_byUID = mysqli_query($con,"SELECT rc FROM users WHERE id='$userID'");
-                $getUserRC = mysqli_fetch_array($q_getRc_byUID)['rc'];
-                if(empty($getUserRC))
-                    echo json_encode(array('networklist' => []));
-                else{
-                    $q_getChildsByParentID  = mysqli_query($con,"SELECT child_id, id FROM relations WHERE parent_id='$getUserRC'");
-                    $ar_json = array();
+        $validator = Validator::make($input, [
+            'user_id' => 'required',
+        ]);
 
-                    while($getChildsByParentID = mysqli_fetch_array($q_getChildsByParentID)){
-
-
-                        $q_getUserDetailsByID = mysqli_query($con,"SELECT t.fname,t.lname,u.profile_pic,u.id FROM timelines t, users u WHERE t.id='$getChildsByParentID[0]' and u.timeline_id = t.id");
-                        $ud = mysqli_fetch_array($q_getUserDetailsByID);
-
-                        // count members
-                        $q_getParentReferalID = mysqli_query($con,"SELECT rc FROM users WHERE id=$getChildsByParentID[0]");
-                        $g_rc = mysqli_fetch_array($q_getParentReferalID);
-                        $q_mbmrcnt = mysqli_query($con,"SELECT COUNT(id) FROM relations WHERE parent_id='$g_rc[0]'");
-                        $mbmrcnt = mysqli_fetch_array($q_mbmrcnt);
-                        $ar = array(
-                            'UserID'=>$ud['id'],
-                            'FirstName'=>$ud['fname'],
-                            'LastName'=>$ud['lname'],
-                            'ImageID'=>$ud['profile_pic'],
-                            'MemberCount'=>$mbmrcnt[0],
-                        );
-                        array_push($ar_json, $ar);
-                    }
-
-                    echo json_encode(array('networklist' => $ar_json));
-                }
-            }
-            getChilds($_REQUEST['a'], $con);
-
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
         }
-
+        $user_id = request('user_id'); //user_id
+        $user = UserModel::find($user_id);
+        if (isset($user)) {
+            // Id to get records
+            $lst_usr_id = 0;
+            // Get childs by ParentID from relation table
+            $rltn = new relation();
+            // Get User Referral ID by User ID
+            // Timeline ID and autogen ID is same.
+            $getPrntRfrlID = $user::select('rc')->where('id', $user->id)->get();
+//            $getChildsByParentID = $rltn::select('child_id', 'id')->where('parent_id', $getPrntRfrlID[0]->rc)->limit(1)->get();
+            $getPrntRfrlIDrc = $getPrntRfrlID[0]->rc;
+            $getChildsByParentID = DB::select("select child_id, id from relations where parent_id = '$getPrntRfrlIDrc'");
+            // Variable to create dynamic template
+            $t = '';
+            $tmln = new Timeline();
+            // Loop records
+            $result = [];
+            if (count($getChildsByParentID) > 0) {
+                foreach ($getChildsByParentID as $chlds) {
+                    $network_user = UserModel::find($chlds->child_id);
+                    $getUserDetailsByID = $tmln::select('fname', 'lname', 'avatar_id')->where('id', $network_user->timeline_id)->get();
+                    $getParentReferalID = $user::select('rc')->where('id', $chlds->child_id)->get();
+                    $getMembersCount = $rltn::select('id')->where('parent_id', $getParentReferalID[0]->rc)->count();
+                    $result[] = ['UserID' => $chlds->child_id, 'FirstName' => $getUserDetailsByID[0]->fname, 'LastName' => $getUserDetailsByID[0]->lname, 'ImageID' => $network_user->profile_pic, 'MemberCount' => $getMembersCount];
+                    $lst_usr_id = $chlds->id;
+                }
+//        return response()->json(array('t' => $result));
+                return $this->sendResponse($result, 'User Network List');
+            } else {
+                return $this->sendError('No member available in your network list', '');
+            }
+        } else {
+            return $this->sendError('User record not available', '');
+        }
     }
 }
 

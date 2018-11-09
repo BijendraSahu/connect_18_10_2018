@@ -43,6 +43,8 @@ class PostController extends Controller
             $newpost->description = LaravelEmojiOneFacade::toShort(request('posttext'));
             $newpost->description2 = request('posttext');
             $newpost->created_at = Carbon::now('Asia/Kolkata');;
+            $newpost->checkin = request('checkin') != '' ? request('checkin') : null;
+            $newpost->post_privacy = request('post_privacy') != '' ? request('post_privacy') : 'public';
             $newpost->save();
 
             if (request('upload_file') != null) {
@@ -263,9 +265,16 @@ class PostController extends Controller
         $ses_user = $_SESSION['user_master'];
         $ses_user = UserModel::find($ses_user->id);
         $user = UserModel::find(request('search_user_id'));
-        $user_id = $user->id;
+        $user_id = $user->id; //search member id
+        $friend = DB::selectOne("select f.id, f.status as status from friends f where f.status = 'friends' and (f.user_id = $user_id and f.friend_id = $ses_user->id or f.user_id = $ses_user->id and f.friend_id = $user_id)");
 //        $posts1 = DB::select("select p.id as id, p.description, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where  p.active = 1 and p.user_id=$user_id or  p.user_id in  (select fr.user_id from friends fr where fr.status='friends' and fr.friend_id=$user_id) or p.user_id in (select f.friend_id from friends f where f.status='friends' and f.user_id=$user_id) ORDER BY p.id DESC");
-        $posts1 = DB::select("select p.id as id, p.description, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC");
+
+        $public = "select p.id as id, p.description, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where p.post_privacy = 'public' and p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC";
+        $friend_public = "select p.id as id, p.description, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where (p.post_privacy = 'public' or p.post_privacy = 'friends') and p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC";
+        $posts1 = isset($friend) ? DB::select($friend_public) : DB::select($public);
+
+
+//        $posts1 = DB::select("select p.id as id, p.description, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC");
         $numrows = count($posts1);
         $rowsperpage = 1;
         $totalpages = ceil($numrows / $rowsperpage);
@@ -285,9 +294,13 @@ class PostController extends Controller
         $media_re = array();
         $comment_re = array();
         $like_re = array();
-        $s = "select p.id as id, p.description, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
+        $s = "select p.id as id, p.description, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where  p.post_privacy = 'public' and  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
+        $q = "select p.id as id, p.description, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where (p.post_privacy = 'public' or p.post_privacy = 'friends') and  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
+//        $old = "select p.id as id, p.description, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
+
+        $final =
 //        echo $s;
-        $posts = DB::select($s);
+        $posts = isset($friend) ? DB::select($q) : DB::select($s);
 
         if (count($posts) > 0) {
             foreach ($posts as $post) {

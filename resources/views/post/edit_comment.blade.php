@@ -12,7 +12,7 @@
 <script>
     $(document).ready(function () {
         InitializeEmoji();
-        {{--$('.emojionearea-editor').text({!! \ChristofferOK\LaravelEmojiOne\LaravelEmojiOneFacade::shortnameToImage($comment->description) !!});--}}
+        {{--$('.emojionearea-editor').text('{!! \ChristofferOK\LaravelEmojiOne\LaravelEmojiOneFacade::shortnameToImage($comment->description) !!}');--}}
     });
     function Requiredtxt(me) {
         var text = $.trim($(me).val());

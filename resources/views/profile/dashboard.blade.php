@@ -212,52 +212,57 @@
                                 <div class="button_head glo_headbtn"></div>
                             </div>
                             <div class="panel-body servey_ul style-scroll">
+                                @php
+                                    $surveys = \App\Survey::GetSurveys();
+                                @endphp
                                 <ul>
-                                    <li>
-                                        <div class="servey_row" data-toggle="modal" data-target="#Modal_serveydetails">
-                                            <div class="servey_title">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज
-                                                साधु-संत?
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar progress-bar-success progress-bar-striped"
-                                                     role="progressbar"
-                                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                                     style="width:40%">
-                                                    40% (yes)
+                                    @foreach($surveys as $survey)
+                                        <li>
+                                            <div class="servey_row" data-toggle="modal"
+                                                 data-target="#Modal_serveydetails" id="{{$survey->id}}"
+                                                 onclick="view_survey(this);">
+                                                <div class="servey_title">{{$survey->question}}</div>
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-success progress-bar-striped"
+                                                         role="progressbar"
+                                                         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                                         style="width:40%">
+                                                        40% (yes)
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="servey_row" data-toggle="modal" data-target="#Modal_serveydetails">
-                                            <div class="servey_title">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज
-                                                साधु-संत?
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar progress-bar-success progress-bar-striped"
-                                                     role="progressbar"
-                                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                                     style="width:40%">
-                                                    40% (yes)
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="servey_row" data-toggle="modal" data-target="#Modal_serveydetails">
-                                            <div class="servey_title">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज
-                                                साधु-संत?
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar progress-bar-success progress-bar-striped"
-                                                     role="progressbar"
-                                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                                     style="width:40%">
-                                                    40% (yes)
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
+                                        </li>
+                                    @endforeach
+                                    {{--<li>--}}
+                                    {{--<div class="servey_row" data-toggle="modal" data-target="#Modal_serveydetails">--}}
+                                    {{--<div class="servey_title">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज--}}
+                                    {{--साधु-संत?--}}
+                                    {{--</div>--}}
+                                    {{--<div class="progress">--}}
+                                    {{--<div class="progress-bar progress-bar-success progress-bar-striped"--}}
+                                    {{--role="progressbar"--}}
+                                    {{--aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"--}}
+                                    {{--style="width:40%">--}}
+                                    {{--40% (yes)--}}
+                                    {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--</li>--}}
+                                    {{--<li>--}}
+                                    {{--<div class="servey_row" data-toggle="modal" data-target="#Modal_serveydetails">--}}
+                                    {{--<div class="servey_title">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज--}}
+                                    {{--साधु-संत?--}}
+                                    {{--</div>--}}
+                                    {{--<div class="progress">--}}
+                                    {{--<div class="progress-bar progress-bar-success progress-bar-striped"--}}
+                                    {{--role="progressbar"--}}
+                                    {{--aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"--}}
+                                    {{--style="width:40%">--}}
+                                    {{--40% (yes)--}}
+                                    {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--</li>--}}
                                 </ul>
 
                             </div>
@@ -405,25 +410,26 @@
                                 aria-hidden="true">×</span></button>
                     <h4 class="modal-title" id="myModalLabel">Please share your opinion</h4>
                 </div>
-                <div class="modal-body">
-                    <div class="servey_question"><i class="mdi mdi-help-circle basic_icon_margin"></i>
-                        क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज साधु-संत?
-                    </div>
-                    <div class="servey_ans">
+                <div class="modal-body" id="survey_body">
+                    {{--<div class="servey_question"><i class="mdi mdi-help-circle basic_icon_margin"></i>--}}
+                    {{--<span id="view_survey_question">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज साधु-संत?</span>--}}
+                    {{--</div>--}}
+                    {{--<div class="servey_ans">--}}
+                    {{--<div class="radio">--}}
+                    {{--<input id="radio-1" value="yes" class="gender" name="servey_radio" type="radio" checked="">--}}
+                    {{--<label for="radio-1" class="radio-label">Yes</label>--}}
+                    {{--</div>--}}
+                    {{--<div class="radio">--}}
+                    {{--<input id="radio-2" value="no" class="gender" name="servey_radio" type="radio">--}}
+                    {{--<label for="radio-2" class="radio-label">No</label>--}}
+                    {{--</div>--}}
 
-                        <div class="radio">
-                            <input id="radio-1" value="yes" class="gender" name="servey_radio" type="radio" checked="">
-                            <label for="radio-1" class="radio-label">Yes</label>
-                        </div>
-                        <div class="radio">
-                            <input id="radio-2" value="no" class="gender" name="servey_radio" type="radio">
-                            <label for="radio-2" class="radio-label">No</label>
-                        </div>
-
-                    </div>
+                    {{--</div>--}}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                    <button type="button" class="btn btn-primary" onclick="save_survey();" {{--data-dismiss="modal"--}}>
+                        Submit
+                    </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -442,6 +448,50 @@
         </script>
     @endif
     <script type="text/javascript">
+        /*******************Survey 09-11-2018*********************/
+        function save_survey() {
+            var ckbox = $("input[name='servey_radio']");
+            var survey_ans = '';
+            $("input[name='servey_radio']:checked").each(function () {
+                survey_ans = $(this).val();
+            });
+            var survey_id = $("#servey_id").val();
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: '{{ url('save_survey') }}',
+                data: {survey_id: survey_id, survey_ans: survey_ans},
+                success: function (data) {
+                    $('#Modal_serveydetails').modal('hide');
+                    if (data == 'Success') {
+                        success_noti("Survey has been successful")
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $('#modal_body').html(xhr.responseText);
+                }
+            });
+        }
+        function view_survey(dis) {
+            var survey_id = $(dis).attr('id');
+            var editurl = '{{ url('view_survey') }}';
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: editurl,
+                data: {survey_id: survey_id},
+                success: function (data) {
+                    $('#survey_body').html(data);
+                },
+                error: function (xhr, status, error) {
+                    $('#survey_body').html(xhr.responseText);
+                }
+            });
+        }
+        /*******************Survey 09-11-2018*********************/
+
+
+
         function getmorepost() {
             $("#load_img").remove();
             append_loading_img = '<div class="feed_loadimg_block" id="load_img">' +
@@ -641,47 +691,47 @@
                         buttons: true,
                         dangerMode: true,
                     }).then((okk) => {
-                        if (okk) {
-                            $.ajax({
-                                type: 'POST',
-                                url: "{{ url('userpost') }}",
-                                data: new FormData(this),
-                                contentType: false,
-                                cache: false,
-                                processData: false,
-                                beforeSend: function () {
-                                    $('#userpostForm').css("opacity", ".5");
-                                    $("#publish").attr("disabled", "disabled");
-                                    $('#loader').css('display', 'block');
-                                },
-                                success: function (data) {
-                                    $('#loader').css('display', 'none');
-                                    HideOnpageLoopader1();
+                            if (okk) {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "{{ url('userpost') }}",
+                                    data: new FormData(this),
+                                    contentType: false,
+                                    cache: false,
+                                    processData: false,
+                                    beforeSend: function () {
+                                        $('#userpostForm').css("opacity", ".5");
+                                        $("#publish").attr("disabled", "disabled");
+                                        $('#loader').css('display', 'block');
+                                    },
+                                    success: function (data) {
+                                        $('#loader').css('display', 'none');
+                                        HideOnpageLoopader1();
 //                                    swal("Success!", "Your post has been uploaded...", "success");
-                                    success_noti("Your post has been uploaded...");
-                                    // ShowSuccessPopupMsg('Your post has been uploaded...');
-                                    $('#image_preview').text('');
-                                    $('.emojionearea-editor').empty();
-                                    $('#post_text_emoji').text('');
-                                    $('#posttext').val('');
-                                    $('#upload_file_image').val('');
-                                    $('#upload_file_video').val('');
-                                    $('.upload_limittxt').text('');
-                                    $('#userpostForm').css("opacity", "");
-                                    $("#publish").removeAttr("disabled", "disabled");
-                                    latest_dashboardpostload();
-                                },
-                                error: function (xhr, status, error) {
-                                    $('#err1').html(xhr.responseText);
-                                    $('#userpostForm').css("opacity", "");
-                                    $("#publish").removeAttr("disabled", "disabled");
+                                        success_noti("Your post has been uploaded...");
+                                        // ShowSuccessPopupMsg('Your post has been uploaded...');
+                                        $('#image_preview').text('');
+                                        $('.emojionearea-editor').empty();
+                                        $('#post_text_emoji').text('');
+                                        $('#posttext').val('');
+                                        $('#upload_file_image').val('');
+                                        $('#upload_file_video').val('');
+                                        $('.upload_limittxt').text('');
+                                        $('#userpostForm').css("opacity", "");
+                                        $("#publish").removeAttr("disabled", "disabled");
+                                        latest_dashboardpostload();
+                                    },
+                                    error: function (xhr, status, error) {
+                                        $('#err1').html(xhr.responseText);
+                                        $('#userpostForm').css("opacity", "");
+                                        $("#publish").removeAttr("disabled", "disabled");
 //                                    swal("Oops!", "Post has not been finished...Please try again", "info");
-                                    warning_noti("Post has not been finished...Please try again");
-                                }
-                            });
+                                        warning_noti("Post has not been finished...Please try again");
+                                    }
+                                });
+                            }
                         }
-                    }
-                )
+                    )
                     ;
 
                 }

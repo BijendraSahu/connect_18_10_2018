@@ -66,6 +66,13 @@ Route::resource('my-network', 'NetworkController');
 Route::resource('member', 'MemberController');
 Route::resource('buys', 'BuySellController');
 
+Route::resource('survey', 'SurveyController');
+Route::get('view_survey', 'SurveyController@view_survey');
+Route::get('save_survey', 'SurveyController@save_survey');
+Route::get('survey/{id}/delete', 'SurveyController@destroy');
+Route::get('survey/{id}/show', 'SurveyController@show');
+
+
 
 Route::get('ads-earning', 'EarningController@adsearning');
 Route::get('myprofile', 'ProfileController@edit');
@@ -297,12 +304,12 @@ Route::get('user_ads', 'APIController@user_ads');
 Route::get('all_ads', 'APIController@all_ads');
 Route::get('get_category', 'APIController@get_category');
 Route::get('friendlist', 'APIController@checkfriend');
-Route::get('getPost', 'APIController@getPost'); //post
+Route::get('getPost', 'APIController@getPost'); //post -------no use
 Route::get('getPost_new', 'APIController@getPost_new'); //post
 Route::get('getPostbyid', 'APIController@getPostbyid'); //post
-Route::get('getDashboardPost', 'APIController@getDashboardPost'); //post
+Route::get('getDashboardPost', 'APIController@getDashboardPost'); //post -------no use
 Route::get('getDashboardPost_new', 'APIController@getDashboardPost_new'); //post
-Route::get('getFriendPost', 'APIController@getFriendPost'); //post
+Route::get('getFriendPost', 'APIController@getFriendPost'); //post  -------no use
 Route::POST('addpost', 'APIController@addpost'); //post
 Route::POST('addpost2', 'APIController@addpost2'); //post
 Route::POST('post_video', 'APIController@post_video'); //post
@@ -373,6 +380,9 @@ Route::get('create_product', 'ProductController@create');
 Route::get('edit_product/{id}', 'ProductController@edit');
 Route::put('update_product/{id}', 'ProductController@update');
 Route::get('delete_product/{id}', 'ProductController@delete');
+
+
+Route::get('user_network', 'APIController@user_network');  //09/11/2018
 
 
 
