@@ -225,6 +225,9 @@ Route::get('privacy', function () {
 Route::get('terms', function () {
     return view('login.terms_condition');
 });
+Route::get('contact', function () {
+    return view('login.contact');
+});
 /*******Login Button*******/
 
 

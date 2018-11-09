@@ -1356,16 +1356,17 @@
     font-size: 14px;
     min-height: 30px;
     margin-bottom: 5px;
-    padding-bottom: 5px;
+    padding-bottom: 2px;
     border-bottom: solid thin #e1e1e1;
     transition: 0.4s;
     -moz-transition: 0.4s;
     -webkit-transition: 0.4s;
+    padding-left: 8px;
     cursor: pointer;
 }
 
 .profile_icons {
-    font-size: 24px;
+    font-size: 18px;
     margin-right: 5px;
     color: #007ac2;
 }
@@ -1457,13 +1458,15 @@
 }
 
 .post_btn_photo {
-    padding: 3px 5px;
-    border-radius: 0px;
+    padding: 0px 5px;
+    border-radius: 3px;
     color: #000000;
     background-color: #ffffff;
     border: solid thin #e1e1e1;
     float: right;
     position: relative;
+    font-size: 12px;
+    text-transform: uppercase;
 }
 
 .post_btn_photo:hover {
@@ -1480,13 +1483,16 @@
 }
 
 .post_btn_video {
-    padding: 3px 5px;
+    padding: 0px 5px;
     color: #000000;
     background-color: #ffffff;
     border: solid thin #e1e1e1;
     float: right;
     margin-left: 10px;
+    border-radius: 3px;
     position: relative;
+    font-size: 12px;
+    text-transform: uppercase;
 }
 
 .post_btn_video:hover {
@@ -1742,7 +1748,7 @@
 }
 
 .heart.broken:before {
-    clip: rect(0, 15px, 50px, 0);
+    clip: rect(0, 10px, 50px, 0);
     animation: break-left 1s ease forwards;
 }
 
@@ -2719,28 +2725,31 @@
 
 .basic_heading {
     width: 100%;
-    font-size: 18px;
-    border-bottom: solid thin #e1e1e1;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+    font-size: 14px;
+    border-bottom: solid thin #e1e1e1b5;
+    /* border-top: solid thin #e1e1e1; */
+    padding-bottom: 5px;
+    margin-bottom: 5px;
     display: inline-block;
+    /* background: #f5f5f5; */
+    padding: 7px 5px 7px 10px;
 }
 
 .basic_count {
     font-size: 18px;
+    padding: 5px 5px 5px 10px;
 }
 
 .icon_circle {
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    line-height: 80px;
+    line-height: 40px;
     text-align: center;
     margin: 0px auto;
-    margin-top: -60px;
     color: #ffffff;
-    font-size: 36px;
-    margin-bottom: 5px;
+    font-size: 20px;
+    margin-top: -20px;
 }
 
 /*Advertise css*/
@@ -3714,6 +3723,7 @@
     text-shadow: 0px 2px 2px #3c3c3c;
     margin-bottom: 20px;
     padding: 0px 10px;
+    word-break: break-word;
 }
 
 .popup_submit {
@@ -4994,6 +5004,7 @@
     height: 37px;
     overflow: hidden;
     padding-right: 80px;
+    margin-bottom: 5px;
     position: relative;
 }
 
@@ -5620,12 +5631,11 @@
 .left_common_block
 {
     display: inline-block;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     background-color: rgb(255, 255, 255);
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 1px, rgba(0, 0, 0, 0.05) 0px 1px 5px;
     -webkit-box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 1px, rgba(0, 0, 0, 0.05) 0px 1px 5px;
-    padding: 10px;
-    margin-top: 50px;
+    margin-top: 20px;
     width: 100%;
 }
 .all_left_brics_container
@@ -5655,11 +5665,10 @@
 .my_about_container
 {
     display: inline-block;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     background-color: rgb(255, 255, 255);
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 1px, rgba(0, 0, 0, 0.05) 0px 1px 5px;
     -webkit-box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 1px, rgba(0, 0, 0, 0.05) 0px 1px 5px;
-    padding: 10px;
     width: 100%;
 }
 
@@ -6195,4 +6204,30 @@ div.scrollingtext{
 .thumb_edit:hover
 {
     background: #262fb5;
+}
+.left_side_fixed
+{
+    position: -webkit-sticky;
+    position: sticky;
+    top: 50px;
+    bottom: 10px;
+}
+/*-------------*/
+.btn_normal
+{
+    padding: 3px 5px;
+    color: #000000;
+    background-color: #ffffff;
+    border: solid thin #e1e1e1;
+    float: right;
+    position: relative;
+}
+.btn_normal:hover {
+    background-color: #ffffff;
+    color: #07d;
+    border: solid thin #e1e1e1;
+}
+.adver_brics .brics_icon
+{
+    top:8px;
 }

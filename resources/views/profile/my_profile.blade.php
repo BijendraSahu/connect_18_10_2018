@@ -2,7 +2,6 @@
 
 @section('title', 'My Profile')
 <link href="{{url('css/cropper.min.css')}}" type="text/css" rel="stylesheet"/>
-<script type="text/javascript" src="{{url('js/cropper.min.js')}}"></script>
 @section('head')
     <section class="member_profileblk">
         <div class="container">
@@ -32,13 +31,14 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3 col-sm-12">
+                <div class="col-md-3 col-sm-12 left_side_fixed">
                     <div class="my_about_container">
                         <div class="basic_heading">
                             About
                         </div>
-                        <div class="profile_follow"><i
-                                    class="profile_icons mdi mdi-calendar"></i>{{ date_format(date_create($user->birthday), "d-M-Y")}}
+                        <div class="profile_follow">
+                            <i class="profile_icons mdi mdi-calendar"></i>
+                            {{ date_format(date_create($user->birthday), "d-M-Y")}}
                         </div>
                         <div class="profile_follow"><i class="profile_icons mdi mdi-phone"></i>{{$user->contact}}</div>
                         <div class="profile_follow" style="margin-bottom: 0px;border: none;"><i
@@ -122,14 +122,11 @@
                                            id="upload_file_video" name="upload_file_video[]"
                                            onchange="PreviewVideo(this);"/>
                                     <i class="basic_icons mdi mdi-video"></i>Video
-                                    Album
                                 </button>
                                 <button class="btn btn-primary post_btn_photo">
                                     <input class="profile-upload-pic" accept=".png,.jpg, .jpeg, .gif" type="file"
-                                           id="upload_file_image" name="upload_file[]" onchange="prrr(this);"
+                                           id="upload_file_image" name="upload_file[]" onchange="UploadPostImage(this);"
                                            multiple/>
-
-
                                     <i class="basic_icons mdi mdi-image"></i>Photo
                                 </button>
                                 {{--<input class="-upload-pic" accept=".png,.jpg, .jpeg, .gif" type="file"--}}
@@ -158,7 +155,7 @@
                                     not be maximum 3 mb
                                 </div>
                                 <!--   <div class="all_thumbcontainner style-scroll">-->
-                                <div class="upload_imgbox" id="image_preview123">
+                                <div class="upload_imgbox" id="image_preview">
                                     <!--<div class='upimg_box'><i class='mdi mdi-close' onclick='Remove_uploadimg(this);'></i><img class='up_img' src='images/NoPreview_Img.png' /></div>-->
 
                                 </div>
@@ -352,4 +349,75 @@
 
 
     </script>
+    <div id="modal_crop_forpost" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Crop and Download your image</h4>
+                </div>
+                <div class="modal-body">
+                    <main class="page row">
+                        <div class="box" style="display:none">
+                            <div class="input-group">
+            <span class="input-group-btn">
+                <span class="btn btn-default btn-file">
+                    Browse… <input type="file" id="file-input"/>
+                </span>
+            </span>
+                                <input type="text" id="file_text_crop" class="form-control" readonly=""/>
+                            </div>
+                            <p class="note_forcrop">
+                                You can easily rotate, move and crop the image. double click are used to change the
+                                event like move to 360 degree. ( image and crop frame )
+                            </p>
+                        </div>
+                        <div class="box-2">
+                            <div class="result">
+                                <img class="cropped" id="image_frout" src="{{url('images/NoPreview_CropImg.png')}}"
+                                     alt="">
+                            </div>
+                        </div>
+                        <div class="box-2 img-result hide">
+                            <img class="cropped" id="image_frout" src="" alt="">
+                        </div>
+                        <div class="box" id="cropbtn_setting">
+                            {{--<div class="options hide">--}}
+                            {{--<label> Width</label>--}}
+                            {{--<input type="text" class="img-w" value="300" min="100" max="1200"/>--}}
+                            {{--</div>--}}
+                            <button class="btn btn-info btn-sm" disabled="disabled" id="btn_RotateLeft">
+                                <i class="mdi mdi-format-rotate-90 basic_icon_margin"></i>Rotate Left
+                            </button>
+                            <button class="btn btn-warning btn-sm center_btnmargin" disabled="disabled"
+                                    id="btn_RotateRight">
+                                <i class="mdi mdi-rotate-right basic_icon_margin"></i>Rotate Right
+                            </button>
+                            <button class="btn btn-danger btn-sm" disabled="disabled" id="btn_RotateReset">
+                                <i class="mdi mdi-rotate-3d basic_icon_margin"></i>Reset
+                            </button>
+                            <!-- <button class="btn btn-success" id="btn_getRounded">
+                                 <i class="mdi mdi-rotate-3d basic_icon_margin"></i>Rounded</button>-->
+                        </div>
+                    </main>
+                </div>
+                <div class="modal-footer">
+                    <a href="" target="_blank" class="btn btn-default download" disabled="disabled"
+                       id="btncrop_download" download="imagename.png">
+                        <i class="mdi mdi-folder-download basic_icon_margin"></i>Download</a>
+                    <button class="btn btn-primary save" id="save" onclick="Cropped_image();" disabled="disabled"><i
+                                class="mdi mdi-crop basic_icon_margin"></i>Cropped
+                    </button>
+                    <button class="btn btn-success upload-result" disabled="disabled" id="save_toserver" data-dismiss="modal"
+                            onclick="UpdateImage();"><i class="mdi mdi-account-check basic_icon_margin"></i>
+                        Save
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script type="text/javascript" src="{{url('js/cropper.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('js/post-crop.js')}}"></script>
 @stop

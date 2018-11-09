@@ -5,8 +5,7 @@
     </a>
     {{--    <form method="GET" action="{{url('friend')}}">--}}
     <div class="search_box">
-        <input type="text" class="header_search" id="user_id" autocomplete="off" placeholder="Search your friends..."
-               onkeyup="HeaderSearchFilter(this);"/>
+        <input type="text" class="header_search" id="user_id" autocomplete="off" placeholder="Search your friends..." onkeyup="HeaderSearchFilter(this);"/>
         <input type="hidden" name="search" id="search_user_id">
         <i class="search_icon mdi mdi-magnify"></i>
         <div class="search_filter_box scale0">

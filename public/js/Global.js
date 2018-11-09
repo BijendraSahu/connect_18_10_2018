@@ -503,7 +503,7 @@ var oversize = false;
 var overfilesname = "";
 
 function PreviewImage() {
-    $('#image_preview').text('');
+  //  $('#image_preview').text('');
     total_file = 0;
     current_uploadfile = 0;
     total_file += document.getElementById("upload_file_image").files.length;
@@ -535,14 +535,14 @@ function PreviewImage() {
                         //var FR= new FileReader();
                        // tour_dates = new Array();
 
-                        FR.addEventListener("load", function(e) {
+                        //FR.addEventListener("load", function(e) {
                             // document.getElementById("img").src       = e.target.result;
                             //document.getElementById("b64").innerHTML = e.target.result;
                            //  alert("First Alert"+e.target.result);
                            // console.log(e.target.result);
                             //tour_dates.push(e.target.result);
                             // tmppath=e.target.result;
-                        });
+                        //});
                        /// var tids = tour_dates;
                         //var base= FR.readAsDataURL(_file[i]);
                         // alert(" Alert"+base);
