@@ -6,7 +6,14 @@
         <img src="{{url('').'/'.$comment->user->profile_pic}}">
     </div>
     <div class="exis_msg_post">
-        <div class="posted_name">{{$comment->user->timeline->name}}</div>
+        <div class="posted_name">
+            @if($comment->user_id != $_SESSION['user_master']->id)
+                <a class="posted_name"
+                   href="{{url('friend?search=').$comment->user_id}}">{{$comment->name}}</a>
+            @else
+                <a class="posted_name" href="{{url('my-profile')}}">{{$comment->name}}</a>
+            @endif
+        </div>
         {{--<div class="exis_msg" id="container1{{$comment->id}}">--}}
         {{--{!! $comment->description  !!}--}}
         {{--</div>--}}
@@ -19,30 +26,19 @@
                     <i class="mdi mdi-dots-horizontal"></i>
                 </button>
                 <div class="dropdown-menu show notifi_options scalenoti">
-                    <div class="noti_opti_row" id="5" onclick="EditPost(this);"><i
-                                class="mdi mdi-pencil basic_icon_margin" style="color: #07d;"></i>Edit
-                    </div>
-                    <div class="noti_opti_row" id="5"
-                         onclick="DeletePostComment(comment_row_id_{{$uni_id}}, count_comment{{$comment->post_id}}, {{$comment->id}});">
+                    <div class="noti_opti_row"
+                         onclick="EditPostComment(comment_row_id_{{$uni_id}}, count_comment{{$comment->post_id}}, '{{$comment->id}}');">
                         <i
-                                class="mdi mdi-delete color_red basic_icon_margin"
-                                style="color: #ff0000;"></i>Delete
+                                class="mdi mdi-pencil basic_icon_margin"
+                                style="color: #07d;"></i>Edit
+                    </div>
+                    <div class="noti_opti_row"
+                         onclick="DeletePostComment(comment_row_id_{{$uni_id}}, count_comment{{$comment->post_id}}, '{{$comment->id}}');">
+                        <i class="mdi mdi-delete color_red basic_icon_margin"
+                           style="color: #ff0000;"></i>Delete
                     </div>
                 </div>
             </div>
         </div>
-        {{--<input type="hidden" class="glo_emojishow" id="demo_{{$comment->id}}"--}}
-        {{--value="{{$comment->description}}">--}}
-        {{--<div class="exis_txtblock exis_msg" id="container1{{$comment->id}}"></div>--}}
-        {{--<script type="text/javascript">--}}
-        {{--$(document).ready(function () {--}}
-        {{--$("#demo_{{$comment->id}}").emojioneArea({--}}
-        {{--container: "#container1{{$comment->id}}",--}}
-        {{--hideSource: false,--}}
-        {{--standalone: true--}}
-        {{--});--}}
-        {{--InitializeEmoji();--}}
-        {{--});--}}
-        {{--</script>--}}
     </div>
 </div>

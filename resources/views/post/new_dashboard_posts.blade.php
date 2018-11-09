@@ -227,7 +227,14 @@
                                 <img src="{{url('').'/'.$comment->profile_pic}}">
                             </div>
                             <div class="exis_msg_post">
-                                <div class="posted_name">{{$comment->name}}</div>
+                                <div class="posted_name">
+                                    @if($comment->user_id != $user->id)
+                                        <a class="posted_name"
+                                           href="{{url('friend?search=').$comment->user_id}}">{{$comment->name}}</a>
+                                    @else
+                                        <a class="posted_name" href="{{url('my-profile')}}">{{$comment->name}}</a>
+                                    @endif
+                                </div>
                                 {{--<div class="exis_msg" id="container1{{$comment->id}}">--}}
                                 {{--{!! $comment->description  !!}--}}
                                 {{--</div>--}}
@@ -243,13 +250,13 @@
                                             </button>
                                             <div class="dropdown-menu show notifi_options scalenoti">
                                                 <div class="noti_opti_row"
-                                                     onclick="EditPostComment(comment_row_id_{{$uni_id}}, count_comment{{$post[$i]['id']}}, {{$comment->id}});">
+                                                     onclick="EditPostComment(comment_row_id_{{$uni_id}}, count_comment{{$post[$i]['id']}}, '{{$comment->id}}');">
                                                     <i
                                                             class="mdi mdi-pencil basic_icon_margin"
                                                             style="color: #07d;"></i>Edit
                                                 </div>
                                                 <div class="noti_opti_row"
-                                                     onclick="DeletePostComment(comment_row_id_{{$uni_id}}, count_comment{{$post[$i]['id']}}, {{$comment->id}});">
+                                                     onclick="DeletePostComment(comment_row_id_{{$uni_id}}, count_comment{{$post[$i]['id']}}, '{{$comment->id}}');">
                                                     <i class="mdi mdi-delete color_red basic_icon_margin"
                                                        style="color: #ff0000;"></i>Delete
                                                 </div>
