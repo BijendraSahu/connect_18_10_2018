@@ -633,11 +633,17 @@
             $('#save_toserver').removeAttr("disabled");
         }
         function Submit_advertise() {
+
            var adverimg_length = $('.upimg_box').length;
            if(adverimg_length >8) {
                ShowErrorPopupMsg("You can upload maximum 8 images for Advertisement");
            }else {
                ShowSuccessPopupMsg("Advertisement has been uploaded... Advertisement will get appear after approval.");
+               var image_src_array=[];
+               $('.up_img').each(function () {
+                  image_src_array =  $(this).attr('src');
+               });
+              // alert(image_src_array);
                $('#Modal_NewAdd').modal('hide');
            }
        }

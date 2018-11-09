@@ -745,6 +745,7 @@
                 e.preventDefault();
                 var files = $('#upload_file_image').val();
                 var videos = $('#upload_file_video').val();
+
                 if (textval == '' && files == '' && videos == '') {
 //                    swal("Required", "You can't post without any text or image or video", "info");
                     warning_noti("You can't post without any text or image or video");
