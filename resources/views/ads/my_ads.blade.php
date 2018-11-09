@@ -1,93 +1,8 @@
 @extends('layout.master.master')
 
 @section('title', 'My Advertisement')
-<style type="text/css">
-    .upload_file_box {
-        width: 100%;
-        margin-top: 15px;
-        display: inline-block;
-    }
-
-    .upload_result_img {
-        margin-top: 10px;
-    }
-    .result {
-        width: 100%;
-        min-height: 200px;
-    }
-    .cropper-container
-    {
-        width: 100% !important;
-        min-height:150px;
-    }
-</style>
 <link href="{{url('css/cropper.min.css')}}" type="text/css" rel="stylesheet"/>
 <style type="text/css">
-    .page {
-        max-width: 768px;
-        display: flex;
-        align-items: flex-start;
-        flex-wrap: wrap;
-    }
-
-    .box {
-        width: 100%;
-        margin: 5px 5px 10px 5px;
-    }
-
-    .box-2 {
-        padding: 0.5em;
-        width: calc(100% / 2 - 0em);
-    }
-
-    .options label,
-    .options input {
-        width: 4em;
-        padding: 0.5em 1em;
-    }
-
-    .note_forcrop {
-        width: 100%;
-        margin: 10px 0px;
-        color: #666666;
-        font-size: 12px;
-    }
-
-    .hide {
-        display: none;
-    }
-
-    img {
-        max-width: 100%;
-    }
-
-    .center_btnmargin {
-        margin: 0px 10px;
-    }
-
-    .btn-file input[type=file] {
-        position: absolute;
-        top: 0;
-        right: 0;
-        min-width: 100%;
-        min-height: 100%;
-        font-size: 100px;
-        text-align: right;
-        filter: alpha(opacity=0);
-        opacity: 0;
-        outline: none;
-        background: white;
-        cursor: inherit;
-        display: block;
-    }
-
-    .basic_icon_margin {
-        margin-right: 5px;
-    }
-
-    .content_block {
-        margin-top: 0px;
-    }
 
 </style>
 @section('head')
@@ -282,7 +197,6 @@
                 </div>
             </div>
         </div>
-
         @php
             $cities = DB::select("select * from cities where City IS NOT NULL order by City ASC");
         @endphp
@@ -457,8 +371,8 @@
                         {{--</div>--}}
                     </div>
                     <div class="modal-footer">
-                        {{--<button type="submit" class="btn btn-primary" data-dismiss="modal">Submit</button>--}}
-                        {!! Form::submit('Submit', ['class' => 'btn btn-sm btn-primary']) !!}
+                        <button type="button" class="btn btn-primary" onclick="Submit_advertise();">Submit</button>
+{{--                        {!! Form::submit('Submit', ['class' => 'btn btn-sm btn-primary']) !!}--}}
                         <button type="button" class="btn btn-default" data-dismiss="modal" onclick="GloCloseModel();">
                             Close
                         </button>
@@ -525,7 +439,7 @@
                     <a href="" target="_blank" class="btn btn-default download" disabled="disabled"
                        id="btncrop_download" download="imagename.png">
                         <i class="mdi mdi-folder-download basic_icon_margin"></i>Download</a>
-                    <button class="btn btn-primary save" id="save" disabled="disabled"><i
+                    <button class="btn btn-primary save" id="save" onclick="Cropped_image();" disabled="disabled"><i
                                 class="mdi mdi-crop basic_icon_margin"></i>Cropped
                     </button>
                     <button class="btn btn-success upload-result" disabled="disabled" id="save_toserver" data-dismiss="modal"
@@ -539,125 +453,42 @@
     </div>
     <script type="text/javascript" src="{{url('js/cropper.min.js')}}"></script>
     <script type="text/javascript">
-
-        function CheckFileValidation(dis) {
-            var sizefile = Number(dis.files[0].size);
-            if (sizefile > 1048576 * 2) {
-                var finalfilesize = parseFloat(dis.files[0].size / 1048576).toFixed(2);
-                ShowErrorPopupMsg('Your file size ' + finalfilesize + ' MB. File size should not exceed 2 MB');
-                $(dis).val("");
-                return false;
-            }
-            var validfile = ["png", "jpg", "jpeg"];
-            var source = $(dis).val();
-            var current_filename = $(dis).val().replace(/\\/g, '/').replace(/.*\//, '');
-            var ext = source.substring(source.lastIndexOf(".") + 1, source.length).toLowerCase();
-            for (var i = 0; i < validfile.length; i++) {
-                if (validfile[i] == ext) {
-                    break;
-                }
-            }
-            if (i >= validfile.length) {
-                ShowErrorPopupMsg('Only following file extension is allowed, png, jpg, jpeg ');
-                $(dis).val("");
-                return false;
-            }
-            else {
-                var input = dis;
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        // $(changepicid).attr('src', e.target.result);
-                    };
-                    reader.readAsDataURL(input.files[0]);
-                    $('#file_text_crop').val(current_filename);
-                    return true;
-                }
-            }
-        }
-        $(document).ready(function () {
-//            var result = $('.result'),
-//                img_result = $('.img-result'),
-//                img_w = $('.img-w'),
-//                img_h = $('.img-h'),
-//                options = $('.options'),
-//                save = $('.save'),
-//                cropped = $('.cropped'),
-//                dwn = $('.download'),
-////                upload = $('#file-input'),
-//                cropper = '';
-         //   var roundedCanvas;
-
-            $('#file-input').change(function (e) {
-                if (CheckFileValidation(this)) {
-                    if (e.target.files.length) {
-                        // start file reader
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            if (e.target.result) {
-                                // create new image
-                                var img = document.createElement('img');
-                                img.id = 'image';
-                                img.src = e.target.result;
-                                // clean result before
-                                //result.innerHTML = '';
-                                result.children().remove();
-                                // append new image
-                                result.append(img);
-                                $('#image_frout').attr('src', '');
-                                // show save btn and options
-                                // save.removeClass('hide');
-                                //options.removeClass('hide');
-                                // init cropper
-                                cropper = new Cropper(img);
-                                // cropbtn setting enabled
-                                $('#cropbtn_setting').find('.btn').removeAttr("disabled");
-                                $('#btncrop_download').attr("disabled", "true");
-                                $('#save_toserver').attr("disabled", "true");
-                                save.removeAttr("disabled");
-
-                                $('#btn_RotateLeft').click(function () {
-                                    cropper.rotate(90);
-                                });
-                                $('#btn_RotateRight').click(function () {
-                                    cropper.rotate(-90);
-                                });
-                                $('#btn_RotateReset').click(function () {
-                                    cropper.reset();
-                                });
-                                $('#btn_Compresed').click(function () {
-                                    debugger;
-                                    /*     cropper.(UMD, compressed);*/
-                                });
-                            }
-                        };
-                        reader.readAsDataURL(e.target.files[0]);
-                    }
-                }
-            });
-            $('#save').click(function (e) {
-                //e.preventDefault();
-                // get result to data uri
-                var imgSrc = cropper.getCroppedCanvas({
-                    width: img_w.value // input value
-                }).toDataURL();
-                // remove hide class of img
-                cropped.removeClass('hide');
-                img_result.removeClass('hide');
-                // show image cropped
-                cropped.attr('src', imgSrc);
-                dwn.removeClass('hide');
-                //dwn.download = 'imagename.png';
-                dwn.attr('href', imgSrc);
-                // download button enabled
-                $('#btncrop_download').removeAttr("disabled");
-                $('#save_toserver').removeAttr("disabled");
-            });
-        });
-
-    </script>
-    <script type="text/javascript">
        // window.URL = window.URL || window.webkitURL;
+       function CheckFileValidation(dis) {
+           var sizefile = Number(dis.files[0].size);
+           if (sizefile > 1048576 * 2) {
+               var finalfilesize = parseFloat(dis.files[0].size / 1048576).toFixed(2);
+               ShowErrorPopupMsg('Your file size ' + finalfilesize + ' MB. File size should not exceed 2 MB');
+               $(dis).val("");
+               return false;
+           }
+           var validfile = ["png", "jpg", "jpeg"];
+           var source = $(dis).val();
+           var current_filename = $(dis).val().replace(/\\/g, '/').replace(/.*\//, '');
+           var ext = source.substring(source.lastIndexOf(".") + 1, source.length).toLowerCase();
+           for (var i = 0; i < validfile.length; i++) {
+               if (validfile[i] == ext) {
+                   break;
+               }
+           }
+           if (i >= validfile.length) {
+               ShowErrorPopupMsg('Only following file extension is allowed, png, jpg, jpeg ');
+               $(dis).val("");
+               return false;
+           }
+           else {
+               var input = dis;
+               if (input.files && input.files[0]) {
+                   var reader = new FileReader();
+                   reader.onload = function (e) {
+                       // $(changepicid).attr('src', e.target.result);
+                   };
+                   reader.readAsDataURL(input.files[0]);
+                   $('#file_text_crop').val(current_filename);
+                   return true;
+               }
+           }
+       }
         useBlob = false && window.URL;
        var result = $('.result'),
                 img_result = $('.img-result'),
@@ -703,13 +534,10 @@
             getfilelength();
         }
         function getfilelength() {
-            debugger;
             setTimeout(
                 function () {
                    var pen_length = $('.upimg_box').length;
-//                    if(pen_length <= 8) {
                         $('#file_upload_count').val(pen_length + " Files Selected");
-                    //}
                 }, 300);
         }
         function UploadImage(dis) {
@@ -788,6 +616,31 @@
             $('.edit_this').attr('src', update_imgsrc);
             $('.up_img').removeClass('edit_this');
         }
+        function Cropped_image() {
+            var imgSrc = cropper.getCroppedCanvas({
+                width: img_w.value // input value
+            }).toDataURL();
+            // remove hide class of img
+            cropped.removeClass('hide');
+            img_result.removeClass('hide');
+            // show image cropped
+            cropped.attr('src', imgSrc);
+            dwn.removeClass('hide');
+            //dwn.download = 'imagename.png';
+            dwn.attr('href', imgSrc);
+            // download button enabled
+            $('#btncrop_download').removeAttr("disabled");
+            $('#save_toserver').removeAttr("disabled");
+        }
+        function Submit_advertise() {
+           var adverimg_length = $('.upimg_box').length;
+           if(adverimg_length >8) {
+               ShowErrorPopupMsg("You can upload maximum 8 images for Advertisement");
+           }else {
+               ShowSuccessPopupMsg("Advertisement has been uploaded... Advertisement will get appear after approval.");
+               $('#Modal_NewAdd').modal('hide');
+           }
+       }
     </script>
     <script type="text/javascript">
         $('.btnDelete').click(function () {

@@ -131,10 +131,8 @@ if (is_null($_SESSION['user_master'])) {
                 {{--</button>--}}
                 <input type="submit" name="submit" class="btn btn-danger setting_save_btn" id="btnSaveTheme"
                        value="Save"/>
-                <p class="btn btn-primary post_btn_photo" onclick="Defaulte_theme();"><i
+                <p class="btn btn-primary btn_normal" onclick="Defaulte_theme();"><i
                             class="basic_icons mdi mdi-image"></i>Default</p>
-
-
             </div>
             <div class="setting_containner_image">
                 <div class="theme_box" onclick="ChangeBg(this);">
@@ -721,6 +719,7 @@ $friendC = count($friendlist);
     function ChangeBg(dis) {
         var img_source = $(dis).find('.theme_img').attr('src');
         $('body').css('background-image', 'url("' + img_source + '")');
+        $('#market_line').css('background-image', 'url("' + img_source + '")');
         $('.selected_img').removeClass('show_applytheme');
         $(dis).find('.selected_img').addClass('show_applytheme');
         $('#theme_img').val(img_source);
@@ -737,6 +736,7 @@ $friendC = count($friendlist);
 
     function Defaulte_theme() {
         $('body').css('background-image', 'none');
+        $('#market_line').css('background-image', 'none');
         $('#master_header_block').css('background-color', '#000000');
         $('#theme_uploadimg').attr('src', 'images/NoPreview_Img.png');
         $('#themebyuser_close').fadeOut();
@@ -793,6 +793,7 @@ $friendC = count($friendlist);
     function RemoveTheameByUser(dis) {
         $('#theme_uploadimg').attr('src', 'images/NoPreview_Img.png');
         $('body').css('background-image', 'none');
+        $('#market_line').css('background-image', 'none');
         $('#themebyuser_close').fadeOut();
         $('#profilebg_Image').val('');
         $('#theme_img').val('images/NoPreview_Img.png');
@@ -830,6 +831,7 @@ $friendC = count($friendlist);
                 reader.onload = function (e) {
                     $(changepicid).attr('src', e.target.result);
                     $('body').css('background-image', 'url("' + e.target.result + '")');
+                    $('#market_line').css('background-image', 'url("' + e.target.result + '")');
                     $('#themebyuser_close').fadeIn();
                     $('.selected_img').removeClass('show_applytheme');
                     $('#theme_img').val(source);
@@ -927,9 +929,11 @@ $friendC = count($friendlist);
             }
             if (theme_img.trim() != '') {
                 $('body').css('background-image', 'url("' + theme_img + '")');
+                $('#market_line').css('background-image', 'url("' + theme_img + '")');
                 $('#theme_uploadimg').attr('src', theme_img);
             } else {
                 $('body').css('background-image', 'none');
+                $('#market_line').css('background-image', 'none');
                 $('#theme_uploadimg').attr('src', 'images/NoPreview_Img.png');
             }
             $('#themebyuser_close').fadeOut();
@@ -954,11 +958,13 @@ $friendC = count($friendlist);
                     $('#user_header').val(obj.theme_img);
                     if (obj.theme_img != null) {
                         $('body').css('background-image', obj.theme_img);
+                        $('#market_line').css('background-image', obj.theme_img);
                         $('#theme_uploadimg').attr('src', obj.theme_img);
                     } else {
 //                        $('#themebyuser_close').fadeOut();
                         $('#theme_img').val('images/NoPreview_Img.png');
                         $('body').css('background-image', 'none');
+                        $('#market_line').css('background-image', 'none');
                         $('#theme_uploadimg').attr('src', 'images/NoPreview_Img.png');
 //                        $('#user_header').val('#000000');
                     }
