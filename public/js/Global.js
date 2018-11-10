@@ -660,6 +660,7 @@ function checkin_click() {
 }
 function setprivacy(txt) {
     $('#set_privacy_txt').text(txt);
+    $('#post_privacy_set').val(txt);
 }
 /*----------------Update By Pinku 03_04_18----------*/
 var selected_payoption = "payumoney";

@@ -46,33 +46,33 @@
                         </div>
                     </div>
                     <div class="all_left_brics_container">
-                    <div class="left_common_block">
-                        <div class="icon_circle" style="background-color: #007cc2;">
-                            <i class="mdi mdi-currency-inr"></i>
+                        <div class="left_common_block">
+                            <div class="icon_circle" style="background-color: #007cc2;">
+                                <i class="mdi mdi-currency-inr"></i>
+                            </div>
+                            <div class="basic_heading">
+                                My Earning
+                                <a class="btn btn-primary post_btn_photo" href="{{url('my-earning')}}"><i
+                                            class="basic_icons mdi mdi-view-module"></i>View
+                                    All
+                                </a>
+                            </div>
+                            <div class="basic_count" style="color: #007cc2;">Rs {{$total_earning}} /-</div>
                         </div>
-                        <div class="basic_heading">
-                            My Earning
-                            <a class="btn btn-primary post_btn_photo" href="{{url('my-earning')}}"><i
-                                        class="basic_icons mdi mdi-view-module"></i>View
-                                All
-                            </a>
+                        <div class="left_common_block">
+                            <div class="icon_circle" style="background-color: #f8c301;">
+                                <i class="mdi mdi-sitemap"></i>
+                            </div>
+                            <div class="basic_heading">
+                                My Networks
+                                <a href="{{url('my-network')}}" class="btn btn-primary post_btn_photo"><i
+                                            class="basic_icons mdi mdi-view-module"></i>View
+                                    All
+                                </a>
+                            </div>
+                            <div class="basic_count" style="color: #f8c301;">{{$member_count}}</div>
                         </div>
-                        <div class="basic_count" style="color: #007cc2;">Rs {{$total_earning}} /-</div>
-                    </div>
-                    <div class="left_common_block">
-                        <div class="icon_circle" style="background-color: #f8c301;">
-                            <i class="mdi mdi-sitemap"></i>
-                        </div>
-                        <div class="basic_heading">
-                            My Networks
-                            <a href="{{url('my-network')}}" class="btn btn-primary post_btn_photo"><i
-                                        class="basic_icons mdi mdi-view-module"></i>View
-                                All
-                            </a>
-                        </div>
-                        <div class="basic_count" style="color: #f8c301;">{{$member_count}}</div>
-                    </div>
-                    <div class="left_common_block">
+                        <div class="left_common_block">
                             <div class="icon_circle" style="background-color: #ff003b;">
                                 <i class="mdi mdi-account-multiple"></i>
                             </div>
@@ -85,19 +85,19 @@
                             </div>
                             <div class="basic_count" style="color: #ff003b;">{{$friend_count}}</div>
                         </div>
-                    {{--<div class="basic_thumb">--}}
+                        {{--<div class="basic_thumb">--}}
                         {{--<div class="icon_circle" style="background-color: #07a20d;">--}}
-                            {{--<i class="mdi mdi-chemical-weapon"></i>--}}
+                        {{--<i class="mdi mdi-chemical-weapon"></i>--}}
                         {{--</div>--}}
                         {{--<div class="basic_heading">--}}
-                            {{--Followers--}}
-                            {{--<button class="btn btn-primary post_btn_photo"><i--}}
-                            {{--class="basic_icons mdi mdi-view-module"></i>View--}}
-                            {{--All--}}
-                            {{--</button>--}}
+                        {{--Followers--}}
+                        {{--<button class="btn btn-primary post_btn_photo"><i--}}
+                        {{--class="basic_icons mdi mdi-view-module"></i>View--}}
+                        {{--All--}}
+                        {{--</button>--}}
                         {{--</div>--}}
                         {{--<div class="basic_count" style="color: #07a20d;">{{$friend_count}}</div>--}}
-                    {{--</div>--}}
+                        {{--</div>--}}
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-9">
@@ -110,7 +110,9 @@
                         {{--<form role="form" name="userpostForm" id="userpostForm" action="" method="post"--}}
                         {{--enctype="multipart/form-data">--}}
                         <style>
-                            #preview img{ height:100px; }
+                            #preview img {
+                                height: 100px;
+                            }
                         </style>
                         <form enctype="multipart/form-data" id="userpostForm">
                             <div class="post_head">
@@ -130,6 +132,9 @@
                                            multiple/>
                                     <i class="basic_icons mdi mdi-image"></i>Photo
                                 </button>
+                                {{---------------}}
+                                <input type="text" id="post_img_src" name="post_img_src">
+                                {{---------------}}
                                 {{--<input class="-upload-pic" accept=".png,.jpg, .jpeg, .gif" type="file"--}}
                                 {{--id="post_file_image" name="post_upload_file[]"--}}
                                 {{--multiple/>--}}
@@ -147,7 +152,8 @@
                                     <input id="location-input" class="form-control" type="text"
                                            placeholder="Enter a location">
                                 </div>
-                                <div class="post_text_block emoji_div" placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}..."
+                                <div class="post_text_block emoji_div"
+                                     placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}..."
                                      id="post_text">
                                     <!--<textarea class="post_textarea" id="ta1" placeholder="What's on your mind"></textarea>-->
                                     <!-- <div class="post_textarea txtwithemoji_block" contenteditable="true" id="ta"
@@ -158,7 +164,8 @@
                                 <!--<div class="post_emoji"><i class="mdi mdi-emoticon"></i></div>-->
                             </div>
                             <div class="files_block" id="files_block">
-                                <div class="upload_limittxt">You can Upload Maximum 10 images of 3MB each & 1 Video of 15 MB.
+                                <div class="upload_limittxt">You can Upload Maximum 10 images of 3MB each & 1 Video of
+                                    15 MB.
                                 </div>
                                 <!--   <div class="all_thumbcontainner style-scroll">-->
                                 <div class="upload_imgbox" id="image_preview">
@@ -166,10 +173,13 @@
 
                                 </div>
                             </div>
+                            <input type="hidden" id="post_privacy_set" name="post_privacy_set" value="Public"/>
+
                             <div class="post_footer_btn">
                                 <div class="btn-group pull-left" data-toggle="tooltip" title="Post Privacy">
                                     <button type="button" class="btn btn-default" id="set_privacy_txt">Public</button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false">
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
@@ -288,13 +298,30 @@
                 var textval = $('#post_text').text();
                 $('#posttext').val(textval);
                 e.preventDefault();
-                var files = $('#upload_file_image').val();
+                img_ids = [];
+                var i = 0;
+                $('.up_img').each(function () {
+                    var getimg_id = $(this).attr('src');
+//                    img_ids.push([getimg_id.replace('data:image/png;base64,', '')]);
+                    img_ids[i] = $(this).attr('src');
+                    ;
+                    i++;
+                });
+
+                var files = img_ids;
+//                alert(img_ids);
+                console.log(img_ids);
+//                var files = $('#upload_file_image').val();
                 var videos = $('#upload_file_video').val();
+                var adverimg_length = $('.upimg_box').length;
                 if (textval == '' && files == '' && videos == '') {
-//                    swal("Required", "You can't post without any text or image or video", "info");
                     warning_noti("You can't post without any text or image or video");
                     HideOnpageLoopader1();
+                } else if (adverimg_length > 10) {
+                    warning_noti("You can upload maximum 10 images for post");
+                    HideOnpageLoopader1();
                 } else {
+                    $('#post_img_src').val(JSON.stringify(img_ids));
                     swal({
                         title: "Are you sure?",
                         text: "You want to submit this post...!",
@@ -303,6 +330,7 @@
                         dangerMode: true,
                     }).then((okk) => {
                         if (okk) {
+
                             $.ajax({
                                 type: 'POST',
                                 url: "{{ url('userpost') }}",
@@ -317,9 +345,10 @@
                                     round_info_noti("WE ARE UPLOADING YOUR POST QUICKLY");
                                 },
                                 success: function (data) {
+                                                                        console.log(data);
                                     $('#loader').css('display', 'none');
                                     HideOnpageLoopader1();
-//                                    swal("Success!", "Your post has been uploaded...", "success");
+                                    //                                    swal("Success!", "Your post has been uploaded...", "success");
                                     success_noti("SUCESSFULLY POSTED,KEEP GOING");
                                     // ShowSuccessPopupMsg('Your post has been uploaded...');
                                     $('#image_preview').text('');
@@ -334,8 +363,11 @@
                                     latest_dashboardpostload();
                                 },
                                 error: function (xhr, status, error) {
-//                                    ShowErrorPopupMsg('Error in uploading...');
-                                    warning_noti("Error in uploading...");
+                                    //                                    ShowErrorPopupMsg('Error in uploading...');
+//                                    warning_noti("Error in uploading...");
+//                                    $('#userpostForm').css("opacity", "");
+
+                                    $('#userpostForm').html(xhr.responseText);
                                 }
                             });
                         }
@@ -427,7 +459,8 @@
                     <button class="btn btn-primary save" id="save" onclick="Cropped_image();" disabled="disabled"><i
                                 class="mdi mdi-crop basic_icon_margin"></i>Cropped
                     </button>
-                    <button class="btn btn-success upload-result" disabled="disabled" id="save_toserver" data-dismiss="modal"
+                    <button class="btn btn-success upload-result" disabled="disabled" id="save_toserver"
+                            data-dismiss="modal"
                             onclick="UpdateImage();"><i class="mdi mdi-account-check basic_icon_margin"></i>
                         Save
                     </button>
