@@ -1449,7 +1449,7 @@
 
 .post_title {
     font-size: 16px;
-    margin-right: 10px;
+    /*margin-right: 10px;*/
     display: inline-block;
 }
 
@@ -3637,16 +3637,17 @@
     background: rgba(255, 255, 255, .9);
     display: none;
     z-index: 15;
-    padding-right: 40px;
+    /*padding-right: 40px;*/
 }
 
 .footer_fixicon {
     display: inline-block;
-    width: 33%;
+    width: 25%;
     float: left;
     text-align: center;
     font-size: 30px;
     color: #002d43;
+    border-right: solid thin #e1e1e17d;
 }
 
 .overlay_res {
@@ -3961,6 +3962,7 @@
     padding: 15px;
     background-color: #ffffff;
     margin-top: 15px;
+    color: #666666;
 }
 
 /*--------------------About Us-------------------*/
@@ -5934,7 +5936,6 @@ div.scrollingtext{
     position:absolute;
     white-space:nowrap;
 }
-
 .valueChanged
 {
     font-weight:bold;
@@ -5970,7 +5971,7 @@ div.scrollingtext{
     height: 100%;
 }
 .dashboard_fixed_first {
-    display: inline-block;
+    /*display: inline-block;*/
     position: -webkit-sticky;
     position: sticky;
     top: 45px;
@@ -5984,7 +5985,7 @@ div.scrollingtext{
     position: sticky;
     top: 95px;
 }
-.small_padding {
+.dashboard_center_padding {
     padding: 0px;
 }
 .overlay_all {
@@ -6269,4 +6270,32 @@ div.scrollingtext{
 .post_footer_btn .dropdown-menu a {
     padding: 2px 3px 0px 10px;
     border-bottom: solid thin #e1e1e1;
+}
+.faq_ul {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+.faq_ul li {
+    color: #666666;
+    padding-left: 25px;
+    position: relative;
+    margin-bottom: 5px;
+}
+.faq_ul li:before {
+    content: "\F139";
+    position: absolute;
+    left: 0px;
+    top: 2px;
+    font: normal normal normal 15px/1 "Material Design Icons";
+}
+.wbiscroller:before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background: transparent;
+    z-index: 10;
 }
