@@ -770,7 +770,7 @@
         $('[data-toggle="tooltip"]').tooltip();
         $('#rcode').tooltip({
             'trigger': 'focus',
-            'title': 'Use Your Friend Refferal Code or Promo Code You Recieved on Succesful Completion of the Survey'
+            'title': 'Use Your Friend Referral Code or Promo Code You Received on Successful Completion of the Survey'
         });
         $('#rcode').focusout(function () {
             var txt_val = $(this).val();

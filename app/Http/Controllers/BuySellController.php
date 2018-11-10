@@ -48,30 +48,39 @@ class BuySellController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->file('ad_img') == '') {
-            return redirect('myads')->withInput()->withErrors('Please select ad image');
-        } else {
-            $ads = new Ads();
-            $ads->ad_title = request('title');
-            $ads->ad_category_id = request('ddcategory') > 0 ? request('ddcategory') : null;
-            $ads->other_cat = request('other');
-            $ads->ad_description = request('add_details');
-            $ads->user_id = $_SESSION['user_master']->id;
-            $ads->city = request('city');
-            $ads->save();
-            $file = $request->file('ad_img');
-            if (request('ad_img') != null) {
+//        $tids = explode("=,", request('img_src'));
+//        foreach ($tids as $tid) {
+//            echo '<img src="' . $tid . '">' . "</br>";
+//        }
+
+        $ads = new Ads();
+        $ads->ad_title = request('title');
+        $ads->ad_category_id = request('ddcategory') > 0 ? request('ddcategory') : null;
+        $ads->other_cat = request('other');
+        $ads->ad_description = request('add_details');
+        $ads->user_id = $_SESSION['user_master']->id;
+        $ads->city = request('city');
+        $ads->email = request('email');
+        $ads->contact = request('contact');
+        $ads->location = request('add_address');
+        $ads->selling_cost = request('selling_cost');
+        $ads->save();
+        if (request('img_src') != null) {
+//            $array = $request->input('img_src');
+            $tids = explode("=,", request('img_src'));
+            foreach ($tids as $obj) {
                 $adimg = new AdsImages();
-                $destination_path = 'buysell/';
-                $filename = str_random(6) . '_' . $file->getClientOriginalName();
-                $file->move($destination_path, $filename);
-                $adimg->image_url = $destination_path . $filename;
+                $data = $obj;
+                $data = base64_decode($data);
+                $image_name = str_random(6) . "png";
+                $destinationPath = './buysell/' . $image_name;
+                file_put_contents($destinationPath, $data);
+                $adimg->image_url = 'buysell/' . $image_name;
                 $adimg->ad_id = $ads->id;
                 $adimg->save();
             }
-            return redirect('myads')->with('message', 'Your ad has been submitted...after approval it will be shown');
         }
-
+        return redirect('myads')->with('message', 'Your ad has been submitted...after approval it will be shown');
     }
 
 

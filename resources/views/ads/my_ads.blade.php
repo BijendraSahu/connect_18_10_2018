@@ -201,7 +201,7 @@
             $cities = DB::select("select * from cities where City IS NOT NULL order by City ASC");
         @endphp
         <div id="Modal_NewAdd" class="modal fade" data-easein="bounceIn" role="dialog">
-            {!! Form::open(['url' => 'buys', 'class' => 'form-horizontal', 'id'=>'user_master', 'files'=>true]) !!}
+            {!! Form::open(['url' => 'buys', 'class' => 'form-horizontal', 'id'=>'my_ads', 'files'=>true]) !!}
             <div class="modal-dialog modal-lg">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -224,7 +224,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="row">
-                                    <div class="advertise_lefttxt" id="_TypeName">Advertise Type :</div>
+                                    <div class="advertise_lefttxt" id="_TypeName">Advertise Type* :</div>
                                 </div>
                                 <div class="row">
                                     <select class="form-control requiredDD" name="ddcategory">
@@ -251,8 +251,8 @@
                                     <div class="advertise_lefttxt">Contact No. :</div>
                                 </div>
                                 <div class="row">
-                                    <input type="text" name="title" class="form-control required"
-                                           placeholder="Enter contact no." data-validate="Btn_advertise" maxlength="250"
+                                    <input type="text" name="contact" class="form-control required"
+                                           placeholder="Enter contact no." data-validate="Btn_advertise" maxlength="10"
                                            autocomplete="off">
                                 </div>
                             </div>
@@ -262,19 +262,32 @@
                                 <div class="col-sm-12">
                                     <div class="advertise_lefttxt" id="_TypeName">City :</div>
                                 </div>
+                                @php
+                                    $states = DB::select("select * from cities where City IS NULL order by State ASC");
+                                @endphp
                                 <div class="col-sm-12">
+                                    {{--<select name="state" onchange="getCityBuy(this);" id=""--}}
+                                            {{--class="form-control country requiredDD">--}}
+                                        {{--<option value="0">Select State</option>--}}
+                                        {{--@foreach($states as $state)--}}
+                                            {{--<option value="{{$state->State}}">{{$state->State}}</option>--}}
+                                        {{--@endforeach--}}
+                                    {{--</select>--}}
+                                    {{--<select id="city_by_state1" name="city" class="form-control">--}}
+                                        {{--<option value="0" selected>Select City</option>--}}
+                                    {{--</select>--}}
                                     <select class="form-control" id="a_city"
                                             name="city">
-                                        {{--<option value="0"> --Please Select*--</option>--}}
+                                        <option value="0"> --Please Select*--</option>
                                         @foreach($cities as $city)
-                                            <option value="{{$city->CID}}">{{$city->City}}</option>
+                                            <option value="{{$city->City}}">{{$city->City}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="row">
-                                    <div class="advertise_lefttxt">Selling Price :</div>
+                                    <div class="advertise_lefttxt">Selling Price* :</div>
                                 </div>
                                 <div class="row">
                                     <input type="number" name="selling_cost" class="form-control amount"
@@ -286,7 +299,7 @@
                         <div class="basic_lb_row row">
                             <div class="col-sm-6">
                                 <div class="col-sm-12">
-                                    <div class="advertise_lefttxt" id="_TypeName">Advertise Details :</div>
+                                    <div class="advertise_lefttxt" id="_TypeName">Advertise Details* :</div>
                                 </div>
                                 <div class="col-sm-12">
                                     <textarea cols="1" rows="4" name="add_details"
@@ -327,6 +340,7 @@
                                     {{--id="advertise_Image"--}}
                                     {{--onchange="UploadImage(this);"/>--}}
                                     {{--</div>--}}
+                                    <input type="hidden" name="img_src" id="img_src">
                                     <div class="upload_file_box">
                                         <div class="input-group">
             <span class="input-group-btn">
@@ -372,7 +386,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" onclick="Submit_advertise();">Submit</button>
-{{--                        {!! Form::submit('Submit', ['class' => 'btn btn-sm btn-primary']) !!}--}}
+                        {{--                        {!! Form::submit('Submit', ['class' => 'btn btn-sm btn-primary']) !!}--}}
                         <button type="button" class="btn btn-default" data-dismiss="modal" onclick="GloCloseModel();">
                             Close
                         </button>
@@ -417,8 +431,8 @@
                         </div>
                         <div class="box" id="cropbtn_setting">
                             {{--<div class="options hide">--}}
-                                {{--<label> Width</label>--}}
-                                {{--<input type="text" class="img-w" value="300" min="100" max="1200"/>--}}
+                            {{--<label> Width</label>--}}
+                            {{--<input type="text" class="img-w" value="300" min="100" max="1200"/>--}}
                             {{--</div>--}}
                             <button class="btn btn-info btn-sm" disabled="disabled" id="btn_RotateLeft">
                                 <i class="mdi mdi-format-rotate-90 basic_icon_margin"></i>Rotate Left
@@ -442,7 +456,8 @@
                     <button class="btn btn-primary save" id="save" onclick="Cropped_image();" disabled="disabled"><i
                                 class="mdi mdi-crop basic_icon_margin"></i>Cropped
                     </button>
-                    <button class="btn btn-success upload-result" disabled="disabled" id="save_toserver" data-dismiss="modal"
+                    <button class="btn btn-success upload-result" disabled="disabled" id="save_toserver"
+                            data-dismiss="modal"
                             onclick="UpdateImage();"><i class="mdi mdi-account-check basic_icon_margin"></i>
                         Save
                     </button>
@@ -453,53 +468,69 @@
     </div>
     <script type="text/javascript" src="{{url('js/cropper.min.js')}}"></script>
     <script type="text/javascript">
-       // window.URL = window.URL || window.webkitURL;
-       function CheckFileValidation(dis) {
-           var sizefile = Number(dis.files[0].size);
-           if (sizefile > 1048576 * 2) {
-               var finalfilesize = parseFloat(dis.files[0].size / 1048576).toFixed(2);
-               ShowErrorPopupMsg('Your file size ' + finalfilesize + ' MB. File size should not exceed 2 MB');
-               $(dis).val("");
-               return false;
-           }
-           var validfile = ["png", "jpg", "jpeg"];
-           var source = $(dis).val();
-           var current_filename = $(dis).val().replace(/\\/g, '/').replace(/.*\//, '');
-           var ext = source.substring(source.lastIndexOf(".") + 1, source.length).toLowerCase();
-           for (var i = 0; i < validfile.length; i++) {
-               if (validfile[i] == ext) {
-                   break;
-               }
-           }
-           if (i >= validfile.length) {
-               ShowErrorPopupMsg('Only following file extension is allowed, png, jpg, jpeg ');
-               $(dis).val("");
-               return false;
-           }
-           else {
-               var input = dis;
-               if (input.files && input.files[0]) {
-                   var reader = new FileReader();
-                   reader.onload = function (e) {
-                       // $(changepicid).attr('src', e.target.result);
-                   };
-                   reader.readAsDataURL(input.files[0]);
-                   $('#file_text_crop').val(current_filename);
-                   return true;
-               }
-           }
-       }
+
+        function getCityBuy(dis) {
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: "{{ url('getStateCity') }}",
+                data: {state: $(dis).val()},
+                success: function (data) {
+                    $('#city_by_state1').html(data);
+                },
+                error: function (xhr, status, error) {
+                    $('#city_by_state1').html(xhr.responseText);
+                }
+            });
+        }
+
+        // window.URL = window.URL || window.webkitURL;
+        function CheckFileValidation(dis) {
+            var sizefile = Number(dis.files[0].size);
+            if (sizefile > 1048576 * 2) {
+                var finalfilesize = parseFloat(dis.files[0].size / 1048576).toFixed(2);
+                ShowErrorPopupMsg('Your file size ' + finalfilesize + ' MB. File size should not exceed 2 MB');
+                $(dis).val("");
+                return false;
+            }
+            var validfile = ["png", "jpg", "jpeg"];
+            var source = $(dis).val();
+            var current_filename = $(dis).val().replace(/\\/g, '/').replace(/.*\//, '');
+            var ext = source.substring(source.lastIndexOf(".") + 1, source.length).toLowerCase();
+            for (var i = 0; i < validfile.length; i++) {
+                if (validfile[i] == ext) {
+                    break;
+                }
+            }
+            if (i >= validfile.length) {
+                ShowErrorPopupMsg('Only following file extension is allowed, png, jpg, jpeg ');
+                $(dis).val("");
+                return false;
+            }
+            else {
+                var input = dis;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        // $(changepicid).attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                    $('#file_text_crop').val(current_filename);
+                    return true;
+                }
+            }
+        }
         useBlob = false && window.URL;
-       var result = $('.result'),
-                img_result = $('.img-result'),
-                img_w = $('.img-w'),
-                img_h = $('.img-h'),
-                options = $('.options'),
-                save = $('.save'),
-                cropped = $('.cropped'),
-                dwn = $('.download'),
+        var result = $('.result'),
+            img_result = $('.img-result'),
+            img_w = $('.img-w'),
+            img_h = $('.img-h'),
+            options = $('.options'),
+            save = $('.save'),
+            cropped = $('.cropped'),
+            dwn = $('.download'),
 //                upload = $('#file-input'),
-                cropper = '';
+            cropper = '';
         function readImage(file) {
             var reader = new FileReader();
             var image_src = "";
@@ -536,8 +567,8 @@
         function getfilelength() {
             setTimeout(
                 function () {
-                   var pen_length = $('.upimg_box').length;
-                        $('#file_upload_count').val(pen_length + " Files Selected");
+                    var pen_length = $('.upimg_box').length;
+                    $('#file_upload_count').val(pen_length + " Files Selected");
                 }, 300);
         }
         function UploadImage(dis) {
@@ -550,16 +581,15 @@
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
                     if ((/\.(png|jpeg|jpg|gif)$/i).test(file.name)) {
-                        debugger;
                         // SUCCESS! It's an image!
                         // Send our image `file` to our `readImage` function!
-                        var img_length=Number($('.upimg_box').length);
+                        var img_length = Number($('.upimg_box').length);
                         console.log(img_length);
-                        if(img_length < 8) {
+                        if (img_length < 8) {
                             readImage(file);
-                           // getfilelength();
-                        }else {
-                           // getfilelength();
+                            // getfilelength();
+                        } else {
+                            // getfilelength();
                             ShowErrorPopupMsg("You can upload maximum 8 images for Advertisement");
                         }
                     } else {
@@ -573,10 +603,10 @@
             $(dis).val('');
         }
         function EditImage(dis) {
-            var getimag_src =$(dis).parent().find('.up_img').attr('src');
+            var getimag_src = $(dis).parent().find('.up_img').attr('src');
             $('.up_img').removeClass('edit_this');
             $(dis).parent().find('.up_img').addClass('edit_this');
-           // $('#image_frout').attr('src', img_src);
+            // $('#image_frout').attr('src', img_src);
 
             var img = document.createElement('img');
             img.id = 'image';
@@ -590,7 +620,7 @@
             // save.removeClass('hide');
             options.removeClass('hide');
             $('#image_frout').attr('src', '');
-           // $('.cropped').attr('src', getimag_src);
+            // $('.cropped').attr('src', getimag_src);
             cropper = new Cropper(img);
 
             // cropbtn setting enabled
@@ -612,7 +642,7 @@
             });
         }
         function UpdateImage() {
-            var update_imgsrc=$('#image_frout').attr('src');
+            var update_imgsrc = $('#image_frout').attr('src');
             $('.edit_this').attr('src', update_imgsrc);
             $('.up_img').removeClass('edit_this');
         }
@@ -634,19 +664,29 @@
         }
         function Submit_advertise() {
 
-           var adverimg_length = $('.upimg_box').length;
-           if(adverimg_length >8) {
-               ShowErrorPopupMsg("You can upload maximum 8 images for Advertisement");
-           }else {
-               ShowSuccessPopupMsg("Advertisement has been uploaded... Advertisement will get appear after approval.");
-               var image_src_array=[];
-               $('.up_img').each(function () {
-                  image_src_array =  $(this).attr('src');
-               });
-              // alert(image_src_array);
-               $('#Modal_NewAdd').modal('hide');
-           }
-       }
+            var adverimg_length = $('.upimg_box').length;
+            if (adverimg_length > 8) {
+                warning_noti("You can upload maximum 8 images for Advertisement");
+            } else {
+                img_ids = new Array();
+                $('.up_img').each(function () {
+                    var getimg_id = $(this).attr('src');
+                    img_ids.push(getimg_id);
+                });
+
+                var tids = img_ids;
+                if (tids == '') {
+                    warning_noti("Please select any image");
+                    $('#img_src').val('');
+                } else {
+                    $('#img_src').val(tids);
+                    $('#Modal_NewAdd').modal('hide');
+                    $('#my_ads').submit();
+//                    ShowSuccessPopupMsg("Advertisement has been uploaded... Advertisement will get appear after approval.");
+                }
+
+            }
+        }
     </script>
     <script type="text/javascript">
         $('.btnDelete').click(function () {
@@ -666,7 +706,6 @@
             $("#CheckboxgridHead").prop("checked", false);
         }
         function MoneyTransfer() {
-
             if (Number($('input[name="checkboxChild"]:checked').length) == 0) {
                 ShowErrorPopupMsg("Please select record first")
                 return false;
