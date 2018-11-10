@@ -114,9 +114,10 @@
                         </style>
                         <form enctype="multipart/form-data" id="userpostForm">
                             <div class="post_head">
-
-
                                 <span class="post_title"><i class="mdi mdi-pencil"></i>Make Post</span>
+                                <button type="button" class="btn btn-primary post_btn_video" onclick="checkin_click();">
+                                    <i class="basic_icons mdi mdi-map-marker"></i>Check In
+                                </button>
                                 <button class="btn btn-primary post_btn_video">
                                     <input class="profile-upload-pic" accept=".mp4, .3gp, .ogg, .avi, .wmv" type="file"
                                            id="upload_file_video" name="upload_file_video[]"
@@ -139,6 +140,13 @@
                                 <div class="post_imgblock">
                                     <img src="{{url('').'/'.$user->profile_pic}}"/>
                                 </div>
+                                <div class="location_block" id="checkin_block">
+                                    <div class="location_icon">
+                                        <i class="mdi mdi-map-marker"></i>
+                                    </div>
+                                    <input id="location-input" class="form-control" type="text"
+                                           placeholder="Enter a location">
+                                </div>
                                 <div class="post_text_block emoji_div" placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}..."
                                      id="post_text">
                                     <!--<textarea class="post_textarea" id="ta1" placeholder="What's on your mind"></textarea>-->
@@ -159,8 +167,20 @@
                                 </div>
                             </div>
                             <div class="post_footer_btn">
+                                <div class="btn-group pull-left" data-toggle="tooltip" title="Post Privacy">
+                                    <button type="button" class="btn btn-default" id="set_privacy_txt">Public</button>
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a onclick="setprivacy('Public');">Public</a></li>
+                                        <li><a onclick="setprivacy('Friends');">Friends</a></li>
+                                    </ul>
+                                </div>
                                 {{--<button class="btn btn-primary btn_post" onclick="publish()">Publish</button>--}}
-                                <input type="submit" name="submit" class="btn btn-primary btn_post" value="Publish"/>
+                                <button type="submit" name="submit" class="btn btn-primary btn_post" value="Publish">
+                                    <i class="mdi basic_icon_margin mdi-send"></i>Publish
+                                </button>
                             </div>
                             <p id="err1"></p>
                         </form>
