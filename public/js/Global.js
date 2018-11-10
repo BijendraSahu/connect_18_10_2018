@@ -193,7 +193,6 @@ $(document).ready(function () {
     $('.emoji_div').text('');
 
     $('.glo_menuclick').click(function (e) {
-        debugger;
         var chkopen = $(this).find('.menu_basic_popup').attr('class');
         $('#setting_box_slide').removeClass('show_setting');
         if (chkopen != 'menu_basic_popup effect') {
@@ -209,7 +208,7 @@ $(document).ready(function () {
         e.stopPropagation();
     });
     $("#countdown").dsCountDown(options);
-
+    $('[data-toggle="tooltip"]').tooltip();
     window.onload = function () {
         // var announce_txt = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
         // setTimeout(ShowAnnouncement(announce_txt), 8000);
@@ -655,7 +654,13 @@ function Remove_uploadimg(dis) {
         $('#upload_file_image').val('');
     }
 }
-
+function checkin_click() {
+    $('#checkin_block').slideToggle();
+    $('#location-input').val('');
+}
+function setprivacy(txt) {
+    $('#set_privacy_txt').text(txt);
+}
 /*----------------Update By Pinku 03_04_18----------*/
 var selected_payoption = "payumoney";
 

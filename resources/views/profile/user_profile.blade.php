@@ -1,92 +1,8 @@
 @extends('layout.master.master')
 
 @section('title', 'User Profile')
-
+<link href="{{url('css/cropper.min.css')}}" type="text/css" rel="stylesheet"/>
 @section('head')
-    <style>
-        .emoji_div {
-            width: 100%;
-            display: inline-block;
-            min-height: 80px;
-        }
-
-        .files_block {
-            display: none;
-            width: 100%;
-            padding: 5px 15px;
-            position: relative;
-        }
-
-        .upload_limittxt {
-            font-size: 12px;
-            color: #c7c7c7;
-            display: inline-block;
-            width: 100%;
-        }
-
-        .upload_imgbox {
-            display: inline-block;
-            width: 100%;
-        }
-
-        .upimg_box {
-            width: 25%;
-            text-align: center;
-            display: inline-block;
-            max-width: 100px;
-            height: 100px;
-            overflow: hidden;
-            position: relative;
-            border: solid thin #e1e1e1;
-            padding: 5px;
-            margin-top: 5px;
-            margin-right: 5px;
-            box-shadow: 5px 8px 20px rgba(199, 199, 199, 0.19), 0 2px 5px rgba(107, 100, 100, 0.23);
-        }
-
-        .thumb_close {
-            position: absolute;
-            width: 18px;
-            height: 18px;
-            background: #ff5656;
-            line-height: 20px;
-            color: #fff;
-            cursor: pointer;
-            right: 5px;
-            top: 5px;
-            z-index: 2;
-        }
-
-        .thumb_close:hover {
-            background: #dc0d0d;
-        }
-
-        .up_img {
-            width: 100%;
-            height: 100%;
-        }
-
-        .video_playicon {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            margin-top: -15px;
-            margin-left: -15px;
-            width: 30px;
-            height: 30px;
-            font-size: 24px;
-            color: #ffffff;
-        }
-
-        .all_thumbcontainner {
-            /* width: 100%;
-             display: inline-block;
-             overflow: scroll;
-             overflow-y: hidden;
-             max-width: 100%;
-             cursor: pointer;*/
-        }
-    </style>
     <section class="member_profileblk">
         <div class="container">
             <div class="member_profile_imgcontainner">
@@ -144,7 +60,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3 col-sm-12">
+                <div class="col-md-3 col-sm-12 left_side_fixed">
                     <div class="my_about_container">
                         <div class="basic_heading">
                             About
@@ -237,16 +153,18 @@
                         <form enctype="multipart/form-data" id="userpostForm">
                             <div class="post_head">
                                 <span class="post_title"><i class="mdi mdi-pencil"></i>Make Post</span>
+                                <button type="button" class="btn btn-primary post_btn_video" onclick="checkin_click();">
+                                    <i class="basic_icons mdi mdi-map-marker"></i>Check In
+                                </button>
                                 <button class="btn btn-primary post_btn_video">
                                     <input class="profile-upload-pic" accept=".mp4, .3gp, .ogg, .avi, .wmv" type="file"
                                            id="upload_file_video" name="upload_file_video[]"
                                            onchange="PreviewVideo(this);"/>
                                     <i class="basic_icons mdi mdi-video"></i>Video
-                                    Album
                                 </button>
                                 <button class="btn btn-primary post_btn_photo">
                                     <input class="profile-upload-pic" accept=".png,.jpg, .jpeg, .gif" type="file"
-                                           id="upload_file_image" name="upload_file[]" onchange="PreviewImage();"
+                                           id="upload_file_image" name="upload_file[]" onchange="UploadPostImage(this);"
                                            multiple/>
                                     <i class="basic_icons mdi mdi-image"></i>Photo
                                 </button>
@@ -260,7 +178,15 @@
                                 <div class="post_imgblock">
                                     <img src="{{url('').'/'.$user->profile_pic}}"/>
                                 </div>
-                                <div class="post_text_block emoji_div" placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}...🙂"
+                                <div class="location_block" id="checkin_block">
+                                    <div class="location_icon">
+                                        <i class="mdi mdi-map-marker"></i>
+                                    </div>
+                                        <input id="location-input" class="form-control" type="text"
+                                               placeholder="Enter a location">
+                                </div>
+                                <div class="post_text_block emoji_div"
+                                     placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}...🙂"
                                      id="post_text">
                                     <!--<textarea class="post_textarea" id="ta1" placeholder="What's on your mind"></textarea>-->
                                     <!-- <div class="post_textarea txtwithemoji_block" contenteditable="true" id="ta"
@@ -281,8 +207,20 @@
                                 </div>
                             </div>
                             <div class="post_footer_btn">
+                                <div class="btn-group pull-left" data-toggle="tooltip" title="Post Privacy">
+                                    <button type="button" class="btn btn-default" id="set_privacy_txt">Public</button>
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a onclick="setprivacy('Public');">Public</a></li>
+                                        <li><a onclick="setprivacy('Friends');">Friends</a></li>
+                                    </ul>
+                                </div>
                                 {{--<button class="btn btn-primary btn_post" onclick="publish()">Publish</button>--}}
-                                <input type="submit" name="submit" class="btn btn-primary btn_post" value="Publish"/>
+                                <button type="submit" name="submit" class="btn btn-primary btn_post" value="Publish">
+                                    <i class="mdi basic_icon_margin mdi-send"></i>Publish
+                                </button>
                             </div>
                             <p id="err1"></p>
                         </form>
@@ -605,5 +543,86 @@
         });
 
         /************Bijendra*************/
+    </script>
+    <div id="modal_crop_forpost" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Crop and Download your image</h4>
+                </div>
+                <div class="modal-body">
+                    <main class="page row">
+                        <div class="box" style="display:none">
+                            <div class="input-group">
+            <span class="input-group-btn">
+                <span class="btn btn-default btn-file">
+                    Browse… <input type="file" id="file-input"/>
+                </span>
+            </span>
+                                <input type="text" id="file_text_crop" class="form-control" readonly=""/>
+                            </div>
+                            <p class="note_forcrop">
+                                You can easily rotate, move and crop the image. double click are used to change the
+                                event like move to 360 degree. ( image and crop frame )
+                            </p>
+                        </div>
+                        <div class="box-2">
+                            <div class="result">
+                                <img class="cropped" id="image_frout" src="{{url('images/NoPreview_CropImg.png')}}"
+                                     alt="">
+                            </div>
+                        </div>
+                        <div class="box-2 img-result hide">
+                            <img class="cropped" id="image_frout" src="" alt="">
+                        </div>
+                        <div class="box" id="cropbtn_setting">
+                            {{--<div class="options hide">--}}
+                            {{--<label> Width</label>--}}
+                            {{--<input type="text" class="img-w" value="300" min="100" max="1200"/>--}}
+                            {{--</div>--}}
+                            <button class="btn btn-info btn-sm" disabled="disabled" id="btn_RotateLeft">
+                                <i class="mdi mdi-format-rotate-90 basic_icon_margin"></i>Rotate Left
+                            </button>
+                            <button class="btn btn-warning btn-sm center_btnmargin" disabled="disabled"
+                                    id="btn_RotateRight">
+                                <i class="mdi mdi-rotate-right basic_icon_margin"></i>Rotate Right
+                            </button>
+                            <button class="btn btn-danger btn-sm" disabled="disabled" id="btn_RotateReset">
+                                <i class="mdi mdi-rotate-3d basic_icon_margin"></i>Reset
+                            </button>
+                            <!-- <button class="btn btn-success" id="btn_getRounded">
+                                 <i class="mdi mdi-rotate-3d basic_icon_margin"></i>Rounded</button>-->
+                        </div>
+                    </main>
+                </div>
+                <div class="modal-footer">
+                    <a href="" target="_blank" class="btn btn-default download" disabled="disabled"
+                       id="btncrop_download" download="imagename.png">
+                        <i class="mdi mdi-folder-download basic_icon_margin"></i>Download</a>
+                    <button class="btn btn-primary save" id="save" onclick="Cropped_image();" disabled="disabled"><i
+                                class="mdi mdi-crop basic_icon_margin"></i>Cropped
+                    </button>
+                    <button class="btn btn-success upload-result" disabled="disabled" id="save_toserver"
+                            data-dismiss="modal"
+                            onclick="UpdateImage();"><i class="mdi mdi-account-check basic_icon_margin"></i>
+                        Save
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script type="text/javascript" src="{{url('js/cropper.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('js/post-crop.js')}}"></script>
+    <script type="text/javascript">
+        function activatPlaceSearch() {
+            var input = document.getElementById('location-input');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+        }
+    </script>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjTLwOh9QO1yD2K9PWqYOrZ-Tt47OLHdQ&libraries=places&callback=activatPlaceSearch">
     </script>
 @stop
