@@ -746,48 +746,101 @@ $friendC = count($friendlist);
 
     function HideTranparent() {
         $('.overlay_res').fadeOut();
+        $('.menu_left').removeClass('profile_basic_menu_block_show');
+        $('.earner_right').removeClass('show_fixed_rightblk');
+        $('.followers_block').removeClass('followers_block_show');
+        $('.servey_block').removeClass('show_fixed_rightblk');
         $('.basic_thumb').removeClass('basic_thumb_show');
         $('.profile_basic_menu_block').removeClass('profile_basic_menu_block_show');
-        $('.top_earner_block').removeClass('show_fixed_rightblk');
-        $('.followers_block').removeClass('show_fixed_rightblk');
         $('#advertise_category_block').removeClass('advertise_category_show');
         $('body').css('overflow', 'auto');
     }
 
-    function Show_Topearner() {
-        var check_class = $('.top_earner_block').attr('class');
-        $('.top_earner_block').removeClass('show_fixed_rightblk');
-        if (check_class == "panel top_earner_block panel-default") {
-            $('.top_earner_block').addClass('show_fixed_rightblk');
+//    function Show_Topearner() {
+//        var check_class = $('.top_earner_block').attr('class');
+//        $('.top_earner_block').removeClass('show_fixed_rightblk');
+//        if (check_class == "panel top_earner_block panel-default") {
+//            $('.top_earner_block').addClass('show_fixed_rightblk');
+//            $('.overlay_res').show();
+//            $('body').css('overflow', 'hidden');
+//        }
+//    }
+
+//    function Show_Followers() {
+//        var check_class = $('.followers_block').attr('class');
+//        $('.followers_block').removeClass('show_fixed_rightblk');
+//        if (check_class == "followers_block") {
+//            $('.followers_block').addClass('show_fixed_rightblk');
+//            $('.overlay_res').show();
+//            $('body').css('overflow', 'hidden');
+//        }
+//    }
+    function Show_LinkOptions() {
+        var check_class = $('.menu_left').attr('class');
+        if (check_class == "col-md-2 dashboard_fixed menu_left") {
+            $('.menu_left').addClass('profile_basic_menu_block_show');
             $('.overlay_res').show();
             $('body').css('overflow', 'hidden');
         }
+        else {
+            $('.menu_left').removeClass('profile_basic_menu_block_show');
+            $('.overlay_res').hide();
+            $('body').css('overflow', 'auto');
+        }
     }
-
+    function Show_Topearner() {
+        var check_class = $('.earner_right').attr('class');
+        if (check_class == "col-sm-2 dashboard_fixed earner_right") {
+            $('.earner_right').addClass('show_fixed_rightblk');
+            $('.overlay_res').show();
+            $('body').css('overflow', 'hidden');
+        }
+        else {
+            $('.earner_right').removeClass('show_fixed_rightblk');
+            $('.overlay_res').hide();
+            $('body').css('overflow', 'auto');
+        }
+    }
+    function Show_Survey() {
+        var check_class = $('.servey_block').attr('class');
+        if (check_class == "servey_block") {
+            $('.servey_block').addClass('show_fixed_rightblk');
+            $('.overlay_res').show();
+            $('body').css('overflow', 'hidden');
+        }
+        else {
+            $('.servey_block').removeClass('show_fixed_rightblk');
+            $('.overlay_res').hide();
+            $('body').css('overflow', 'auto');
+        }
+    }
     function Show_Followers() {
         var check_class = $('.followers_block').attr('class');
-        $('.followers_block').removeClass('show_fixed_rightblk');
-        if (check_class == "followers_block") {
-            $('.followers_block').addClass('show_fixed_rightblk');
+        if (check_class == "followers_block panel panel-default") {
+            $('.followers_block').addClass('followers_block_show');
             $('.overlay_res').show();
             $('body').css('overflow', 'hidden');
+        }
+        else {
+            $('.followers_block').removeClass('followers_block_show');
+            $('.overlay_res').hide();
+            $('body').css('overflow', 'auto');
         }
     }
-
-    function Show_LinkOptions() {
-        var check_class = $('.profile_basic_menu_block').attr('class');
-        $('.profile_basic_menu_block').removeClass('bootom_menu_show');
-        if (check_class == "profile_basic_menu_block") {
-            $('.profile_basic_menu_block').addClass('profile_basic_menu_block_show');
-            $('.overlay_res').show();
-            $('body').css('overflow', 'hidden');
-        }
-        else if (check_class == "profile_basic_menu_block left_menu_fixed") {
-            $('.profile_basic_menu_block').addClass('profile_basic_menu_block_show');
-            $('.overlay_res').show();
-            $('body').css('overflow', 'hidden');
-        }
-    }
+//    function Show_LinkOptions() {
+//        var check_class = $('.profile_basic_menu_block').attr('class');
+//        $('.profile_basic_menu_block').removeClass('bootom_menu_show');
+//        if (check_class == "profile_basic_menu_block") {
+//            $('.profile_basic_menu_block').addClass('profile_basic_menu_block_show');
+//            $('.overlay_res').show();
+//            $('body').css('overflow', 'hidden');
+//        }
+//        else if (check_class == "profile_basic_menu_block left_menu_fixed") {
+//            $('.profile_basic_menu_block').addClass('profile_basic_menu_block_show');
+//            $('.overlay_res').show();
+//            $('body').css('overflow', 'hidden');
+//        }
+//    }
 
 
     function RemoveTheameByUser(dis) {

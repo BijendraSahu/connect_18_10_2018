@@ -1,8 +1,51 @@
 @media screen and (min-width: 320px) and (max-width: 479px) {
+    .caption_count
+    {
+        font-size: 11px;
+    }
+    .heart.happy:before
+    {
+        right: -8px;
+    }
+    .heart.broken:before
+    {
+        left: 8px;
+    }
+    .heart.broken:after
+    {
+        right: -8px;
+    }
+    .dislike_block
+    {
+        font-size: 11px;
+    }
+    .comment_block
+    {
+        font-size: 11px;
+        margin-right: 2px;
+    }
     .slider_video {
         max-width: 100%;
     }
-
+    .existing_post_block
+    {
+        margin-bottom: 10px;
+    }
+    .dashboard_center_padding {
+        margin-top: 85px !important;
+        /*padding: 0px 0px 0px 8px;*/
+    }
+    .search_filter_box
+    {
+        top:30px;
+    }
+    .post_btn_photo {
+        font-size: 11px !important;
+    }
+    .dash_respad
+    {
+        padding: 0px 5px;
+    }
     .connected_name {
         font-size: 14px;
     }
@@ -215,26 +258,13 @@
         padding: 3px 5px;
         margin: 0px 5px 5px 0px;
     }
-
-    .post_textblock {
-        padding-left: 80px;
-    }
-
     .post_imgblock {
         left: 5px;
-    }
-
-    .existing_msg_block {
-        padding: 0px 0px 0px 70px;
     }
 
     .upimg_box {
         width: 75px;
         height: 75px;
-    }
-
-    .exis_comments_post {
-        padding-left: 60px;
     }
 
     .person_block {
@@ -414,7 +444,7 @@
         }
     }
     .exis_operation {
-        padding: 5px 10px;
+        padding: 3px 0px 5px 0px;
     }
 
 }
@@ -915,6 +945,10 @@
      {
          display: none;
      }*/
+    .dashboard_center_padding
+    {
+        margin-top: 95px;
+    }
     .topfixed_marginbox {
         display: none;
     }
@@ -946,7 +980,10 @@
     .option-container {
         margin-right: 5px;
     }
-
+    .dashboard_fixed_second
+    {
+        z-index: 111;
+    }
     .setting_box {
         top: 135px;
     }
@@ -959,25 +996,19 @@
         max-width: 315px;
         position: fixed;
     }
-
+    .servey_block {
+        position: fixed;
+        right: -320px;
+        transition: .5s all;
+        z-index: 111;
+        top: 0px;
+        margin: 0px;
+        width: 250px;
+        height: 100%;
+        background: #ffffff;
+    }
     .advertiseall_block {
         display: none;
-    }
-
-    .followers_block {
-        transition: .5s all;
-        position: absolute;
-        width: 100%;
-        top: 0px;
-        right: -319px;
-    }
-
-    .top_earner_block {
-        transition: .5s all;
-        position: absolute;
-        width: 100%;
-        top: 0px;
-        right: -319px;
     }
 
     .top_manubar {
@@ -989,18 +1020,40 @@
     .show_fixed_rightblk {
         right: 20px;
     }
-
-    .profile_basic_menu_block {
-        /* position: absolute !important;*/
-        left: -310px;
+    .menu_left
+    {
+        position: fixed;
+        left: -350px;
+        z-index: 111;
+        top: 0px;
+        margin: 0px;
+        max-width: 250px;
+        height: 100%;
+        transition: .5s all;
+    }
+    .earner_right
+    {
+        position: fixed;
+        right: -320px;
         transition: .5s all;
         z-index: 111;
-        max-width: 300px;
         top: 0px;
-        position: fixed;
+        margin: 0px;
+        width: 250px;
         height: 100%;
-        overflow: auto;
+        background: #ffffff;
     }
+    /*.profile_basic_menu_block {*/
+        /*!* position: absolute !important;*!*/
+        /*left: -310px;*/
+        /*transition: .5s all;*/
+        /*z-index: 111;*/
+        /*max-width: 300px;*/
+        /*top: 0px;*/
+        /*!*position: fixed;*!*/
+        /*height: 100%;*/
+        /*overflow: auto;*/
+    /*}*/
 
     .profile_basic_menu_block_show {
         left: 0px;
@@ -1013,15 +1066,10 @@
     }
 
     .post_title {
-        font-size: 14px;
-    }
-
-    .post_btn_video {
         font-size: 13px;
     }
-
     .post_btn_photo {
-        font-size: 13px;
+        font-size: 12px;
     }
 
     .existing_post_block {
@@ -1032,14 +1080,10 @@
         margin-right: 5px;
     }
 
-    .comment_block {
-        margin-right: 0px;
-        float: right;
-    }
-
-    .like_block {
-        padding-left: 35px;
-    }
+    /*.comment_block {*/
+        /*margin-right: 0px;*/
+        /*float: right;*/
+    /*}*/
 
     .res_footermenu {
         display: block;
@@ -1410,6 +1454,17 @@
 }
 
 @media screen and (min-width: 320px) and (max-width: 1023px) {
+    .servey_block .panel {
+        box-shadow: none;
+        border: none;
+    }
+    .servey_ul {
+        max-height: calc(100% - 20px);
+    }
+    .dash_post_main_container
+    {
+        margin-bottom: 30px;
+    }
     .top_manubar_fixed {
         padding-bottom: 45px
     }
@@ -1460,21 +1515,17 @@
     }
 
     .followers_block {
+        position: fixed;
+        right: -320px;
         transition: .5s all;
-        position: absolute;
-        width: 100%;
-        top: 0px;
-        right: -319px;
+        top: 88px;
+        margin: 0px;
+        width: 250px;
     }
-
-    .top_earner_block {
-        transition: .5s all;
-        position: absolute;
-        width: 100%;
-        top: 0px;
-        right: -319px;
+    .followers_block_show
+    {
+        right: 15px;
     }
-
     .top_manubar {
         position: fixed;
         padding-bottom: 45px;
@@ -1487,7 +1538,7 @@
     }
 
     .show_fixed_rightblk {
-        right: 20px;
+        right: 0px;
     }
 
     .overall_margin {
@@ -1501,11 +1552,8 @@
     }
 
     .post_btn_video {
-        font-size: 13px;
-    }
-
-    .post_btn_photo {
-        font-size: 13px;
+        font-size: 11px;
+        margin-left: 2px;
     }
 
     .existing_post_block {
@@ -1516,18 +1564,13 @@
         margin-right: 5px;
     }
 
-    .comment_block {
-        margin-right: 0px;
-    }
-
     .like_block {
-        padding-left: 35px;
+        padding-left: 30px;
     }
 
     .res_footermenu {
         display: block;
-        padding-right: 60px;
-
+        /*padding-right: 60px;*/
     }
 
     .cometchat_tab {

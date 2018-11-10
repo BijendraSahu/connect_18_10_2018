@@ -8,13 +8,13 @@
     <script src="http://widgets.freestockcharts.com/script/WBIHorizontalTicker2.js?ver=12334"
             type="text/javascript"></script>
     <style type="text/css">
-        .exis_msg {
-            margin-left: -15px;
-        }
+        /*.exis_msg {*/
+            /*margin-left: -15px;*/
+        /*}*/
     </style>
-    <section class="container-fluid overall_containner">
+    <section class="container-fluid overall_containner dash_respad">
         <div class="row">
-            <div class="col-md-2 dashboard_fixed">
+            <div class="col-md-2 dashboard_fixed menu_left">
                 <div class="profile_basic_menu_block">
                     <div class="profile_img_block">
                         <img src="{{url('').'/'.$user->profile_pic}}"/>
@@ -46,15 +46,15 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-sm-8 small_padding">
+            <div class="col-md-8 col-sm-12 dashboard_center_padding">
                 <div class="col-sm-12 dashboard_fixed_first" id="market_line">
                     <script type="text/javascript">
                         var gainTicker = new WBIHorizontalTicker('gainers');
                         gainTicker.start();
                     </script>
                 </div>
-                <div class="col-md-8">
-                    <div class="dynamic_overlay overlay_all">
+                <div class="col-md-8 col-sm-12">
+                    <div class="dynamic_overlay">
                         <div class="post_block">
                             <form enctype="multipart/form-data" id="userpostForm">
                                 <div class="post_head">
@@ -217,15 +217,16 @@
                     </div>
 
                     {{--------------------Load Dashboard Post------------------------}}
-                    <div id="dashboard_post">
+                    <div id="dashboard_post" class="dash_post_main_container">
                         {{--@include('post.new_dashboard_posts')--}}
                     </div>
                     {{--------------------Load Dashboard Post------------------------}}
                     <input type="hidden" id="see_id" value="1"/>
                     {{--<button class="more_btn btn btn-warning" onclick="getmorepost();">See more</button>--}}
                 </div>
-                <div class="col-sm-4 dashboard_fixed_second">
+                <div class="col-md-4 col-sm-10 dashboard_fixed_second">
                     <div class="all_right_block">
+                        <div class="servey_block">
                         <div class="panel panel-default">
                             <div class="panel-heading basic_headgradian">
                                 <b>Online Survey</b>
@@ -282,6 +283,7 @@
 
                             </div>
                         </div>
+                        </div>
                         <div class="followers_block panel panel-default">
                             <div class="panel panel-default" style="margin-bottom: 5px;">
                                 <div class="panel-heading basic_headgradian"><b>Our Followers </b></div>
@@ -332,7 +334,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-2 dashboard_fixed">
+            <div class="col-sm-2 dashboard_fixed earner_right">
                 <div class="panel top_earner_block panel-default">
                     <div class="panel-heading basic_headgradian">
                         <b>Top Earners</b>
@@ -350,7 +352,8 @@
     <footer class="res_footermenu">
         <div class="footer_fixicon" onclick="Show_Topearner();"><i class="mdi mdi-currency-inr"></i></div>
         <div class="footer_fixicon" onclick="Show_Followers();"><i class="mdi mdi-chemical-weapon"></i></div>
-        <div class="footer_fixicon" onclick="Show_LinkOptions();"><i class="mdi mdi-account-settings-variant"></i></div>
+        <div class="footer_fixicon" onclick="Show_LinkOptions();"><i class="mdi mdi-account-details"></i></div>
+        <div class="footer_fixicon" onclick="Show_Survey();"><i class="mdi mdi-account-question"></i></div>
     </footer>
     {{------------------------Ads modal----------------}}
     <div id="Modal_Survey" class="modal fade" data-easein="bounceIn" role="dialog">
