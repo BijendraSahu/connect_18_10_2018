@@ -5,7 +5,7 @@
 
 @section('head')
     <section class="notofication_containner">
-        <div class="container">
+        <div class="container mob_pad0">
             <div class="row">
                 <div class="col-md-3 col-sm-12">
                     <div class="all_left_brics_container">

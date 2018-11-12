@@ -279,6 +279,7 @@ function InitializeEmoji() {
 function ShowAdvertiseDetails(dis) {
     globalloadershow();
     $('#otr_lb_details').show();
+    $('#amt_lb_details').show();
     var getimgsrc = $(dis).parent().parent().find('img').attr('src');
     var gettitle = $(dis).text().trim();
     var getdetails = $(dis).parent().find('.list_description').text().trim();
@@ -301,6 +302,7 @@ function ShowAdvertiseDetails(dis) {
 function ShowAdminAdvertiseDetails(dis) {
     ShowOnpageLoopader();
     $('#otr_lb_details').hide();
+    $('#amt_lb_details').hide();
     var getimgsrc = $(dis).parent().parent().find('img').attr('src');
     var gettitle = $(dis).text().trim();
     var getdetails = $(dis).parent().find('.list_description').val().trim();

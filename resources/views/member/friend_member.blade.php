@@ -14,7 +14,7 @@
         }
     </style>
     <section class="member_profileblk">
-        <div class="container">
+        <div class="container mob_pad0">
             <div class="row">
                 <div class="col-sm-3">
                     <div class="basic_thumb res_earning networkfirst_top">
@@ -73,6 +73,11 @@
                             <div class="net_img">
                                 {{--<img src="images/ConnectingOneAdmin.jpg" class="" />--}}
                                 <img src="{{url('').'/'.$suser->profile_pic}}" alt="UserProfile">
+                            </div>
+                        </div>
+                        <div class="net_arrow_blk">
+                            <div class="arrow_blk">
+                                <i class="mdi mdi-arrow-down-bold"></i>
                             </div>
                         </div>
                         <!--  <div class="net_arrow_blk">

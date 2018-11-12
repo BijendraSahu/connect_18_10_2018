@@ -9,7 +9,7 @@
     <section class="container-fluid overall_containner notofication_containner">
         <div class="row">
             <div class="col-md-2">
-                <div class="profile_basic_menu_block">
+                <div class="profile_basic_menu_block res_menu_hide">
                     <div class="profile_img_block">
                         <img src="{{url('').'/'.$user->profile_pic}}"/>
                     </div>
@@ -211,22 +211,18 @@
                         <h4 class="modal-title">Add New Advertisement</h4>
                     </div>
                     <div class="modal-body" id="Add_newAdvertise">
-                        <div class="basic_lb_row row">
+                        <div class="basic_lb_row">
                             <div class="col-sm-6">
-                                <div class="col-sm-12">
+                                <div class="inner_lbdiv">
                                     <div class="advertise_lefttxt" id="_TypeName">Advertise Title :</div>
-                                </div>
-                                <div class="col-sm-12">
                                     <input type="text" name="title" class="form-control required"
                                            placeholder="Enter title" data-validate="Btn_advertise" maxlength="250"
                                            autocomplete="off">
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="row">
+                                <div class="inner_lbdiv">
                                     <div class="advertise_lefttxt" id="_TypeName">Advertise Type :</div>
-                                </div>
-                                <div class="row">
                                     <select class="form-control requiredDD" name="ddcategory">
                                         <option value="0">Select</option>
                                         @foreach($ad_category as $category)
@@ -236,33 +232,27 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="basic_lb_row row">
+                        <div class="basic_lb_row">
                             <div class="col-sm-6">
-                                <div class="col-sm-12">
+                                <div class="inner_lbdiv">
                                     <div class="advertise_lefttxt" id="_TypeName">Email Id :</div>
-                                </div>
-                                <div class="col-sm-12">
                                     <input type="text" name="email" class="form-control" placeholder="Enter Email id"
                                            data-validate="Btn_advertise" maxlength="250" autocomplete="off">
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="row">
+                                <div class="inner_lbdiv">
                                     <div class="advertise_lefttxt">Contact No. :</div>
-                                </div>
-                                <div class="row">
                                     <input type="text" name="title" class="form-control required"
                                            placeholder="Enter contact no." data-validate="Btn_advertise" maxlength="250"
                                            autocomplete="off">
                                 </div>
                             </div>
                         </div>
-                        <div class="basic_lb_row row">
+                        <div class="basic_lb_row">
                             <div class="col-sm-6">
-                                <div class="col-sm-12">
+                                <div class="inner_lbdiv">
                                     <div class="advertise_lefttxt" id="_TypeName">City :</div>
-                                </div>
-                                <div class="col-sm-12">
                                     <select class="form-control" id="a_city"
                                             name="city">
                                         {{--<option value="0"> --Please Select*--</option>--}}
@@ -273,32 +263,26 @@
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="row">
+                                <div class="inner_lbdiv">
                                     <div class="advertise_lefttxt">Selling Price :</div>
-                                </div>
-                                <div class="row">
                                     <input type="number" name="selling_cost" class="form-control amount"
                                            placeholder="Enter Selling Price" data-validate="Btn_advertise"
                                            maxlength="50" autocomplete="off">
                                 </div>
                             </div>
                         </div>
-                        <div class="basic_lb_row row">
+                        <div class="basic_lb_row">
                             <div class="col-sm-6">
-                                <div class="col-sm-12">
+                                <div class="inner_lbdiv">
                                     <div class="advertise_lefttxt" id="_TypeName">Advertise Details :</div>
-                                </div>
-                                <div class="col-sm-12">
                                     <textarea cols="1" rows="4" name="add_details"
                                               class="form-control txt_resize required" placeholder="Enter Details"
                                               data-validate="Btn_advertise" maxlength="500"></textarea>
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="row">
+                                <div class="inner_lbdiv">
                                     <div class="advertise_lefttxt">Location :</div>
-                                </div>
-                                <div class="row">
                                     <textarea cols="1" rows="4" name="add_address" class="form-control txt_resize"
                                               placeholder="Enter Location" data-validate="Btn_advertise"
                                               maxlength="500"></textarea>
@@ -306,18 +290,16 @@
                             </div>
                         </div>
                         <div class="basic_lb_row other_hide" id="adver_otherbox">
-                            <div class="col-sm-3">
+                            <div class="inner_lbdiv">
                                 <div class="advertise_lefttxt" id="_TypeName">Other Category :</div>
-                            </div>
-                            <div class="col-sm-9">
                                 <input type="text" name="other" class="form-control" placeholder="Enter Category"
                                        data-validate="Btn_advertise" maxlength="250" autocomplete="off">
                             </div>
                         </div>
-                        <div class="basic_lb_row row">
+                        <div class="basic_lb_row">
                             <div class="col-sm-6">
                                 {{--<input id="browse" type="file" onchange="UploadImage(this);" multiple/>--}}
-                                <div class="col-sm-12">
+                                <div class="inner_lbdiv">
                                     <div class="advertise_lefttxt">Upload Image :</div>
                                     <div class="upload_limittxt">You can upload maximum 8 images for Advertisement.
                                     </div>
@@ -344,7 +326,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div id="preview" class="row upload_result_img"></div>
+                                <div id="preview" class="upload_result_img"></div>
                             </div>
                         </div>
                         {{--<div class="basic_lb_row row">--}}

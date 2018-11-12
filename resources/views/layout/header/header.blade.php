@@ -46,7 +46,7 @@
                     </div>
                     <div class="menu_popup_settingrow effect">
                         <a href="#" onclick="privacy_setting();" class="menu_setting_row">
-                            <i class="mdi mdi-account-settings-variant"></i>
+                            <i class="mdi mdi-account-key"></i>
                             Privacy Setting
                         </a>
                     </div>

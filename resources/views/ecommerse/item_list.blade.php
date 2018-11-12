@@ -20,9 +20,8 @@
             $(dis).find('.menu_basic_popup').removeClass('scale0');
         }
     </script>
-    <section class="container-fluid ecommerce_containner">
-        <div class="row">
-            <div class="col-md-2">
+    <section class="container-fluid overall_containner mob_pad0">
+            <div class="col-md-2 dashboard_fixed res_menu_hide">
                 <div class="profile_basic_menu_block">
                     <div class="profile_img_block">
                         <img src="{{url('').'/'.$user->profile_pic}}"/>
@@ -52,8 +51,8 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-10">
-                <div class="product_boxcontainner">
+            <div class="col-md-10 col-sm-12">
+                <div class="product_boxcontainner adver_mainblock">
                     <div class="advertise_withhead">
                         <div class="col-sm-6 col-md-4 col-xs-5 head_caption">Products List
                            {{-- <input class="form-control" placeholder="Search by item name" name="srch-term"
@@ -195,7 +194,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </section>
     <div class="modal fade-scale" id="Modal_ViewDetails_Ecommerce" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel">

@@ -1,173 +1,15 @@
 @extends('layout.master.master')
 @section('title', 'E-Commerce : Checkout')
 @section('head')
-    <style>
-        /*.long_qty_box {*/
-        /*background-color: #e8e8e8;*/
-        /*display: inline-block;*/
-        /*width: 100%;*/
-        /*border: solid thin #ccc;*/
-        /*position: relative;*/
-        /*padding-left: 105px;*/
-        /*max-width: 150px;*/
-        /*font-size: 12px;*/
-        /*}*/
-        /*.long_qty_txt {*/
-        /*width: 105px;*/
-        /*display: inline-block;*/
-        /*color: #000;*/
-        /*position: absolute;*/
-        /*left: 5px;*/
-        /*border-right: solid thin #ccc;*/
-        /*height: 100%;*/
-        /*text-align: left;*/
-        /*line-height: 25px;*/
-        /*background: #e8e8e8;*/
-        /*}*/
-        /* .spinner_addcardbtn {
-             position: absolute;
-             right: 0px;
-             top: 0px;
-             border: none;
-             height: 28px;
-             padding-left: 20px;
-             margin-top: 25px;
-         }
-
-         .long_spinner_withbtn {
-             position: relative;
-             display: inline-block;
-             width: 100%;
-             padding-right: 80px;
-             margin-bottom: 5px;
-             text-align: left;
-         }
-
-         .menu_popup_containner1 {
-             padding-top: 15px;
-             max-height: 210px !important;
-             overflow: auto !important;
-         }
-
-         .menu_basic_popup {
-             width: 320px;
-             height: auto;
-             background: #fff;
-             box-shadow: 0 2px 10px rgba(0, 0, 0, .4);
-             position: absolute;
-             color: #333;
-             z-index: 100;
-             right: 0;
-             padding: 15px;
-             top: 60px;
-             transition: all 150ms linear;
-         }
-
-         .baskit_containner i {
-             font-size: 30px;
-         }
-
-         .scale0 {
-             max-width: 540px;
-             opacity: 0;
-             top: 100px !important;
-             visibility: hidden;
-         }
-
-         .baskit_counter {
-             position: absolute;
-             width: 20px;
-             height: 20px;
-             background: #dd0000;
-             color: #ffffff;
-             text-align: center;
-             border-radius: 50%;
-             right: -8px;
-             top: -2px;
-             z-index: 10;
-             line-height: 20px;
-         }
-
-         .product_block {
-             width: 23%;
-             float: left;
-             overflow: hidden;
-             margin-right: 2%;
-             padding: 10px;
-             background-color: #fff;
-             box-shadow: rgba(0, 0, 0, 0.08) 5px 8px 20px, rgba(72, 67, 67, 0.23) 0px 2px 5px;
-             margin-bottom: 20px;
-             height: 320px;
-         }
-
-         .header_popup {
-             color: #fff;
-             display: flex;
-             width: 100%;
-             padding: 5px 10px 5px 10px;
-             background: #5cb85c;
-         }
-
-         .table_addcard {
-             border: solid thin #e1e1e1;
-             font-size: 14px;
-             margin: 0px;
-         }
-
-         .menu_basic_popup:before {
-             width: 0;
-             height: 0;
-             border-style: solid;
-             border-width: 0 8px 10px 8px;
-             border-color: transparent transparent #fff transparent;
-             position: absolute;
-             top: -10px;
-             right: 20px;
-             z-index: 5;
-             content: "";
-         }
-
-         .hide {
-             display: none;
-         }
-
-         .show {
-             display: block;
-         }
-
-         .details_radio {
-             max-width: 300px;
-             padding: 10px;
-             border: solid thin #813e3e;
-             background-color: #fda1a1;
-             display: none;
-             color: #000;
-             width: 100%;
-             margin-bottom: 5px;
-         }
-
-         .radiopanelbox {
-             margin-bottom: 0px;
-         }
-
-         .radiobox {
-             display: inline-block;
-             width: 100%;
-             max-width: 400px;
-         }*/
-    </style>
-    <style type="text/css">
-
-    </style>
     <script type="text/javascript">
         $(window).scroll(function (event) {
             var chk_scroll = $(window).scrollTop();
-            if (chk_scroll > 70) {
-                $('.top_manubar').addClass('top_manubar_fixed');
+           // if (chk_scroll > 70) {
+               // $('.top_manubar').addClass('top_manubar_fixed');
 //                    $('.overall_containner').addClass('overall_margin');
-                $('.profile_basic_menu_block').addClass('left_menu_fixed');
-                $('.all_right_block').addClass('right_menu_fixed');
-            }
+              //  $('.profile_basic_menu_block').addClass('left_menu_fixed');
+               // $('.all_right_block').addClass('right_menu_fixed');
+         //   }
             if ($(window).scrollTop() + $(window).height() == $(document).height()) {
                 if (parseFloat($('#see_id').val()) <= parseFloat($('#pcount').val())) {
                     getmorepost();
@@ -176,15 +18,15 @@
         });
         $(document).ready(function () {
             //$('[data-toggle="tooltip"]').tooltip();
-            $(document).click(function (e) {
-                $('.menu_basic_popup').addClass('scale0');
-                e.stopPropagation();
-            });
-            $('.glo_menuclick').click(function (e) {
-                $('.menu_basic_popup').addClass('scale0');
-                $(this).find('.menu_basic_popup').removeClass('scale0');
-                e.stopPropagation();
-            });
+//            $(document).click(function (e) {
+//                $('.menu_basic_popup').addClass('scale0');
+//                e.stopPropagation();
+//            });
+//            $('.glo_menuclick').click(function (e) {
+//                $('.menu_basic_popup').addClass('scale0');
+//                $(this).find('.menu_basic_popup').removeClass('scale0');
+//                e.stopPropagation();
+//            });
         });
         function AddressOption(txt) {
             if (txt == "existing") {
@@ -224,7 +66,7 @@
     </script>
     <section class="container-fluid ecommerce_containner">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 dashboard_fixed res_menu_hide">
                 <div class="profile_basic_menu_block">
                     <div class="profile_img_block">
                         <img src="{{url('').'/'.$user->profile_pic}}"/>
@@ -254,7 +96,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-10 col-sm-12">
                 <div class="advertise_withhead">
                     <div class="col-sm-6 col-md-4 col-xs-12 head_caption">Products List</div>
                     <div class="col-sm-6 col-md-8 col-xs-12 head_caption" style="display: none;">
@@ -731,7 +573,6 @@
                 }
             });
         }
-
         function submitContactForm() {
             var existaddress = $('#existaddess').val();
             var name = $('#a_name').val();
@@ -779,7 +620,6 @@
                 submitExistAddress();
             }
         }
-
         function submitContact() {
             $('#myModal').modal('show');
             $('#modal_title').html('Checkout Payment');
@@ -813,7 +653,6 @@
                 }
             });
         }
-
         function submitExistAddress() {
             $('#myModal').modal('show');
             var is_cod = $('#payment').val();
@@ -838,7 +677,6 @@
                 }
             });
         }
-
         $('#a_email').focusout(function () {
             var domains = ["gmail.com", "hotmail.com", "msn.com", "yahoo.com", "yahoo.in", "yahoo.com", "aol.com", "hotmail.co.uk", "yahoo.co.in", "live.com", "rediffmail.com", "outlook.com", "hotmail.it", "googlemail.com", "mail.com"]; //update ur domains here
             var idx1 = this.value.indexOf("@");
