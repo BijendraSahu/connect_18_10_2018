@@ -531,7 +531,7 @@ if (is_null($_SESSION['user_master'])) {
                     <div class="advertise_details_box">
                         <div class="latest_update_title" id="adver_title_lb"></div>
                         <div class="latest_updatetxt" id="adver_details_lb"></div>
-                        <div class="latest_updatetxt" id="amt_lb_details">
+                        <div class="latest_updatetxt" id="amt_lb_details" >
                             <span><i class="mdi mdi-currency-inr"></i> <span id="adver_price_lb"></span></span>
                             <span><i class="mdi mdi-map-marker"></i> <span id="adver_city_lb"></span></span>
                             <span><i class="mdi mdi-home-automation basic_icon_margin"></i><span id="adver_type_lb"></span></span>
