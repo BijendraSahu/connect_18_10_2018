@@ -3022,7 +3022,8 @@
     -webkit-box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 1px, rgba(0, 0, 0, 0.05) 0px 1px 5px;
     padding: 10px 15px;
     margin-top: 20px;
-    min-height: 300px;
+    min-height: calc(100vh - 120px);
+
 }
 
 .net_imgblk {
@@ -5956,14 +5957,14 @@
     font-size: 10pt;
     /*background-image: url(http://widgets.freestockcharts.com/WidgetServer/images/BGBlackLine.png);*/
     background: #000000;
-    min-height: 35px;
+    min-height: 27px;
     width: 100%;
     display: block;
     position: relative;
     overflow: hidden;
     border: #CCCCCC 1px solid;
     line-height: normal;
-    padding: 10px 5px;
+    padding: 5px;
     margin-bottom: 5px;
 }
 
@@ -6059,7 +6060,7 @@ div.scrollingtext {
     padding-left: 0px;
     position: -webkit-sticky;
     position: sticky;
-    top: 95px;
+    top: 80px;
 }
 
 .dashboard_center_padding {
