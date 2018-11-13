@@ -14,7 +14,7 @@
         }
     </style>
     <section class="notofication_containner">
-        <div class="container">
+        <div class="container mob_pad0">
             <div class="row">
                 <div class="col-md-3 col-sm-12">
                     <div class="all_left_brics_container">
@@ -76,13 +76,13 @@
                                 <img src="{{url('').'/'.$user->profile_pic}}" alt="UserProfile">
                             </div>
                         </div>
-                       <div class="net_arrow_blk">
+                         <div class="net_arrow_blk">
                               <div class="arrow_blk">
                                   <i class="mdi mdi-arrow-down-bold"></i>
                               </div>
                           </div>
-                         {{--<div class="net_long_line">--}}
-                         {{--</div>--}}
+                        <!-- <div class="net_long_line">
+                         </div>-->
                         <!--<div class="level_caption">Level 0</div>-->
                         <div class="net_internaldiv">
                             <div class="user_image_containner">

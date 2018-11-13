@@ -473,7 +473,7 @@ if (is_null($_SESSION['user_master'])) {
 
                         </tbody>
                     </table>
-                    <div class="latest_updateimg">
+                    <div class="latest_updateimg" id="advertise_append_img">
                         <img src="{{url('images/Adver_mainimg1.jpg')}}" id="adver_image"/>
                     </div>
                 </div>
@@ -531,7 +531,7 @@ if (is_null($_SESSION['user_master'])) {
                     <div class="advertise_details_box">
                         <div class="latest_update_title" id="adver_title_lb"></div>
                         <div class="latest_updatetxt" id="adver_details_lb"></div>
-                        <div class="latest_updatetxt">
+                        <div class="latest_updatetxt" id="amt_lb_details" >
                             <span><i class="mdi mdi-currency-inr"></i> <span id="adver_price_lb"></span></span>
                             <span><i class="mdi mdi-map-marker"></i> <span id="adver_city_lb"></span></span>
                             <span><i class="mdi mdi-home-automation basic_icon_margin"></i><span id="adver_type_lb"></span></span>
@@ -553,25 +553,24 @@ if (is_null($_SESSION['user_master'])) {
     </div>
 </div>
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
-    <div class="modal-dialog modal-lg" id="modal_type">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 <h4 id="modal_title" class="modal-title">Title</h4>
             </div>
-            <div id="modal_body" class="modal-body">
+            <div id="modal_body">
                 <p>One fine body&hellip;</p>
             </div>
-            <div class="modal-footer">
-                <div class=" pull-right">
-                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
-                    &nbsp;
-                </div>
-                &nbsp;
-                <div id="modalBtn" class="pull-right">&nbsp;</div>
-                {{--<button id="extraBtn1" type="button" class="btn btn-primary" style="display:none">Save changes</button>--}}
-            </div>
+            {{--<div class="modal-footer">--}}
+                {{--<div class=" pull-right">--}}
+                    {{--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>--}}
+                    {{--&nbsp;--}}
+                {{--</div>--}}
+                {{--&nbsp;--}}
+                {{--<div id="modalBtn" class="pull-right">&nbsp;</div>             --}}
+            {{--</div>--}}
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

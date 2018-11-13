@@ -216,7 +216,7 @@
 @stop
 @section('content')
     <section class="notofication_containner">
-        <div class="container">
+        <div class="container mob_pad0">
             <div class="content_block form-group">
                 <div class="com-block block_header">
                     <div class="row">
