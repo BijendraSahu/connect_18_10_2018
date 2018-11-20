@@ -1,4 +1,16 @@
 @media screen and (min-width: 320px) and (max-width: 479px) {
+    .contact_form .form-group {
+        margin-bottom: 10px;
+    }
+    .paid_img
+    {
+        width: 16px;
+        height: 16px;
+    }
+    .login_accept
+    {
+        margin-bottom: 10px;
+    }
     .animate_announcement
     {
         width: 290px;
@@ -455,17 +467,27 @@
 }
 
 @media screen and (min-width: 320px) and (max-width: 360px) {
+    .login_maintxt
+    {
+        font-size: 18px;
+    }
+    .regis_block .col-sm-6, .regis_block .col-sm-12 {
+        padding: 0px 5px;
+    }
     .all_right_block {
         width: 280px !important;
     }
-
+    .forgot_link
+    {
+        font-size: 12px;
+    }
     .privacy_heading h1 {
         font-size: 46px !important;
     }
 
     .links_ul li {
         margin-right: 0px;
-        padding: 5px 6px;
+        padding:0px;
     }
     .comment_block
     {
@@ -473,6 +495,14 @@
     }
     .menu_basic_block {
         width: 30px !important;
+    }
+    .left_maintxt h1
+    {
+        font-size: 18px !important;
+    }
+    .links_ul li a
+    {
+        padding: 5px 6px !important;
     }
 }
 
@@ -557,7 +587,19 @@
         -moz-transform: scale(1);
         -webkit-transform: scale(1);
     }
-
+    .contact_form
+    {
+        padding: 10px 0px 0px 0px;
+        top: 75px;
+        width: 100%;
+    }
+    .contact_form h2 {
+        margin-top: 0px;
+    }
+    .contact_form h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
     .exis_imgblock img {
         width: 100%;
         max-width: 100%;
