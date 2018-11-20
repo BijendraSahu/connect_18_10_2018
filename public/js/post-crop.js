@@ -14,7 +14,6 @@ var result = $('.result'),
 //                upload = $('#file-input'),
     cropper = '';
 function readPostImage(file) {
-    debugger;
     var img_length=Number($('.upimg_box').length);
     if(img_length < 10) {
         var reader = new FileReader();
@@ -46,7 +45,7 @@ function removeExtradiv() {
         function () {
             var img_length=Number($('.upimg_box').length);
             if(img_length > 10) {
-                ShowErrorPopupMsg("You can upload maximam 10 images & 1 video at a time.");
+                ShowErrorPopupMsg("You can upload maximum 10 images & 1 video at a time.");
             }
         }, 200);
 }

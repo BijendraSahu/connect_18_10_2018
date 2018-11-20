@@ -7,9 +7,9 @@
             <div class="exis_name_post">
                 @if($post[$i]['user_id'] != $ses_user->id)
                     <a class="posted_name"
-                       href="{{url('friend?search=').$post[$i]['user_id']}}">{{$post[$i]['name']}}</a>
+                       href="{{url('friend?search=').$post[$i]['user_id']}}">{{$post[$i]['name']}}</a>@if(isset($post[$i]['checkin'])) <i class="basic_icons mdi mdi-map-marker">at</i>{!! $post[$i]['checkin'] !!} @endif
                 @else
-                    <a class="posted_name" href="{{url('my-profile')}}">{{$post[$i]['name']}}</a>
+                    <a class="posted_name" href="{{url('my-profile')}}">{{$post[$i]['name']}} </a>@if(isset($post[$i]['checkin'])) <i class="basic_icons mdi mdi-map-marker">at</i>{!! $post[$i]['checkin'] !!} @endif
                 @endif
                 <div class="posted_date"><i
                             class="basic_icons mdi mdi-calendar"></i>{{ date_format(date_create($post[$i]['created_at']), "d-M-Y h:i A")}}

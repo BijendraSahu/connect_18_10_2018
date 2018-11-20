@@ -73,6 +73,7 @@ class ProfileController extends Controller
 
 //            $user = UserModel::where(['timeline_id' => $timeline->id])->first();
             $user->birthday = Carbon::parse(request('dob'))->format('Y-m-d');
+            $user->state = request('state');
             $user->city = request('city');
             $user->country_id = request('country');
             $user->profession = request('profession');
@@ -261,7 +262,7 @@ class ProfileController extends Controller
     public function getsfriend()
     {
         $s = request('search_name');
-        $user = DB::select("SELECT u.id, t.name, u.profile_pic FROM users u, timelines t WHERE u.timeline_id = t.id  and t.name LIKE '$s%' and u.active = 1");
+        $user = DB::select("SELECT u.id, t.name, u.profile_pic FROM users u, timelines t WHERE u.timeline_id = t.id  and (t.name LIKE '$s%' OR u.city LIKE '$s%') and u.active = 1");
         return json_encode($user);
     }
 

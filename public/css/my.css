@@ -4473,13 +4473,14 @@
 }
 
 .adver_list_thumbview {
-    width: 25%;
-    border: solid 3px #e5e5e5;
+    width: 24.5%;
+    /*border: solid 3px #e5e5e5;*/
     background-color: #fff;
     height: 380px;
     overflow: hidden;
     float: left;
     margin-bottom: 5px;
+    margin-right: 0.5%;
 }
 
 .adver_list_thumbview .list_imgbox {
@@ -6043,7 +6044,7 @@ div.scrollingtext {
 }
 
 .top_earner_block {
-    height: 100%;
+    height: 67%;
 }
 
 .dashboard_fixed_first {
@@ -6072,7 +6073,8 @@ div.scrollingtext {
 }
 
 .earn_body {
-    max-height: calc(100vh - 105px);
+    /*max-height: calc(100vh - 105px);*/
+    max-height: calc(100vh - 307px);
     overflow: auto;
 }
 

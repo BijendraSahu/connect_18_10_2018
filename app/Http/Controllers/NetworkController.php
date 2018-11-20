@@ -168,7 +168,7 @@ class NetworkController extends Controller
             $t = '';
             $tmln = new Timeline();
             // Loop records
-            $default_root = "https://www.connecting-one.com/";
+            $default_root = 'https://www.connecting-one.com/';
             foreach ($getChildsByParentID as $chlds) {
 
                 $network_user = UserModel::find($chlds->child_id);

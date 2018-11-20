@@ -9,70 +9,73 @@
             <div class="row">
                 <div class="col-md-3 col-sm-12">
                     <div class="all_left_brics_container">
-                    {{--<div class="left_common_block permanent_display_none">
+                        {{--<div class="left_common_block permanent_display_none">
+                                <div class="basic_heading">
+                                    About
+                                </div>
+                                <div class="profile_name network_name">{{$timeline->name}}</div>
+                                <div class="profile_follow"><i
+                                            class="profile_icons mdi mdi-calendar"></i>{{ date_format(date_create($user->birthday), "d-M-Y")}}
+                                </div>
+                                <div class="profile_follow"><i class="profile_icons mdi mdi-phone"></i>{{isset($user->contact)?$user->contact:'-'}}</div>
+                                <div class="profile_follow last_border_mar0"><i
+                                            class="profile_icons mdi mdi-map-marker"></i>{{isset($user->address)?$user->address:'-'}}
+                                </div>
+                            </div>--}}
+                        <div class="left_common_block">
+                            <div class="icon_circle" style="background-color: #f8c301;">
+                                <i class="mdi mdi-currency-inr"></i>
+                            </div>
                             <div class="basic_heading">
-                                About
+                                My Earning
+                                <div class="btn-group pull-right" href="#Modal_AccountDetails" data-toggle="modal">
+                                    <button type="button" class="btn btn-primary btn-sm res_btn"><span
+                                                class="mdi mdi-currency-inr"></span></button>
+                                    <button type="button" class="btn btn-primary btn-sm res_btn">Redeem</button>
+                                </div>
                             </div>
-                            <div class="profile_name network_name">{{$timeline->name}}</div>
-                            <div class="profile_follow"><i
-                                        class="profile_icons mdi mdi-calendar"></i>{{ date_format(date_create($user->birthday), "d-M-Y")}}
+                            <div class="basic_count" style="color: #f8c301;">Rs {{$amnt}} /-</div>
+                            <input type="hidden" id="my_earning_amt" value="{{$amnt}}"/>
+                        </div>
+                        <div class="left_common_block">
+                            <div class="icon_circle" style="background-color: #ff4141;">
+                                <i class="mdi mdi-currency-inr"></i>
                             </div>
-                            <div class="profile_follow"><i class="profile_icons mdi mdi-phone"></i>{{isset($user->contact)?$user->contact:'-'}}</div>
-                            <div class="profile_follow last_border_mar0"><i
-                                        class="profile_icons mdi mdi-map-marker"></i>{{isset($user->address)?$user->address:'-'}}
+                            <div class="basic_heading">
+                                Advertise Earning {{--{{url('ads-earning')}}--}}
+                                {{--<a href="#" data-toggle="tooltip" data-placement="top" title="coming soon" class="btn btn-primary post_btn_photo">--}}
+                                {{--<i class="basic_icons mdi mdi-view-module"></i>View All--}}
+                                {{--</a>--}}
                             </div>
-                        </div>--}}
-                    <div class="left_common_block">
-                        <div class="icon_circle" style="background-color: #f8c301;">
-                            <i class="mdi mdi-currency-inr"></i>
+                            @php
+                                $user_survey = \App\UserSurveyAmount::where(['user_id' => $user->id])->sum('amt');
+                            @endphp
+                            <div class="basic_count" style="color: #f8c301;">{{round($user_survey,2)}}</div>
                         </div>
-                        <div class="basic_heading">
-                            My Earning
-                            <div class="btn-group pull-right" href="#Modal_AccountDetails" data-toggle="modal">
-                                <button type="button" class="btn btn-primary btn-sm res_btn"><span
-                                            class="mdi mdi-currency-inr"></span></button>
-                                <button type="button" class="btn btn-primary btn-sm res_btn">Redeem</button>
+                        <div class="left_common_block">
+                            <div class="icon_circle" style="background-color: #007cc2;">
+                                <i class="mdi mdi-sitemap"></i>
                             </div>
+                            <div class="basic_heading">
+                                My Networks
+                                <a href="{{url('my-network')}}" class="btn btn-primary post_btn_photo"><i
+                                            class="basic_icons mdi mdi-view-module"></i>View All
+                                </a>
+                            </div>
+                            <div class="basic_count" style="color: #007cc2;">{{$MembersCount}}</div>
                         </div>
-                        <div class="basic_count" style="color: #f8c301;">Rs {{$amnt}} /-</div>
-                        <input type="hidden" id="my_earning_amt" value="{{$amnt}}"/>
-                    </div>
-                    <div class="left_common_block">
-                        <div class="icon_circle" style="background-color: #ff4141;">
-                            <i class="mdi mdi-currency-inr"></i>
+                        <div class="left_common_block">
+                            <div class="icon_circle" style="background-color: #07a20d;">
+                                <i class="mdi mdi-chemical-weapon"></i>
+                            </div>
+                            <div class="basic_heading">
+                                My Friends
+                                <a href="{{url('member')}}" class="btn btn-primary post_btn_photo"><i
+                                            class="basic_icons mdi mdi-view-module"></i>View All
+                                </a>
+                            </div>
+                            <div class="basic_count" style="color: #07a20d;">{{$friend_count}}</div>
                         </div>
-                        <div class="basic_heading">
-                            Advertise Earning {{--{{url('ads-earning')}}--}}
-                            <a href="#" data-toggle="tooltip" data-placement="top" title="coming soon" class="btn btn-primary post_btn_photo">
-                                <i class="basic_icons mdi mdi-view-module"></i>View All
-                            </a>
-                        </div>
-                        <div class="basic_count" style="color: #f8c301;">0</div>
-                    </div>
-                    <div class="left_common_block">
-                        <div class="icon_circle" style="background-color: #007cc2;">
-                            <i class="mdi mdi-sitemap"></i>
-                        </div>
-                        <div class="basic_heading">
-                            My Networks
-                            <a href="{{url('my-network')}}" class="btn btn-primary post_btn_photo"><i
-                                        class="basic_icons mdi mdi-view-module"></i>View All
-                            </a>
-                        </div>
-                        <div class="basic_count" style="color: #007cc2;">{{$MembersCount}}</div>
-                    </div>
-                    <div class="left_common_block">
-                        <div class="icon_circle" style="background-color: #07a20d;">
-                            <i class="mdi mdi-chemical-weapon"></i>
-                        </div>
-                        <div class="basic_heading">
-                            My Friends
-                            <a href="{{url('member')}}" class="btn btn-primary post_btn_photo"><i
-                                        class="basic_icons mdi mdi-view-module"></i>View All
-                            </a>
-                        </div>
-                        <div class="basic_count" style="color: #07a20d;">{{$friend_count}}</div>
-                    </div>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-9">
@@ -256,20 +259,33 @@
                 </div>
                 <div class="modal-body">
                     <div class="terms_modelblock">
-                        <p>1. Membership to be given to the authenticated person who is having Mo No., Bank Account. Valid E-Mail Id. And PAN / Adhar card.</p>
-                        <p>2. As a Member, Person have the role and responsibility to maintain the decorum of the membership, and should not violate any rules and regulation, and Privacy of the company.
+                        <p>1. Membership to be given to the authenticated person who is having Mo No., Bank Account.
+                            Valid E-Mail Id. And PAN / Adhar card.</p>
+                        <p>2. As a Member, Person have the role and responsibility to maintain the decorum of the
+                            membership, and should not violate any rules and regulation, and Privacy of the company.
                         </p>
-                        <p>3. If any member found guilty of violation of policy ,their membership will be terminated without notice.</p>
-                        <p>4. Member will get reward point after completing online surveys/advertisement promo scheme decided as per policy of connecting one which keep changes from time to time with notification to member.</p>
-                        <p>5. Member can upload there paid advertisement at our platform and get benefited of 50% of the advertisement directly after settlement of bills.</p>
-                        <p>6. Member can redeem their credit points/ Money at any moment of time( Min amount – Rs. 10/-)</p>
+                        <p>3. If any member found guilty of violation of policy ,their membership will be terminated
+                            without notice.</p>
+                        <p>4. Member will get reward point after completing online surveys/advertisement promo scheme
+                            decided as per policy of connecting one which keep changes from time to time with
+                            notification to member.</p>
+                        <p>5. Member can upload there paid advertisement at our platform and get benefited of 50% of the
+                            advertisement directly after settlement of bills.</p>
+                        <p>6. Member can redeem their credit points/ Money at any moment of time( Min amount – Rs.
+                            10/-)</p>
                         <p>7. At the time of redemption 10% of the total income will be deducted as service charges.</p>
                         <p>8. Membership fee is non refundable.</p>
                         <p>9. Max Capping of level is Level-250,</p>
-                        <p>10. By visiting this Portal, you agree that the laws of the Republic of India (state of Madhya Pradesh, City Jabalpur)  without regard to its conflict of laws principles, govern this Privacy Policy and any dispute arising in respect hereof shall be subject to and governed by the dispute resolution process set out in the Terms and Conditions. You and Connecting-One.com agree to submit to the personal and exclusive jurisdiction of the court located within Jabalpur, Madhya Pradesh.</p>
+                        <p>10. By visiting this Portal, you agree that the laws of the Republic of India (state of
+                            Madhya Pradesh, City Jabalpur) without regard to its conflict of laws principles, govern
+                            this Privacy Policy and any dispute arising in respect hereof shall be subject to and
+                            governed by the dispute resolution process set out in the Terms and Conditions. You and
+                            Connecting-One.com agree to submit to the personal and exclusive jurisdiction of the court
+                            located within Jabalpur, Madhya Pradesh.</p>
                         <p>11. You are not allowed to share your account with any other individual.</p>
                         <p>12. Payment/Redemption settlement will be carried out in 7 working dates. </p>
-                        <p>13. Your membership will terminate immediately in the unfortunate event of your death. Service accounts are not transferable upon death or otherwise by operation of law.</p>
+                        <p>13. Your membership will terminate immediately in the unfortunate event of your death.
+                            Service accounts are not transferable upon death or otherwise by operation of law.</p>
                         <div class="terms_imgbox">
                             <img src="{{url('images/level.png')}}"/>
                         </div>
@@ -343,7 +359,7 @@
                         <!-- ###################################33 -->
                         {{--  <button type="submit" class="btn btn-warning" id="terms_btn">Accepted<i class="mdi mdi-arrow-right"></i></button>--}}
                         <button type="submit" class="btn btn-primary btn_terms" id="terms_btn"
-                                onclick="refresh_page()"  disabled="disabled">Accepted
+                                onclick="refresh_page()" disabled="disabled">Accepted
                         </button>
                         <button type="button" class="btn btn-default" data-dismiss="modal" onclick="GloCloseModel();">
                             Close
@@ -495,7 +511,7 @@
                 });
             }
         }
-        
+
         function refresh_page() {
             setTimeout(function () {
                 window.location.href = "{{url('dashboard')}}";

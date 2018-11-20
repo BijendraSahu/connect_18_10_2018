@@ -168,6 +168,7 @@
                                            multiple/>
                                     <i class="basic_icons mdi mdi-image"></i>Photo
                                 </button>
+                                <input type="hidden" id="post_img_src" name="post_img_src">
                                 {{--<input class="-upload-pic" accept=".png,.jpg, .jpeg, .gif" type="file"--}}
                                 {{--id="post_file_image" name="post_upload_file[]"--}}
                                 {{--multiple/>--}}
@@ -182,8 +183,8 @@
                                     <div class="location_icon">
                                         <i class="mdi mdi-map-marker"></i>
                                     </div>
-                                        <input id="location-input" class="form-control" type="text"
-                                               placeholder="Enter a location">
+                                    <input id="location-input" class="form-control" name="checkin" type="text"
+                                           placeholder="Enter a location">
                                 </div>
                                 <div class="post_text_block emoji_div"
                                      placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}...🙂"
@@ -197,8 +198,8 @@
                                 <!--<div class="post_emoji"><i class="mdi mdi-emoticon"></i></div>-->
                             </div>
                             <div class="files_block" id="files_block">
-                                <div class="upload_limittxt">You can upload maximum 10 images & 1 video at a time. Video
-                                    file size must not exceed 10 MB.
+                                <div class="upload_limittxt">You can Upload Maximum 10 images of 3MB each & 1 Video of
+                                    15 MB.
                                 </div>
                                 <!--   <div class="all_thumbcontainner style-scroll">-->
                                 <div class="upload_imgbox" id="image_preview">
@@ -209,12 +210,15 @@
                             <div class="post_footer_btn">
                                 <div class="btn-group pull-left" data-toggle="tooltip" title="Post Privacy">
                                     <button type="button" class="btn btn-default" id="set_privacy_txt">Public</button>
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false">
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a onclick="setprivacy('Public');">Public</a></li>
                                         <li><a onclick="setprivacy('Friends');">Friends</a></li>
+                                        <input type="hidden" id="post_privacy_set" name="post_privacy_set"
+                                               value="Public">
                                     </ul>
                                 </div>
                                 {{--<button class="btn btn-primary btn_post" onclick="publish()">Publish</button>--}}
@@ -243,7 +247,6 @@
     </section>
     <script type="text/javascript">
         /************Bijendra*************/
-
         $(document).ready(function () {
 //            function requeststatus() {
             var formData = '_token=' + $('.token').val();
@@ -373,15 +376,33 @@
 
         $(document).ready(function (e) {
             $("#userpostForm").on('submit', function (e) {
+
                 var textval = $('#post_text').text();
                 $('#posttext').val(textval);
                 e.preventDefault();
-                var files = $('#upload_file_image').val();
+                img_ids = [];
+                var i = 0;
+                $('.up_img').each(function () {
+                    var getimg_id = $(this).attr('src');
+//                    img_ids.push([getimg_id.replace('data:image/png;base64,', '')]);
+                    img_ids[i] = $(this).attr('src');
+                    i++;
+                });
+
+                var files = img_ids;
+//                alert(img_ids);
+//                console.log(img_ids);
+//                var files = $('#upload_file_image').val();
                 var videos = $('#upload_file_video').val();
+                var adverimg_length = $('.upimg_box').length;
                 if (textval == '' && files == '' && videos == '') {
-                    swal("Required", "You can't post without any text or image or video", "info");
+                    warning_noti("You can't post without any text or image or video");
+                    HideOnpageLoopader1();
+                } else if (adverimg_length > 10) {
+                    warning_noti("You can upload maximum 10 images for post");
                     HideOnpageLoopader1();
                 } else {
+                    $('#post_img_src').val(JSON.stringify(img_ids));
                     swal({
                         title: "Are you sure?",
                         text: "You want to submit this post...!",
@@ -401,11 +422,14 @@
                                     $('#userpostForm').css("opacity", ".5");
                                     $(".btn_post").attr("disabled", "disabled");
                                     $('#loader').css('display', 'block');
+                                    round_info_noti("WE ARE UPLOADING YOUR POST QUICKLY");
                                 },
                                 success: function (data) {
                                     $('#loader').css('display', 'none');
                                     HideOnpageLoopader1();
-                                    swal("Success!", "Your post has been uploaded...", "success");
+                                    success_noti("SUCESSFULLY POSTED,KEEP GOING");
+                                    $('#post_img_src').val('');
+                                    $('#location-input').val('');
                                     $('#image_preview').text('');
                                     $('.emojionearea-editor').empty();
                                     $('#posttext').text('');
@@ -504,15 +528,10 @@
         //        setInterval(postload, 1000000);
 
         function latest_dashboardpostload() {
-//            var formData = '_token=' + $('.token').val();
-//            var search_user_id = $('.search-user').val();
-//            var limit = Number($('#see_id').val());
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 url: "{{ url('latest_dashboard_post') }}",
-//                data: '{"data":"' + endid + '"}',
-//                data: '{"limit":"' + limit + '"}',
                 beforeSend: function () {
                     $('#userpost').prepend(append_loading_img);
                 },
@@ -535,7 +554,7 @@
                 $('.profile_basic_menu_block').addClass('left_menu_fixed');
                 $('.all_right_block').addClass('right_menu_fixed');
             }
-            if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+            if ($(window).scrollTop() + window.innerHeight == $(document).height()) {
                 if (parseFloat($('#see_id').val()) <= parseFloat($('#pcount').val())) {
                     getmorepost();
                 }
@@ -616,13 +635,13 @@
     </div>
     <script type="text/javascript" src="{{url('js/cropper.min.js')}}"></script>
     <script type="text/javascript" src="{{url('js/post-crop.js')}}"></script>
-    <script type="text/javascript">
-        function activatPlaceSearch() {
-            var input = document.getElementById('location-input');
-            var autocomplete = new google.maps.places.Autocomplete(input);
-        }
-    </script>
-    <script type="text/javascript"
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjTLwOh9QO1yD2K9PWqYOrZ-Tt47OLHdQ&libraries=places&callback=activatPlaceSearch">
-    </script>
+    {{--<script type="text/javascript">--}}
+        {{--function activatPlaceSearch() {--}}
+            {{--var input = document.getElementById('location-input');--}}
+            {{--var autocomplete = new google.maps.places.Autocomplete(input);--}}
+        {{--}--}}
+    {{--</script>--}}
+    {{--<script type="text/javascript"--}}
+            {{--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjTLwOh9QO1yD2K9PWqYOrZ-Tt47OLHdQ&libraries=places&callback=activatPlaceSearch">--}}
+    {{--</script>--}}
 @stop

@@ -66,6 +66,13 @@ Route::resource('my-network', 'NetworkController');
 Route::resource('member', 'MemberController');
 Route::resource('buys', 'BuySellController');
 
+Route::resource('survey', 'SurveyController');
+Route::get('view_survey', 'SurveyController@view_survey');
+Route::get('save_survey', 'SurveyController@save_survey');
+Route::get('survey/{id}/delete', 'SurveyController@destroy');
+Route::get('survey/{id}/show', 'SurveyController@show');
+
+
 
 Route::get('ads-earning', 'EarningController@adsearning');
 Route::get('myprofile', 'ProfileController@edit');
@@ -96,6 +103,7 @@ Route::get('view_report_post', 'AdminController@view_report_post');
 Route::get('buy', 'BuySellController@buy');
 Route::get('myads', 'BuySellController@myads');
 Route::get('myads/{id}/delete', 'BuySellController@delete');
+Route::get('myads/{id}/close', 'BuySellController@close_ad');
 /*******Ads***********/
 
 /**************Admin*************/
@@ -201,6 +209,7 @@ Route::get('postlikelist', 'PostController@postlikelist');
 
 Route::get('getcommentlist', 'PostController@getcommentlist');
 Route::post('post_comment', 'PostController@post_comment');
+Route::post('edit_post_comment', 'PostController@edit_post_comment');
 
 
 Route::get('post/{id}/delete', 'PostController@post_delete');
@@ -282,6 +291,12 @@ Route::post('success', 'CartController@payment_success');
 Route::post('e_atom_payment', 'CartController@e_atom_payment');
 Route::post('failed', 'CartController@payment_failed');
 
+
+Route::post('contact_us', 'LoginController@contact_us');
+
+Route::get('getStateCity', 'LoginController@getStateCity');
+Route::get('selectedgetStateCity', 'LoginController@selectedgetStateCity');
+Route::get('get_post_comment', 'PostController@get_post_comment');
 ////////////*Ecommerse
 
 
@@ -295,12 +310,12 @@ Route::get('user_ads', 'APIController@user_ads');
 Route::get('all_ads', 'APIController@all_ads');
 Route::get('get_category', 'APIController@get_category');
 Route::get('friendlist', 'APIController@checkfriend');
-Route::get('getPost', 'APIController@getPost'); //post
+Route::get('getPost', 'APIController@getPost'); //post -------no use
 Route::get('getPost_new', 'APIController@getPost_new'); //post
 Route::get('getPostbyid', 'APIController@getPostbyid'); //post
-Route::get('getDashboardPost', 'APIController@getDashboardPost'); //post
+Route::get('getDashboardPost', 'APIController@getDashboardPost'); //post -------no use
 Route::get('getDashboardPost_new', 'APIController@getDashboardPost_new'); //post
-Route::get('getFriendPost', 'APIController@getFriendPost'); //post
+Route::get('getFriendPost', 'APIController@getFriendPost'); //post  -------no use
 Route::POST('addpost', 'APIController@addpost'); //post
 Route::POST('addpost2', 'APIController@addpost2'); //post
 Route::POST('post_video', 'APIController@post_video'); //post
@@ -318,6 +333,8 @@ Route::get('adsbycategory', 'APIController@adsbycategory'); //adsbycat
 Route::get('clist', 'APIController@commentlist'); //comment_list
 Route::get('pllist', 'APIController@postlikelist'); //Like_list
 Route::POST('addads', 'APIController@addads'); //user ad_list
+Route::POST('editads', 'APIController@editads'); //Edit ad
+Route::get('deleteads', 'APIController@deleteads'); //user ad_list
 Route::get('uadsdelete', 'APIController@myadsdelete'); //user ad_list
 Route::get('pdelete', 'APIController@post_delete'); //user ad_list
 Route::get('notice', 'APIController@notice'); //show notification
@@ -356,7 +373,12 @@ Route::get('like_post', 'APIController@like_post');
 Route::get('unlike_post', 'APIController@unlike_post');
 Route::get('spam_post', 'APIController@spam_post');
 Route::get('savecomment', 'APIController@savecomment');
+Route::get('savecomment_new', 'APIController@savecomment_new');
 Route::get('post_text', 'APIController@post_text');
+
+Route::get('editcomment', 'APIController@editcomment');
+Route::get('deletecomment', 'APIController@deletecomment');
+Route::get('deactivate_account', 'APIController@deactivate_account');
 
 Route::get('products', 'ProductController@show');
 Route::post('create_product', 'ProductController@store');
@@ -364,6 +386,9 @@ Route::get('create_product', 'ProductController@create');
 Route::get('edit_product/{id}', 'ProductController@edit');
 Route::put('update_product/{id}', 'ProductController@update');
 Route::get('delete_product/{id}', 'ProductController@delete');
+
+
+Route::get('user_network', 'APIController@user_network');  //09/11/2018
 
 
 

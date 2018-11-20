@@ -38,16 +38,44 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use File;
 use Illuminate\Support\Facades\Storage;
+use Validator;
 
 class APIController extends Controller
 {
+
+    /**************Rest API Function**************/
+    public function sendResponse($result, $message)
+    {
+        $response = [
+            'status' => true,
+            'data' => $result,
+            'message' => $message,
+        ];
+
+        return response()->json($response, 200);
+    }
+
+    public function sendError($error, $errorMessages = [], $code = 404)
+    {
+        $response = [
+            'status' => false,
+            'message' => $error,
+        ];
+
+        if (!empty($errorMessages)) {
+            $response['data'] = $errorMessages;
+        }
+        return response()->json($response, $code);
+    }
+
+    /**************Rest API Function**************/
 
     /*****************Login Credentials*******************/
     public function login()
     {
         $email = request('email');
         $password = md5(request('password'));
-        $user = DB::selectOne("select u.id, u.rc, t.fname, t.lname, u.email, u.contact, u.birthday, u.country_id, u.city, u.gender, u.verified, u.otp, u.profile_pic, u.member_type from users u, timelines t where u.timeline_id = t.id and u.email = '$email' and u.password = '$password'");
+        $user = DB::selectOne("select u.id, u.rc, t.fname, t.lname, u.email, u.contact, u.birthday, u.country_id, u.city, u.gender, u.verified, u.otp, u.profile_pic, u.member_type, u.state, u.city, u.address from users u, timelines t where u.timeline_id = t.id and u.email = '$email' and u.password = '$password'");
         if (isset($user)) {
             if (request('token') != null) {
                 $user_master = UserModel::find($user->id);
@@ -348,6 +376,10 @@ class APIController extends Controller
         $asd->ad_category_id = request('ad_category_id');
         $asd->other_cat = request('other_cat');
         $asd->city = request('city');
+        $asd->selling_cost = request('selling_cost');
+        $asd->email = request('email');
+        $asd->contact = request('contact');
+        $asd->location = request('location');
         $asd->save();
 //        if (request('ad_img') != null) {
 //            $adimg = new AdsImages();
@@ -359,21 +391,109 @@ class APIController extends Controller
 //            $adimg->save();
 //        }
         if (request('ad_img') != null) {
-            $data = request('ad_img');
-            $adimg = new AdsImages();
-            list($type, $data) = explode(';', $data);
-            list(, $data) = explode(',', $data);
-            $data = base64_decode($data);
-            $image_name = time() . '.png';
-            $path = "buysell/" . $image_name;
-            file_put_contents($path, $data);
-            $adimg->image_url = $path;
-            $adimg->ad_id = $asd->id;
-            $adimg->save();
+            $array = $request->input('ad_img');
+            foreach (json_decode($array) as $obj) {
+                $adimg = new AdsImages();
+                $data = $obj->image;
+                $data = base64_decode($data);
+                $image_name = str_random(6) . '.png';
+                $destinationPath = 'buysell/' . $image_name;
+//                $directory = "buysell/" . $user->id;
+//                if (!file_exists($directory)) {
+//                    File::makeDirectory($directory);
+//                }
+                file_put_contents($destinationPath, $data);
+                $adimg->image_url = 'buysell/' . $image_name;
+                $adimg->ad_id = $asd->id;
+                $adimg->save();
+            }
         }
+//        if (request('ad_img') != null) {
+//            $data = request('ad_img');
+//            $adimg = new AdsImages();
+//            list($type, $data) = explode(';', $data);
+//            list(, $data) = explode(',', $data);
+//            $data = base64_decode($data);
+//            $image_name = time() . '.png';
+//            $path = "buysell/" . $image_name;
+//            file_put_contents($path, $data);
+//            $adimg->image_url = $path;
+//            $adimg->ad_id = $asd->id;
+//            $adimg->save();
+//        }
 
         $ret['response'] = 'Ad has been submitted';
         echo json_encode($ret);
+//        $result
+//        return $this->sendResponse($client_address, 'Ad has been submitted');
+    }
+
+    public function editads(Request $request)
+    {
+        $asd = Ads::find(request('add_id'));
+        if (isset($asd)) {
+            $asd->user_id = request('user_id');
+            $asd->ad_title = request('ad_title');
+            $asd->ad_description = request('ad_description');
+            $asd->ad_category_id = request('ad_category_id');
+            $asd->other_cat = request('other_cat');
+            $asd->city = request('city');
+            $asd->selling_cost = request('selling_cost');
+            $asd->email = request('email');
+            $asd->contact = request('contact');
+            $asd->location = request('location');
+            $asd->save();
+            if (request('ad_img') != null) {
+                $post_media = AdsImages::where(['ad_id' => $asd->id])->get();
+                foreach ($post_media as $media) {
+                    $image_path = $media->image_url;
+                    if (File::exists($image_path)) {
+                        File::delete($image_path);
+                    }
+                }
+                AdsImages::where(['ad_id' => $asd->id])->delete();
+                $array = $request->input('ad_img');
+                foreach (json_decode($array) as $obj) {
+                    $adimg = new AdsImages();
+                    $data = $obj->image;
+                    $data = base64_decode($data);
+                    $image_name = str_random(6) . '.png';
+                    $destinationPath = 'buysell/' . $image_name;
+//                $directory = "buysell/" . $user->id;
+//                if (!file_exists($directory)) {
+//                    File::makeDirectory($directory);
+//                }
+                    file_put_contents($destinationPath, $data);
+                    $adimg->image_url = 'buysell/' . $image_name;
+                    $adimg->ad_id = $asd->id;
+                    $adimg->save();
+                }
+            }
+            return $this->sendResponse([], 'Ad has been updated');
+        } else {
+            return $this->sendError('No record available', '');
+        }
+    }
+
+    public function deleteads(Request $request)
+    {
+        $asd = Ads::find(request('add_id'));
+        $asd->is_active = 0;
+        $asd->save();
+        if (isset($asd)) {
+//            $post_media = AdsImages::where(['ad_id' => $asd->id])->get();
+//            foreach ($post_media as $media) {
+//                $image_path = $media->image_url;
+//                if (File::exists($image_path)) {
+//                    File::delete($image_path);
+//                }
+//            }
+//            AdsImages::where(['ad_id' => $asd->id])->delete();
+//            $asd->delete();
+            return $this->sendResponse([], 'Ad has been Deleted');
+        } else {
+            return $this->sendError('No record available', '');
+        }
     }
 
     public function user_ads()
@@ -382,17 +502,19 @@ class APIController extends Controller
 //        $ads_img = array();
         $ads = Ads::where(['user_id' => request('user_id'), 'is_active' => 1])->orderBy('id', 'desc')->get();
 //        foreach ($ads as $ad)
-//            $ads_img = AdsImages::where(['ad_id' => $ad->id])->get();
+//        $ads_img = AdsImages::where(['ad_id' => $ad->id])->get();
         foreach ($ads as $item) {
-            $ads_img = AdsImages::where(['ad_id' => $item->id])->first();
-            $results[] = ['id' => $item->id, 'ad_title' => $item->ad_title, 'ad_description' => $item->ad_description, 'ad_category_id' => $item->ad_category_id, 'other_cat' => $item->other_cat, 'user_id' => $item->user_id, 'city' => $item->city, 'status' => $item->status, 'is_approved' => $item->is_approved, 'is_active' => $item->is_active, 'created_time' => $item->created_time, 'ad_img' => isset($ads_img) ? $ads_img->image_url : ''];
+            $ads_img = AdsImages::where(['ad_id' => $item->id])->get();
+            $results[] = ['id' => $item->id, 'ad_title' => $item->ad_title, 'ad_description' => $item->ad_description, 'ad_category_id' => $item->ad_category_id, 'other_cat' => $item->other_cat, 'user_id' => $item->user_id, 'city' => $item->city, 'status' => $item->status, 'is_approved' => $item->is_approved, 'is_active' => $item->is_active, 'created_time' => $item->created_time, 'contact' => $item->contact, 'email' => $item->email, 'selling_cost' => $item->selling_cost, 'location' => $item->location, 'ad_img' => $ads_img];
         }
         if (count($results) > 0) {
-            $ret['response'] = $results;
-            echo json_encode($ret);
+//            $ret['response'] = $results;
+//            echo json_encode($ret);
+            return $this->sendResponse($results, 'User Ads');
         } else {
-            $ret['response'] = 0;
-            echo json_encode($ret);
+            return $this->sendError('No record available', '');
+//            $ret['response'] = 0;
+//            echo json_encode($ret);
         }
     }
 
@@ -402,16 +524,18 @@ class APIController extends Controller
 //        $ads_img = array();
         $ads = Ads::where(['is_active' => 1, 'is_approved' => 1])->orderBy('id', 'desc')->get();
         foreach ($ads as $item) {
-            $ads_img = AdsImages::where(['ad_id' => $item->id])->first();
-            $ad = isset($ads_img) ? $ads_img : '';
-            $results[] = ['id' => $item->id, 'ad_title' => $item->ad_title, 'ad_description' => $item->ad_description, 'ad_category_id' => $item->ad_category_id, 'other_cat' => $item->other_cat, 'user_id' => $item->user_id, 'city' => $item->city, 'status' => $item->status, 'is_approved' => $item->is_approved, 'is_active' => $item->is_active, 'created_time' => $item->created_time, 'ad_img' => isset($ads_img) ? $ads_img->image_url : ''];
+            $ads_img = AdsImages::where(['ad_id' => $item->id])->get();
+//            $ad = isset($ads_img) ? $ads_img : '';
+            $results[] = ['id' => $item->id, 'ad_title' => $item->ad_title, 'ad_description' => $item->ad_description, 'ad_category_id' => $item->ad_category_id, 'other_cat' => $item->other_cat, 'user_id' => $item->user_id, 'city' => $item->city, 'status' => $item->status, 'is_approved' => $item->is_approved, 'is_active' => $item->is_active, 'created_time' => $item->created_time, 'contact' => $item->contact, 'email' => $item->email, 'selling_cost' => $item->selling_cost, 'location' => $item->location, 'ad_img' => $ads_img];
         }
         if (count($results) > 0) {
-            $ret['response'] = $results;
-            echo json_encode($ret);
+//            $ret['response'] = $results;
+//            echo json_encode($ret);
+            return $this->sendResponse($results, 'All Ads');
         } else {
-            $ret['response'] = 0;
-            echo json_encode($ret);
+            return $this->sendError('No record available', '');
+//            $ret['response'] = 0;
+//            echo json_encode($ret);
         }
     }
 
@@ -431,24 +555,35 @@ class APIController extends Controller
         }
     }
 
-    public function adsbycategory()
+    public function adsbycategory(Request $request)
     {
+
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'ad_category_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
         $ad_category_id = request('ad_category_id');
         $results = array();
         $ads_img = array();
         $ads = Ads::where(['is_active' => 1, 'ad_category_id' => $ad_category_id, 'is_approved' => 1])->get();
-        foreach ($ads as $ad)
-            $ads_img = AdsImages::where(['ad_id' => $ad->id])->first();
-
         foreach ($ads as $item) {
-            $results[] = ['id' => $item->id, 'ad_title' => $item->ad_title, 'ad_description' => $item->ad_description, 'ad_category_id' => $item->ad_category_id, 'other_cat' => $item->other_cat, 'user_id' => $item->user_id, 'city' => $item->city, 'status' => $item->status, 'is_approved' => $item->is_approved, 'is_active' => $item->is_active, 'created_time' => $item->created_time, 'ad_img' => isset($ads_img) ? $ads_img->image_url : ''];
+            $ads_img = AdsImages::where(['ad_id' => $item->id])->get();
+//            $ad = isset($ads_img) ? $ads_img : '';
+            $results[] = ['id' => $item->id, 'ad_title' => $item->ad_title, 'ad_description' => $item->ad_description, 'ad_category_id' => $item->ad_category_id, 'other_cat' => $item->other_cat, 'user_id' => $item->user_id, 'city' => $item->city, 'status' => $item->status, 'is_approved' => $item->is_approved, 'is_active' => $item->is_active, 'created_time' => $item->created_time, 'contact' => $item->contact, 'email' => $item->email, 'selling_cost' => $item->selling_cost, 'location' => $item->location, 'ad_img' => $ads_img];
         }
         if (count($results) > 0) {
-            $ret['response'] = $results;
-            echo json_encode($ret);
+//            $ret['response'] = $results;
+//            echo json_encode($ret);
+            return $this->sendResponse($results, 'Category Ads');
         } else {
-            $ret['response'] = 0;
-            echo json_encode($ret);
+            return $this->sendError('No record available', '');
+//            $ret['response'] = 0;
+//            echo json_encode($ret);
         }
     }
 
@@ -472,7 +607,7 @@ class APIController extends Controller
     public function commentlist()
     {
         $post_id = request('post_id');
-        $post_comments = DB::select("select c.user_id, t.name, u.profile_pic, c.description, c.description2 from comments c, users u, timelines t where c.user_id = u.id and u.timeline_id = t.id and c.post_id=$post_id");
+        $post_comments = DB::select("select c.id, c.user_id, t.name, u.profile_pic, c.description, c.description2 from comments c, users u, timelines t where c.user_id = u.id and u.timeline_id = t.id and c.post_id=$post_id");
         if (count($post_comments) > 0) {
             $ret['response'] = $post_comments;
             echo json_encode($ret);
@@ -528,7 +663,7 @@ class APIController extends Controller
         }
 //            }
 //        }
-        $ret['response'] = 'Post has been submitted' . $posts->id;
+        $ret['response'] = 'Successfully posted, keep going' . $posts->id;
         echo json_encode($ret);
     }
 
@@ -548,6 +683,8 @@ class APIController extends Controller
         $posts->created_at = Carbon::now('Asia/Kolkata');
         $posts->timeline_id = $user->timeline_id;
         $posts->posted_by = request('user_id');
+        $posts->checkin = request('checkin');
+        $posts->post_privacy = request('post_privacy');
         $posts->save();
         if (request('post_file') != null) {
             $array = $request->input('post_file');
@@ -568,7 +705,7 @@ class APIController extends Controller
                 $post_media->save();
             }
         }
-        $ret['response'] = 'Post has been submitted';
+        $ret['response'] = 'Successfully posted, keep going';
         echo json_encode($ret);
     }
 
@@ -774,6 +911,86 @@ class APIController extends Controller
         //ALTER TABLE `users` CHANGE `timezone` `token` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
     }
 
+    public function savecomment_new(Request $request)
+    {
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'user_id' => 'required',
+            'post_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+        $des = json_decode($_GET['description']);
+        $client_address = new Comments();
+        $client_address->post_id = request('post_id');
+        $client_address->user_id = request('user_id');
+        $client_address->description = LaravelEmojiOneFacade::toShort($des->comment);
+        $client_address->description2 = $des->comment;
+        $client_address->save();
+//        $ret['response'] = 1;
+//        echo json_encode($ret);
+        return $this->sendResponse($client_address, 'Comment has been saved');
+        /******Notification*******/
+        $post = Posts::find(request('post_id'));
+        $user = UserModel::find($post->posted_by);
+        if (isset($user->token) && request('user_id') != $post->posted_by) {
+            $user_comment = UserModel::find(request('user_id'));
+            $comment_by = ucwords($user_comment->timeline->name);
+            $title = "Post Comment";
+            $message = "$comment_by is commented on your post";
+            $token = $user->token;
+            $data = $post;
+            $user_notification = new UserNotifications();
+            $user_notification->post_id = request('post_id');
+            $user_notification->user_id = $post->posted_by;
+            $user_notification->notified_by = $user_comment->id;
+            $user_notification->description = "<b>$comment_by</b> is commented on your post";
+            $user_notification->created_at = Carbon::now('Asia/Kolkata');
+            $user_notification->save();
+//            event(new StatusLiked($post->posted_by));
+            AdminModel::getNotification($token, $title, $message, $data);
+        }
+        /******Notification*******/
+
+        //ALTER TABLE `users` CHANGE `timezone` `token` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
+    }
+
+    public function editcomment()
+    {
+        $comment_id = request('comment_id');
+        $des = json_decode($_GET['description']);
+        $comment = Comments::find($comment_id);
+        $comment->description = LaravelEmojiOneFacade::toShort($des->comment);
+        $comment->description2 = $des->comment;
+        $comment->save();
+        $ret['response'] = "Comment has been updated";
+        echo json_encode($ret);
+    }
+
+    public function deletecomment()
+    {
+        $comment_id = request('comment_id');
+        $comment = Comments::find($comment_id)->delete();
+        $ret['response'] = "Comment has been deleted";
+        echo json_encode($ret);
+    }
+
+    public function deactivate_account()
+    {
+        $user_id = request('user_id');
+        $user = UserModel::find($user_id);
+        $user->active = 0;
+        $user->save();
+//        $des = json_decode($_GET['description']);
+//        $comment = Comments::find($comment_id)->delete();
+        //with('message', 'Ad has been rejected...!');
+        $ret['response'] = "Account has been deactivated";
+        echo json_encode($ret);
+    }
+
     public function postshare()
     {
         $post_id = request('post_id');
@@ -872,8 +1089,13 @@ class APIController extends Controller
     public function getPost_new()
     {
         $user = UserModel::find(request('user_id'));
+        $f_user = UserModel::find(request('friend_id'));
+        $friend = DB::selectOne("select f.id, f.status as status from friends f where f.status = 'friends' and (f.user_id = $user->id and f.friend_id = $f_user->id or f.user_id = $f_user->id and f.friend_id = $user->id)");
         $user_id = $user->id;
-        $posts1 = DB::select("select p.id as id, p.description,p.description2, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active, (select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, post_created_by from posts p where  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC");
+
+        $public = "select p.id as id, p.description,p.description2, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active, (select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, post_created_by from posts p where p.post_privacy = 'public' and p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC";
+        $friend_public = "select p.id as id, p.description,p.description2, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active, (select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, post_created_by from posts p where (p.post_privacy = 'public' or p.post_privacy = 'friends') and  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC";
+        $posts1 = isset($friend) ? DB::select($friend_public) : DB::select($public);
         $numrows = count($posts1);
         $rowsperpage = 10;
         $totalpages = ceil($numrows / $rowsperpage);
@@ -890,9 +1112,11 @@ class APIController extends Controller
         $offset = ($currentpage - 1) * $rowsperpage;
 
         $results = array();
-        $s = "select p.id as id, p.description,p.description2, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active, (select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, post_created_by from posts p where  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
+        $s = "select p.id as id, p.description,p.description2, p.checkin, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active, (select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, p.post_created_by from posts p where p.post_privacy = 'public' and  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
+        $q = "select p.id as id, p.description,p.description2, p.checkin, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active, (select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, p.post_created_by from posts p where (p.post_privacy = 'public' or p.post_privacy = 'friends') and  p.active = 1 and p.user_id=$user_id ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
 //        echo $s;
-        $posts = DB::select($s);
+        $n_s = isset($friend) ? $s : $q;
+        $posts = DB::select($n_s);
 
         if (count($posts) > 0) {
             foreach ($posts as $post) {
@@ -913,7 +1137,7 @@ class APIController extends Controller
 
                 /*********Change in 5th oct 18**********/
 
-                $results[] = ['id' => $post->id, 'description' => $post->description, 'description2' => $post->description2, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'post_created_by_name' => $post->post_created_by_name, 'post_created_by' => $post->post_created_by, 'media' => $media_re, 'comment' => count($comment_re), 'like' => count($like_re), 'spam' => count($spam_re), 'dislike' => count($dislike), 'is_like' => isset($is_like) ? '1' : '0', 'is_spam' => isset($is_spam) ? '1' : '0', 'is_dislike' => isset($is_dislike) ? '1' : '0'];
+                $results[] = ['id' => $post->id, 'description' => $post->description, 'description2' => $post->description2, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'post_created_by_name' => $post->post_created_by_name, 'post_created_by' => $post->post_created_by, 'checkin' => $post->checkin, 'media' => $media_re, 'comment' => count($comment_re), 'like' => count($like_re), 'spam' => count($spam_re), 'dislike' => count($dislike), 'is_like' => isset($is_like) ? '1' : '0', 'is_spam' => isset($is_spam) ? '1' : '0', 'is_dislike' => isset($is_dislike) ? '1' : '0'];
             }
             $ret['response'] = $results;
             echo json_encode($ret);
@@ -1004,7 +1228,7 @@ class APIController extends Controller
         $offset = ($currentpage - 1) * $rowsperpage;
 
         $results = array();
-        $s = "select p.id as id, p.description, p.description2, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active,(select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, post_created_by from posts p where  p.active = 1 and p.user_id=$user_id or  p.user_id in  (select fr.user_id from friends fr, users unn where fr.status='friends' and fr.friend_id=$user_id and unn.id=fr.user_id and unn.active = 1) or p.user_id in (select f.friend_id from friends f, users un where f.status='friends' and f.user_id=$user_id and un.id= f.friend_id and un.active = 1) ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
+        $s = "select p.id as id, p.description, p.description2, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active,(select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, post_created_by,p.checkin from posts p where  p.active = 1 and p.user_id=$user_id or  p.user_id in  (select fr.user_id from friends fr, users unn where fr.status='friends' and fr.friend_id=$user_id and unn.id=fr.user_id and unn.active = 1) or p.user_id in (select f.friend_id from friends f, users un where f.status='friends' and f.user_id=$user_id and un.id= f.friend_id and un.active = 1) ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
 //        echo $s;
         $posts = DB::select($s);
 
@@ -1026,7 +1250,7 @@ class APIController extends Controller
                 $is_dislike = Post_unlikes::where(['user_id' => $user_id, 'post_id' => $post->id])->first();
                 /*********Change in 5th oct 18**********/
 
-                $results[] = ['id' => $post->id, 'description' => $post->description, 'description2' => $post->description2, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'post_created_by_name' => $post->post_created_by_name, 'post_created_by' => $post->post_created_by, 'media' => $media_re, 'comment' => count($comment_re), 'like' => count($like_re), 'spam' => count($spam), 'dislike' => count($dislike), 'is_like' => isset($is_like) ? '1' : '0', 'is_spam' => isset($is_spam) ? '1' : '0', 'is_dislike' => isset($is_dislike) ? '1' : '0'];
+                $results[] = ['id' => $post->id, 'description' => $post->description, 'description2' => $post->description2, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'post_created_by_name' => $post->post_created_by_name, 'post_created_by' => $post->post_created_by, 'checkin' => $post->checkin, 'media' => $media_re, 'comment' => count($comment_re), 'like' => count($like_re), 'spam' => count($spam), 'dislike' => count($dislike), 'is_like' => isset($is_like) ? '1' : '0', 'is_spam' => isset($is_spam) ? '1' : '0', 'is_dislike' => isset($is_dislike) ? '1' : '0'];
             }
             $ret['response'] = $results;
             echo json_encode($ret);
@@ -1055,7 +1279,7 @@ class APIController extends Controller
             $is_dislike = Post_unlikes::where(['post_id' => $post->id])->first();
             /*********Change in 5th oct 18**********/
 
-            $results[] = ['id' => $post->id, 'description' => $post->description, 'description2' => $post->description2, 'name' => $post->timeline->name, 'profile_pic' => $post->user->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'post_created_by_name' => $post->post_created_by_name, 'post_created_by' => $post->post_created_by, 'media' => $media_re, 'comment' => count($comment_re), 'like' => count($like_re), 'spam' => count($spam), 'dislike' => count($dislike), 'is_like' => isset($is_like) ? '1' : '0', 'is_spam' => isset($is_spam) ? '1' : '0', 'is_dislike' => isset($is_dislike) ? '1' : '0'];
+            $results[] = ['id' => $post->id, 'description' => $post->description, 'description2' => $post->description2, 'name' => $post->timeline->name, 'profile_pic' => $post->user->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'post_created_by_name' => $post->post_created_by_name, 'post_created_by' => $post->post_created_by, 'checkin' => $post->checkin, 'media' => $media_re, 'comment' => count($comment_re), 'like' => count($like_re), 'spam' => count($spam), 'dislike' => count($dislike), 'is_like' => isset($is_like) ? '1' : '0', 'is_spam' => isset($is_spam) ? '1' : '0', 'is_dislike' => isset($is_dislike) ? '1' : '0'];
             $ret['response'] = $results;
             echo json_encode($ret);
         } else {
@@ -1836,9 +2060,10 @@ class APIController extends Controller
             $user->contact = $contact;
             $user->birthday = Carbon::parse(request('dob'))->format('Y-m-d');
             $user->password = md5(request('password'));
-            $user->city = request('city');
             $user->token = request('token');
-            $user->country_id = request('country');
+            $user->country_id = 91;
+            $user->city = request('city');
+            $user->state = request('state');
             $user->gender = request('gender');
             $user->otp = $otp;
             $user->rc = "rc" . $rc;
@@ -1944,4 +2169,53 @@ class APIController extends Controller
         }
     }
 
+    public function user_network(Request $request)
+    {
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'user_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+        $user_id = request('user_id'); //user_id
+        $user = UserModel::find($user_id);
+        if (isset($user)) {
+            // Id to get records
+            $lst_usr_id = 0;
+            // Get childs by ParentID from relation table
+            $rltn = new relation();
+            // Get User Referral ID by User ID
+            // Timeline ID and autogen ID is same.
+            $getPrntRfrlID = $user::select('rc')->where('id', $user->id)->get();
+//            $getChildsByParentID = $rltn::select('child_id', 'id')->where('parent_id', $getPrntRfrlID[0]->rc)->limit(1)->get();
+            $getPrntRfrlIDrc = $getPrntRfrlID[0]->rc;
+            $getChildsByParentID = DB::select("select child_id, id from relations where parent_id = '$getPrntRfrlIDrc'");
+            // Variable to create dynamic template
+            $t = '';
+            $tmln = new Timeline();
+            // Loop records
+            $result = [];
+            if (count($getChildsByParentID) > 0) {
+                foreach ($getChildsByParentID as $chlds) {
+                    $network_user = UserModel::find($chlds->child_id);
+                    $getUserDetailsByID = $tmln::select('fname', 'lname', 'avatar_id')->where('id', $network_user->timeline_id)->get();
+                    $getParentReferalID = $user::select('rc')->where('id', $chlds->child_id)->get();
+                    $getMembersCount = $rltn::select('id')->where('parent_id', $getParentReferalID[0]->rc)->count();
+                    $result[] = ['UserID' => $chlds->child_id, 'FirstName' => $getUserDetailsByID[0]->fname, 'LastName' => $getUserDetailsByID[0]->lname, 'ImageID' => $network_user->profile_pic, 'MemberCount' => $getMembersCount];
+                    $lst_usr_id = $chlds->id;
+                }
+//        return response()->json(array('t' => $result));
+                return $this->sendResponse($result, 'User Network List');
+            } else {
+                return $this->sendError('No member available in your network list', '');
+            }
+        } else {
+            return $this->sendError('User record not available', '');
+        }
+    }
 }
+
+

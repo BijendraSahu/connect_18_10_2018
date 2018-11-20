@@ -21,7 +21,7 @@ class Ads extends Model
 
     public function scopeGetActiveAdsAdmin($query)
     {
-        return $query->where(['is_active' => 1])->get();
+        return $query->where(['is_active' => 1])->orderBy('id', 'desc')->get();
     }
 
     public function ad_cat()

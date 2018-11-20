@@ -9,7 +9,7 @@
             type="text/javascript"></script>
     <style type="text/css">
         /*.exis_msg {*/
-            /*margin-left: -15px;*/
+        /*margin-left: -15px;*/
         /*}*/
     </style>
     <section class="container-fluid overall_containner dash_respad">
@@ -19,7 +19,16 @@
                     <div class="profile_img_block">
                         <img src="{{url('').'/'.$user->profile_pic}}"/>
                     </div>
-                    <div class="profile_name">{{$timeline->name}}</div>
+
+                    <div class="profile_name">
+                        @if($user->member_type=='paid')
+                            <svg style="width:24px;height:24px" viewBox="0 0 24 24" data-toggle="tooltip"
+                                 data-placement="top" title="Paid User">
+                                <path fill="#007cc2"
+                                      d="M9.04,21.54C10,21.83 10.97,22 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2A10,10 0 0,0 2,12C2,16.25 4.67,19.9 8.44,21.34C8.35,20.56 8.26,19.27 8.44,18.38L9.59,13.44C9.59,13.44 9.3,12.86 9.3,11.94C9.3,10.56 10.16,9.53 11.14,9.53C12,9.53 12.4,10.16 12.4,10.97C12.4,11.83 11.83,13.06 11.54,14.24C11.37,15.22 12.06,16.08 13.06,16.08C14.84,16.08 16.22,14.18 16.22,11.5C16.22,9.1 14.5,7.46 12.03,7.46C9.21,7.46 7.55,9.56 7.55,11.77C7.55,12.63 7.83,13.5 8.29,14.07C8.38,14.13 8.38,14.21 8.35,14.36L8.06,15.45C8.06,15.62 7.95,15.68 7.78,15.56C6.5,15 5.76,13.18 5.76,11.71C5.76,8.55 8,5.68 12.32,5.68C15.76,5.68 18.44,8.15 18.44,11.43C18.44,14.87 16.31,17.63 13.26,17.63C12.29,17.63 11.34,17.11 11,16.5L10.33,18.87C10.1,19.73 9.47,20.88 9.04,21.57V21.54Z"/>
+                            </svg>
+                        @endif
+                        {{$timeline->name}}</div>
                     {{--<div class="profile_follow"><i class="profile_icons mdi mdi-chemical-weapon"></i>100 Friends</div>--}}
 
                     <ul class="profile_ul">
@@ -48,10 +57,22 @@
             </div>
             <div class="col-md-8 col-sm-12 dashboard_center_padding">
                 <div class="col-sm-12 dashboard_fixed_first" id="market_line">
-                    <script type="text/javascript">
-                        var gainTicker = new WBIHorizontalTicker('gainers');
-                        gainTicker.start();
-                    </script>
+                {{--<script type="text/javascript">--}}
+                {{--var gainTicker = new WBIHorizontalTicker('gainers');--}}
+                {{--gainTicker.start();--}}
+                {{--</script>--}}
+                <!-- TradingView Widget BEGIN -->
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <div class="tradingview-widget-copyright"><span class="blue-text">Stock Market Update</span> By
+                            Connecting-One
+                        </div>
+                        <script type="text/javascript"
+                                src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
+                        </script>
+                    </div>
+                    <!-- TradingView Widget END -->
+
                 </div>
                 <div class="col-md-8 col-sm-12">
                     <div class="dynamic_overlay">
@@ -59,7 +80,8 @@
                             <form enctype="multipart/form-data" id="userpostForm">
                                 <div class="post_head">
                                     <span class="post_title"><i class="mdi mdi-pencil"></i>Make Post</span>
-                                    <button type="button" class="btn btn-primary post_btn_video" onclick="checkin_click();">
+                                    <button type="button" class="btn btn-primary post_btn_video"
+                                            onclick="checkin_click();">
                                         <i class="basic_icons mdi mdi-map-marker"></i>Check In
                                     </button>
                                     <a class="btn btn-primary post_btn_video">
@@ -80,6 +102,7 @@
                                                multiple/>
                                         <i class="basic_icons mdi mdi-image"></i>Photo
                                     </a>
+                                    <input type="hidden" id="post_img_src" name="post_img_src">
                                     {{--<input class="-upload-pic" accept=".png,.jpg, .jpeg, .gif" type="file"--}}
                                     {{--id="post_file_image" name="post_upload_file[]"--}}
                                     {{--multiple/>--}}
@@ -90,13 +113,17 @@
                                     <div class="post_imgblock">
                                         <img src="{{url('').'/'.$user->profile_pic}}"/>
                                     </div>
+
                                     <div class="location_block" id="checkin_block">
                                         <div class="location_icon">
                                             <i class="mdi mdi-map-marker"></i>
                                         </div>
-                                        <input id="location-input" class="form-control" type="text"
+
+                                        <input id="location-input" class="placepicker form-control" name="checkin" type="text"
                                                placeholder="Enter a location">
                                     </div>
+
+
                                     <div class="post_text_block emoji_div"
                                          placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}...🙂"
                                          id="post_text_emoji">
@@ -121,14 +148,18 @@
                                 </div>
                                 <div class="post_footer_btn">
                                     <div class="btn-group pull-left" data-toggle="tooltip" title="Post Privacy">
-                                        <button type="button" class="btn btn-default" id="set_privacy_txt">Public</button>
-                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <button type="button" class="btn btn-default" id="set_privacy_txt">Public
+                                        </button>
+                                        <button type="button" class="btn btn-primary dropdown-toggle"
+                                                data-toggle="dropdown" aria-expanded="false">
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
                                             <li><a onclick="setprivacy('Public');">Public</a></li>
                                             <li><a onclick="setprivacy('Friends');">Friends</a></li>
                                         </ul>
+                                        <input type="hidden" id="post_privacy_set" name="post_privacy_set"
+                                               value="Public">
                                     </div>
                                     {{--<button class="btn btn-primary btn_post" onclick="publish()">Publish</button>--}}
                                     <button type="submit" name="submit" class="btn btn-primary btn_post" id="publish"
@@ -227,62 +258,169 @@
                 <div class="col-md-4 col-sm-10 dashboard_fixed_second">
                     <div class="all_right_block">
                         <div class="servey_block">
-                        <div class="panel panel-default">
-                            <div class="panel-heading basic_headgradian">
-                                <b>Online Survey</b>
-                                <div class="button_head glo_headbtn"></div>
-                            </div>
-                            <div class="panel-body servey_ul style-scroll">
-                                <ul>
-                                    <li>
-                                        <div class="servey_row" data-toggle="modal" data-target="#Modal_serveydetails">
-                                            <div class="servey_title">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज
-                                                साधु-संत?
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar progress-bar-success progress-bar-striped"
-                                                     role="progressbar"
-                                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                                     style="width:40%">
-                                                    40% (yes)
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="servey_row" data-toggle="modal" data-target="#Modal_serveydetails">
-                                            <div class="servey_title">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज
-                                                साधु-संत?
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar progress-bar-success progress-bar-striped"
-                                                     role="progressbar"
-                                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                                     style="width:40%">
-                                                    40% (yes)
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="servey_row" data-toggle="modal" data-target="#Modal_serveydetails">
-                                            <div class="servey_title">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज
-                                                साधु-संत?
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar progress-bar-success progress-bar-striped"
-                                                     role="progressbar"
-                                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
-                                                     style="width:40%">
-                                                    40% (yes)
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
+                            <div class="panel panel-default">
+                                <div class="panel-heading basic_headgradian">
+                                    <b>Online Survey</b>
+                                    <div class="button_head glo_headbtn"></div>
+                                </div>
+                                <div class="panel-body servey_ul style-scroll">
+                                    @php
+                                        $surveys = \App\Survey::GetSurveys();
+                                    @endphp
+                                    <ul>
+                                        @foreach($surveys as $survey)
+                                            @php
+                                                $total_ans=0;
+                                                    $survey_count = \App\SurveyCount::where(['survey_id'=>$survey->id])->first();
+                                            @endphp
+                                            <li>
+                                                <div class="servey_row" data-toggle="modal"
+                                                     data-target="#Modal_serveydetails" id="{{$survey->id}}"
+                                                     onclick="view_survey(this);">
+                                                    <div class="servey_title">{{$survey->question}}</div>
+                                                    <div class="progress">
+                                                        @if($survey->question_type == 2)
+                                                            @php
+                                                                $total_ans += $survey_count->option1_count + $survey_count->option2_count;
+                                                            @endphp
+                                                            @if($total_ans > 0)
+                                                                <div class="progress-bar progress-bar-info progress-bar-striped active"
+                                                                     role="progressbar"
+                                                                     aria-valuenow="{{round($survey_count->option1_count/$total_ans*100,2)}}"
+                                                                     aria-valuemin="0"
+                                                                     aria-valuemax="100" data-toggle="tooltip"
+                                                                     data-placement="top"
+                                                                     title="{{$survey->option1}}({{round($survey_count->option1_count/$total_ans*100,2)}}%)"
+                                                                     style="width:{{round($survey_count->option1_count/$total_ans*100,2)}}%">
+                                                                </div>
+                                                                <div class="progress-bar progress-bar-danger progress-bar-striped active"
+                                                                     role="progressbar"
+                                                                     aria-valuenow="{{round($survey_count->option1_count/$total_ans*100,2)}}"
+                                                                     aria-valuemin="0"
+                                                                     aria-valuemax="100" data-toggle="tooltip"
+                                                                     data-placement="top"
+                                                                     title="{{$survey->option2}}({{round($survey_count->option2_count/$total_ans*100,2)}}%)"
+                                                                     style="width:{{round($survey_count->option2_count/$total_ans*100,2)}}%">
+                                                                </div>
+                                                            @endif
+                                                        @elseif($survey->question_type == 3)
+                                                            @php
+                                                                $total_ans += $survey_count->option1_count + $survey_count->option2_count+ $survey_count->option3_count;
+                                                            @endphp
 
+                                                            @if($total_ans > 0)
+                                                                <div class="progress-bar progress-bar-info progress-bar-striped active"
+                                                                     role="progressbar"
+                                                                     aria-valuenow="{{round($survey_count->option1_count/$total_ans*100,2)}}"
+                                                                     aria-valuemin="0"
+                                                                     aria-valuemax="100" data-toggle="tooltip"
+                                                                     data-placement="top"
+                                                                     title="{{$survey->option1}}({{round($survey_count->option1_count/$total_ans*100,2)}}%)"
+                                                                     style="width:{{round($survey_count->option1_count/$total_ans*100,2)}}%">
+                                                                </div>
+                                                                <div class="progress-bar progress-bar-danger progress-bar-striped active"
+                                                                     role="progressbar"
+                                                                     aria-valuenow="{{round($survey_count->option2_count/$total_ans*100,2)}}"
+                                                                     aria-valuemin="0"
+                                                                     aria-valuemax="100" data-toggle="tooltip"
+                                                                     data-placement="top"
+                                                                     title="{{$survey->option2}}({{round($survey_count->option2_count/$total_ans*100,2)}}
+                                                                             %)"
+                                                                     style="width:{{round($survey_count->option2_count/$total_ans*100,2)}}%">
+                                                                </div>
+                                                                <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                                                                     role="progressbar"
+                                                                     aria-valuenow="{{round($survey_count->option3_count/$total_ans*100,2)}}"
+                                                                     aria-valuemin="0"
+                                                                     aria-valuemax="100" data-toggle="tooltip"
+                                                                     data-placement="top"
+                                                                     title="{{$survey->option3}}({{round($survey_count->option3_count/$total_ans*100,2)}}%)"
+                                                                     style="width:{{round($survey_count->option3_count/$total_ans*100,2)}}%">
+                                                                </div>
+                                                            @else
+                                                                @php
+                                                                    $total_ans += $survey_count->option1_count + $survey_count->option2_count + $survey_count->option3_count + $survey_count->option4_count;
+                                                                @endphp
+                                                                @if($total_ans > 0)
+                                                                    <div class="progress-bar progress-bar-success progress-bar-striped active"
+                                                                         role="progressbar"
+                                                                         aria-valuenow="{{round($survey_count->option1_count/$total_ans*100,2)}}"
+                                                                         data-toggle="tooltip" data-placement="top"
+                                                                         title="{{$survey->option1}}({{round($survey_count->option1_count/$total_ans*100,2)}}%)"
+                                                                         aria-valuemin="0"
+                                                                         aria-valuemax="100"
+                                                                         style="width:{{round($survey_count->option1_count/$total_ans*100,2)}}%">
+                                                                    </div>
+
+                                                                    <div class="progress-bar progress-bar-info progress-bar-striped active"
+                                                                         role="progressbar"
+                                                                         aria-valuenow="{{round($survey_count->option2_count/$total_ans*100,2)}}"
+                                                                         data-toggle="tooltip" data-placement="top"
+                                                                         title="{{$survey->option2}}({{round($survey_count->option2_count/$total_ans*100,2)}}%)"
+                                                                         aria-valuemin="0"
+                                                                         aria-valuemax="100"
+                                                                         style="width:{{round($survey_count->option2_count/$total_ans*100,2)}}%">
+                                                                    </div>
+                                                                    <div class="progress-bar progress-bar-danger progress-bar-striped active"
+                                                                         role="progressbar"
+                                                                         aria-valuenow="{{round($survey_count->option3_count/$total_ans*100,2)}}"
+                                                                         data-toggle="tooltip" data-placement="top"
+                                                                         title="{{$survey->option3}}({{round($survey_count->option3_count/$total_ans*100,2)}}%)"
+                                                                         aria-valuemin="0"
+                                                                         aria-valuemax="100"
+                                                                         style="width:{{round($survey_count->option3_count/$total_ans*100,2)}}%">
+                                                                    </div>
+                                                                    <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                                                                         role="progressbar"
+                                                                         aria-valuenow="{{round($survey_count->option4_count/$total_ans*100,2)}}"
+                                                                         data-toggle="tooltip" data-placement="top"
+                                                                         title="{{$survey->option4}}({{round($survey_count->option4_count/$total_ans*100,2)}}%)"
+                                                                         aria-valuemin="0"
+                                                                         aria-valuemax="100"
+                                                                         style="width:{{round($survey_count->option4_count/$total_ans*100,2)}}%">
+                                                                    </div>
+                                                                @endif
+                                                            @endif
+                                                        @endif
+
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                        {{--<li>--}}
+                                        {{--<div class="servey_row" data-toggle="modal" data-target="#Modal_serveydetails">--}}
+                                        {{--<div class="servey_title">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज--}}
+                                        {{--साधु-संत?--}}
+                                        {{--</div>--}}
+                                        {{--<div class="progress">--}}
+                                        {{--<div class="progress-bar progress-bar-success progress-bar-striped"--}}
+                                        {{--role="progressbar"--}}
+                                        {{--aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"--}}
+                                        {{--style="width:40%">--}}
+                                        {{--40% (yes)--}}
+                                        {{--</div>--}}
+                                        {{--</div>--}}
+                                        {{--</div>--}}
+                                        {{--</li>--}}
+                                        {{--<li>--}}
+                                        {{--<div class="servey_row" data-toggle="modal" data-target="#Modal_serveydetails">--}}
+                                        {{--<div class="servey_title">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज--}}
+                                        {{--साधु-संत?--}}
+                                        {{--</div>--}}
+                                        {{--<div class="progress">--}}
+                                        {{--<div class="progress-bar progress-bar-success progress-bar-striped"--}}
+                                        {{--role="progressbar"--}}
+                                        {{--aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"--}}
+                                        {{--style="width:40%">--}}
+                                        {{--40% (yes)--}}
+                                        {{--</div>--}}
+                                        {{--</div>--}}
+                                        {{--</div>--}}
+                                        {{--</li>--}}
+                                    </ul>
+
+                                </div>
                             </div>
-                        </div>
                         </div>
                         <div class="followers_block panel panel-default">
                             <div class="panel panel-default" style="margin-bottom: 5px;">
@@ -345,7 +483,18 @@
                             {!!$top10earners_list!!}
                         </ul>
                     </div>
+
+
                 </div>
+                {{--<a href="https://www.accuweather.com/en/in/jabalpur/204410/weather-forecast/204410" class="aw-widget-legal">--}}
+                    {{--<!----}}
+                    {{--By accessing and/or using this code snippet, you agree to AccuWeather’s terms and conditions (in English) which can be found at https://www.accuweather.com/en/free-weather-widgets/terms and AccuWeather’s Privacy Statement (in English) which can be found at https://www.accuweather.com/en/privacy.--}}
+                    {{---->--}}
+                {{--</a><div id="awcc1542631765607" class="aw-widget-current"  data-locationkey="204410" data-unit="c" data-language="en-us" data-useip="true" data-uid="awcc1542631765607"></div><script type="text/javascript" src="https://oap.accuweather.com/launch.js"></script>--}}
+            <!-- weather widget start --><a target="_blank" href="https://www.booked.net/weather/jabalpur-36029"><img src="https://w.bookcdn.com/weather/picture/3_36029_1_1_3a618c_250_ffffff_333333_08488D_1_ffffff_333333_0_6.png?scode=124&domid=w209&anc_id=68429"  alt="booked.net"/></a><!-- weather widget end -->
+
+
+
             </div>
         </div>
     </section>
@@ -498,25 +647,26 @@
                                 aria-hidden="true">×</span></button>
                     <h4 class="modal-title" id="myModalLabel">Please share your opinion</h4>
                 </div>
-                <div class="modal-body">
-                    <div class="servey_question"><i class="mdi mdi-help-circle basic_icon_margin"></i>
-                        क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज साधु-संत?
-                    </div>
-                    <div class="servey_ans">
+                <div class="modal-body" id="survey_body">
+                    {{--<div class="servey_question"><i class="mdi mdi-help-circle basic_icon_margin"></i>--}}
+                    {{--<span id="view_survey_question">क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज साधु-संत?</span>--}}
+                    {{--</div>--}}
+                    {{--<div class="servey_ans">--}}
+                    {{--<div class="radio">--}}
+                    {{--<input id="radio-1" value="yes" class="gender" name="servey_radio" type="radio" checked="">--}}
+                    {{--<label for="radio-1" class="radio-label">Yes</label>--}}
+                    {{--</div>--}}
+                    {{--<div class="radio">--}}
+                    {{--<input id="radio-2" value="no" class="gender" name="servey_radio" type="radio">--}}
+                    {{--<label for="radio-2" class="radio-label">No</label>--}}
+                    {{--</div>--}}
 
-                        <div class="radio">
-                            <input id="radio-1" value="yes" class="gender" name="servey_radio" type="radio" checked="">
-                            <label for="radio-1" class="radio-label">Yes</label>
-                        </div>
-                        <div class="radio">
-                            <input id="radio-2" value="no" class="gender" name="servey_radio" type="radio">
-                            <label for="radio-2" class="radio-label">No</label>
-                        </div>
-
-                    </div>
+                    {{--</div>--}}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                    <button type="button" class="btn btn-primary" onclick="save_survey();" {{--data-dismiss="modal"--}}>
+                        Submit
+                    </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -535,6 +685,49 @@
         </script>
     @endif
     <script type="text/javascript">
+        /*******************Survey 09-11-2018*********************/
+        function save_survey() {
+            var ckbox = $("input[name='servey_radio']");
+            var survey_ans = '';
+            $("input[name='servey_radio']:checked").each(function () {
+                survey_ans = $(this).val();
+            });
+            var survey_id = $("#servey_id").val();
+
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: '{{ url('save_survey') }}',
+                data: {survey_id: survey_id, survey_ans: survey_ans},
+                success: function (data) {
+                    $('#Modal_serveydetails').modal('hide');
+                    if (data == 'Success') {
+                        success_noti("Survey has been successful")
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $('#modal_body').html(xhr.responseText);
+                }
+            });
+        }
+        function view_survey(dis) {
+            var survey_id = $(dis).attr('id');
+            var editurl = '{{ url('view_survey') }}';
+            $('#modal_body').html('<img height="50px" class="center-block" src="{{url('images/loading.gif')}}"/>');
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: editurl,
+                data: {survey_id: survey_id},
+                success: function (data) {
+                    $('#survey_body').html(data);
+                },
+                error: function (xhr, status, error) {
+                    $('#survey_body').html(xhr.responseText);
+                }
+            });
+        }
+        /*******************Survey 09-11-2018*********************/
         function getmorepost() {
             $("#load_img").remove();
             append_loading_img = '<div class="feed_loadimg_block" id="load_img">' +
@@ -706,7 +899,8 @@
                 // $('.profile_basic_menu_block').addClass('left_menu_fixed');
                 // $('.all_right_block').addClass('right_menu_fixed');
             }
-            if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+//            if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+            if ($(window).scrollTop() + window.innerHeight == $(document).height()) {
                 if (parseFloat($('#see_id').val()) <= parseFloat($('#pcount').val())) {
                     getmorepost();
                 }
@@ -720,13 +914,29 @@
                 var textval = $('#post_text_emoji').text();
                 $('#posttext').val(textval);
                 e.preventDefault();
-                var files = $('#upload_file_image').val();
+                img_ids = [];
+                var i = 0;
+                $('.up_img').each(function () {
+                    var getimg_id = $(this).attr('src');
+//                    img_ids.push([getimg_id.replace('data:image/png;base64,', '')]);
+                    img_ids[i] = $(this).attr('src');
+                    i++;
+                });
+
+                var files = img_ids;
+//                alert(img_ids);
+//                console.log(img_ids);
+//                var files = $('#upload_file_image').val();
                 var videos = $('#upload_file_video').val();
+                var adverimg_length = $('.upimg_box').length;
                 if (textval == '' && files == '' && videos == '') {
-//                    swal("Required", "You can't post without any text or image or video", "info");
                     warning_noti("You can't post without any text or image or video");
                     HideOnpageLoopader1();
+                } else if (adverimg_length > 10) {
+                    warning_noti("You can upload maximum 10 images for post");
+                    HideOnpageLoopader1();
                 } else {
+                    $('#post_img_src').val(JSON.stringify(img_ids));
                     swal({
                         title: "Are you sure?",
                         text: "You want to submit this post...!",
@@ -746,6 +956,7 @@
                                         $('#userpostForm').css("opacity", ".5");
                                         $("#publish").attr("disabled", "disabled");
                                         $('#loader').css('display', 'block');
+                                        round_info_noti("WE ARE UPLOADING YOUR POST QUICKLY");
                                     },
                                     success: function (data) {
                                         $('#loader').css('display', 'none');
@@ -753,6 +964,9 @@
 //                                    swal("Success!", "Your post has been uploaded...", "success");
                                         success_noti("Your post has been uploaded...");
                                         // ShowSuccessPopupMsg('Your post has been uploaded...');
+//                                        setprivacy('Public');
+                                        $('#post_img_src').val('');
+                                        $('#location-input').val('');
                                         $('#image_preview').text('');
                                         $('.emojionearea-editor').empty();
                                         $('#post_text_emoji').text('');
@@ -774,8 +988,7 @@
                                 });
                             }
                         }
-                    )
-                    ;
+                    );
 
                 }
             });
@@ -791,13 +1004,5 @@
     </script>
     <script type="text/javascript" src="{{url('js/cropper.min.js')}}"></script>
     <script type="text/javascript" src="{{url('js/post-crop.js')}}"></script>
-    <script type="text/javascript">
-        function activatPlaceSearch() {
-            var input = document.getElementById('location-input');
-            var autocomplete = new google.maps.places.Autocomplete(input);
-        }
-    </script>
-    <script type="text/javascript"
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjTLwOh9QO1yD2K9PWqYOrZ-Tt47OLHdQ&libraries=places&callback=activatPlaceSearch">
-    </script>
+
 @stop

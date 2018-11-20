@@ -83,6 +83,316 @@
 
     </style>
     <script type="text/javascript" src="{{url('js/cropper.min.js')}}"></script>
+
+@stop
+@section('content')
+    <section class="notofication_containner">
+        <div class="container mob_pad0">
+            <div class="content_block form-group">
+                <div class="com-block block_header">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <h2 class="h2_header">Profile Details</h2>
+                        </div>
+                        <div class="col-sm-8">
+                        </div>
+                    </div>
+                </div>
+                <div class="com-block content-body">
+                    <div class="row">
+                        {{--                <form action="{{url('profile/'.str_slug($timeline->fname." ".$timeline->lname).'/'.$user->id)}}">--}}
+                        {!! Form::open(['url' => 'myprofile', 'id'=>'Unit', 'method'=>'post', 'files'=>true]) !!}
+                        <input type="hidden" name="_token" class="token" value="{{ csrf_token() }}">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <div class="profile_block text-center">
+                                <div class="profile-picture">
+                                    <img src="{{url('').'/'.$user->profile_pic}}" id="_UserProfile" alt="UserProfile">
+                                </div>
+                                <div class="btn btn-info btn-sm profile-upload" data-toggle="modal"
+                                     data-target="#modal_crop">
+                                    <span class="mdi mdi-account-edit mdi-24px"></span>
+                                    {{--<input type="file" name="profile_pic" id="avatar_id" class="profile-upload-pic"--}}
+                                    {{--onchange="ChangeSetImage(this, _UserProfile);">--}}
+                                </div>
+                                @if($user->profile_pic != 'images/Male_default.png')
+                                    <div class="btn btn-default btn-sm profile-upload">
+                                        <span class="mdi mdi-close mdi-24px" onclick="removeProfile()"></span>
+                                    </div>
+                                @endif
+                                <p style="display: none;">
+                                    <small class="text-muted">Accepted formats are .jpg, .gif &amp; .png. Size &lt; 1MB.
+                                        Best
+                                        fit 198 X 120
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-8 col-md-8 pull-right">
+                            <div class="profile_block">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-addon"><i
+                                                        class="mdi mdi-account mdi-16px"></i></span>
+                                                {{--<input name="fname" placeholder="First Name" class="form-control fname"--}}
+                                                {{--value="{{$timeline->fname}}" type="text"/>--}}
+                                                {!! Form::text('fname', $timeline->fname, ['class' => 'form-control textWithSpace txt required','placeholder'=>'First Name']) !!}
+                                                <input name="timeline_id" maxlength="25" placeholder="First Name"
+                                                       class="form-control timeline_id" onpaste="return false;"
+                                                       value="{{$timeline->id}}" type="hidden"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-addon"><i
+                                                        class="mdi mdi-account mdi-16px"></i></span>
+                                                <input name="lname" placeholder="Last Name" maxlength="25"
+                                                       class="form-control txt textWithSpace required lname"
+                                                       onpaste="return false;"
+                                                       value="{{$timeline->lname}}" type="text"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-addon"><i
+                                                        class="mdi mdi-calendar-check mdi-16px"></i></span>
+                                                <input name="dob" placeholder="Date of Birth" maxlength="25"
+                                                       onkeypress="return false;"
+                                                       value="{{date_format(date_create($user->birthday), "d-M-Y")}}"
+                                                       class="form-control textWithSpace required vRequiredText dtp dob"
+                                                       id="date_of_birth"
+                                                       type="text"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{--<div class="col-sm-6">--}}
+                                    {{--<div class="form-group">--}}
+                                    {{--<div class="input-group">--}}
+                                    {{--<span class="input-group-addon"><i class="mdi mdi-clipboard-account mdi-16px"></i></span>--}}
+                                    {{--<input name="password" placeholder="Age" class="form-control"  type="text" />--}}
+                                    {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--</div>--}}
+                                    <div class="col-sm-6">
+                                        <div class="radio">
+                                            <input id="radio-1" value="male" class="gender" name="gender_radio"
+                                                   type="radio" {{$user->gender == 'male'?'checked':''}} >
+                                            <label for="radio-1" class="radio-label">Male</label>
+                                        </div>
+
+                                        <div class="radio">
+                                            <input id="radio-2" value="female" class="gender" name="gender_radio"
+                                                   type="radio" {{$user->gender == 'female'?'checked':''}}>
+                                            <label for="radio-2" class="radio-label">Female</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                            <span class="input-group-addon"><i
+                                                        class="mdi mdi-email-open-outline mdi-16px"></i></span>
+                                                <input onkeypress="return false" tabindex="-1" onkeydown="return false"
+                                                       name="email" placeholder="Email" maxlength="50"
+                                                       readonly="readonly"
+                                                       class="form-control not_allowed"
+                                                       value="{{$user->email}}" type="text"/>
+                                                <input name="user_id" placeholder="user_id" id="user_master_id"
+                                                       class="form-control user_id"
+                                                       value="{{$user->id}}" type="hidden"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{--<div class="col-sm-6">--}}
+                                    {{--<div class="form-group">--}}
+                                    {{--<div class="input-group">--}}
+                                    {{--<span class="input-group-addon"><i class="mdi mdi-clipboard-account mdi-16px"></i></span>--}}
+                                    {{--<input name="password" placeholder="Age" class="form-control"  type="text" />--}}
+                                    {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--</div>--}}
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                        <span class="input-group-addon"><i
+                                                    class="mdi mdi-phone mdi-16px"></i></span>
+                                                <input onkeypress="return false" onkeydown="return false" name="contact"
+                                                       placeholder="Contact" readonly="readonly"
+                                                       class="form-control not_allowed" tabindex="-1"
+                                                       value="{{$user->contact}}" type="text"/>
+                                                {{--                                        <label>{{$user->contact}}</label>--}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    @php
+                                        $states = DB::select("select * from cities where City IS NULL order by State ASC");
+                                    @endphp
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                <span class="input-group-addon"><i
+                                            class="mdi mdi-format-list-checks mdi-16px"></i></span>
+                                                {{--<input name="city" onpaste="return false;" placeholder="City"--}}
+                                                {{--value="{{$user->city}}"--}}
+                                                {{--class="form-control txt textWithSpace required city"--}}
+                                                {{--type="text"/>--}}
+                                                <select name="state" onchange="getSelectCity(this);" id="edit_state"
+                                                        class="form-control country requiredDD">
+                                                    @foreach($states as $state)
+                                                        <option value="{{$state->State}}" {{$state->State == $user->state?'selected':''}}>{{$state->State}}</option>
+                                                    @endforeach
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i
+                                                            class="mdi mdi-clipboard-account mdi-16px"></i></span>
+                                                <select id="city_by_state_edit" name="city" class="form-control">
+                                                    <option value="0" selected>Select City</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                    <span class="input-group-addon"><i
+                                                class="mdi mdi-account-settings mdi-16px"></i></span>
+                                        {{--<select class="form-control requiredDD selectpicker" name="profession" id="profession">--}}
+                                        {{--<option class="greenText" value="">Profession</option>--}}
+                                        {{--<option value="Doctor">Doctor</option>--}}
+                                        {{--<option value="Engineer">Engineer</option>--}}
+                                        {{--<option value="Enterprener">Enterprener</option>--}}
+                                        {{--<option value="Other">Other</option>--}}
+                                        {{--</select>--}}
+                                        {!! Form::select('profession', array('0' => 'Select Profession', 'Doctor' => 'Doctor', 'Engineer' => 'Engineer', 'Entrepreneur' => 'Entrepreneur', 'Other' => 'Other'), $user->profession,['class' => 'form-control requiredDD', 'id'=>'profession']) !!}
+                                    </div>
+                                </div>
+
+                                <div class="form-group glo_otherbox" id="other_block">
+                                    <div class="input-group">
+                                    <span class="input-group-addon"><i
+                                                class="mdi mdi-account-settings mdi-16px"></i></span>
+                                        <input name="profession_other" maxlength="40"
+                                               placeholder="Please enter other profession" id="other_pro"
+                                               class="form-control txt textWithSpace"
+                                               type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i
+                                                    class="mdi mdi-format-list-checks mdi-16px"></i></span>
+                                        <input name="address" placeholder="Address" value="{{$user->address}}"
+                                               class="form-control txt" type="text"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-xs-12 col-md-12">
+                            <div class="btn_block">
+                                <button class="glo_button mdi" id="profile_submit" type="submit"></button>
+                                {{--                            {!! Form::submit('Submit', ['class' => 'glo_button mdi']) !!}--}}
+                            </div>
+                        </div>
+                        {{--</form>--}}
+                        {!! Form::close() !!}
+                        <p id="err"></p>
+                        <button class="mdi glo_button" onclick="deactivate_account()">Deactivate Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="myModal_TermsAccepted" class="connect_LBbox modal fade in" role="dialog" aria-hidden="false"></div>
+    <div id="modal_crop" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Crop and Download your image</h4>
+                </div>
+                <div class="modal-body">
+                    <main class="page">
+                        <div class="box">
+                            <div class="input-group">
+            <span class="input-group-btn">
+                <span class="btn btn-default btn-file">
+                    Browse… <input type="file" id="file-input"/>
+                </span>
+            </span>
+                                <input type="text" id="file_text_crop" class="form-control" readonly=""/>
+                            </div>
+                            <p class="note_forcrop">
+                                You can easily rotate, move and crop the image. double click are used to change the
+                                event like move to 360 degree. ( image and crop frame )
+                            </p>
+                        </div>
+                        <div class="box-2">
+                            <div class="result">
+                                <img class="cropped" id="image_frout" src="{{url('images/NoPreview_CropImg.png')}}"
+                                     alt="">
+                            </div>
+                        </div>
+                        <div class="box-2 img-result hide">
+                            <img class="cropped" id="image_frout" src="" alt="">
+                        </div>
+                        <div class="box" id="cropbtn_setting">
+                            <!--<div class="options hide">
+                                <label> Width</label>
+                                <input type="text" class="img-w" value="300" min="100" max="1200"/>
+                            </div>-->
+                            <button class="btn btn-info btn-sm" disabled="disabled" id="btn_RotateLeft">
+                                <i class="mdi mdi-format-rotate-90 basic_icon_margin"></i>Rotate Left
+                            </button>
+                            <button class="btn btn-warning btn-sm center_btnmargin" disabled="disabled"
+                                    id="btn_RotateRight">
+                                <i class="mdi mdi-rotate-right basic_icon_margin"></i>Rotate Right
+                            </button>
+                            <button class="btn btn-danger btn-sm" disabled="disabled" id="btn_RotateReset">
+                                <i class="mdi mdi-rotate-3d basic_icon_margin"></i>Reset
+                            </button>
+                            <!-- <button class="btn btn-success" id="btn_getRounded">
+                                 <i class="mdi mdi-rotate-3d basic_icon_margin"></i>Rounded</button>-->
+                        </div>
+                    </main>
+                </div>
+                <div class="modal-footer">
+                    <a href="" target="_blank" class="btn btn-default download" disabled="disabled"
+                       id="btncrop_download" download="imagename.png">
+                        <i class="mdi mdi-folder-download basic_icon_margin"></i>Download</a>
+                    <button class="btn btn-primary save" id="save" disabled="disabled"><i
+                                class="mdi mdi-crop basic_icon_margin"></i>Cropped
+                    </button>
+                    <button class="btn btn-success upload-result" disabled="disabled" id="save_toserver"
+                            onclick="setprofile();"><i class="mdi mdi-account-check basic_icon_margin"></i>Set
+                        Profile
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <script type="text/javascript">
         function setprofile() {
             var image = $('#image_frout').attr('src');
@@ -91,7 +401,8 @@
                 type: "POST",
                 data: {"image": image},
                 success: function (data) {
-                    swal("Success!", 'Your profile has been uploaded...', "success");
+                    success_noti("Your profile has been uploaded...");
+                    //swal("Success!", 'Your profile has been uploaded...', "success");
                     setTimeout(function () {
                         window.location.reload();
                     }, 2000);
@@ -213,307 +524,37 @@
         });
 
     </script>
-@stop
-@section('content')
-    <section class="notofication_containner">
-        <div class="container mob_pad0">
-            <div class="content_block form-group">
-                <div class="com-block block_header">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <h2 class="h2_header">Profile Details</h2>
-                        </div>
-                        <div class="col-sm-8">
-                        </div>
-                    </div>
-                </div>
-                <div class="com-block content-body">
-                    <div class="row">
-                        {{--                <form action="{{url('profile/'.str_slug($timeline->fname." ".$timeline->lname).'/'.$user->id)}}">--}}
-                        {!! Form::open(['url' => 'myprofile', 'id'=>'Unit', 'method'=>'post', 'files'=>true]) !!}
-                        <input type="hidden" name="_token" class="token" value="{{ csrf_token() }}">
-                        <div class="col-xs-12 col-sm-4 col-md-4">
-                            <div class="profile_block text-center">
-                                <div class="profile-picture">
-                                    <img src="{{url('').'/'.$user->profile_pic}}" id="_UserProfile" alt="UserProfile">
-                                </div>
-                                <div class="btn btn-info btn-sm profile-upload" data-toggle="modal"
-                                     data-target="#modal_crop">
-                                    <span class="mdi mdi-account-edit mdi-24px"></span>
-                                    {{--<input type="file" name="profile_pic" id="avatar_id" class="profile-upload-pic"--}}
-                                    {{--onchange="ChangeSetImage(this, _UserProfile);">--}}
-                                </div>
-                                @if($user->profile_pic != 'images/Male_default.png')
-                                    <div class="btn btn-default btn-sm profile-upload">
-                                        <span class="mdi mdi-close mdi-24px" onclick="removeProfile()"></span>
-                                    </div>
-                                @endif
-                                <p style="display: none;">
-                                    <small class="text-muted">Accepted formats are .jpg, .gif &amp; .png. Size &lt; 1MB.
-                                        Best
-                                        fit 198 X 120
-                                    </small>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-8 col-md-8 pull-right">
-                            <div class="profile_block">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                            <span class="input-group-addon"><i
-                                                        class="mdi mdi-account mdi-16px"></i></span>
-                                                {{--<input name="fname" placeholder="First Name" class="form-control fname"--}}
-                                                {{--value="{{$timeline->fname}}" type="text"/>--}}
-                                                {!! Form::text('fname', $timeline->fname, ['class' => 'form-control textWithSpace txt required','placeholder'=>'First Name']) !!}
-                                                <input name="timeline_id" maxlength="25" placeholder="First Name"
-                                                       class="form-control timeline_id" onpaste="return false;"
-                                                       value="{{$timeline->id}}" type="hidden"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                            <span class="input-group-addon"><i
-                                                        class="mdi mdi-account mdi-16px"></i></span>
-                                                <input name="lname" placeholder="Last Name" maxlength="25"
-                                                       class="form-control txt textWithSpace required lname"
-                                                       onpaste="return false;"
-                                                       value="{{$timeline->lname}}" type="text"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                            <span class="input-group-addon"><i
-                                                        class="mdi mdi-calendar-check mdi-16px"></i></span>
-                                                <input name="dob" placeholder="Date of Birth" maxlength="25"
-                                                       onkeypress="return false;"
-                                                       value="{{date_format(date_create($user->birthday), "d-M-Y")}}"
-                                                       class="form-control textWithSpace required vRequiredText dtp dob"
-                                                       id="date_of_birth"
-                                                       type="text"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {{--<div class="col-sm-6">--}}
-                                    {{--<div class="form-group">--}}
-                                    {{--<div class="input-group">--}}
-                                    {{--<span class="input-group-addon"><i class="mdi mdi-clipboard-account mdi-16px"></i></span>--}}
-                                    {{--<input name="password" placeholder="Age" class="form-control"  type="text" />--}}
-                                    {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--</div>--}}
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                        <span class="input-group-addon"><i
-                                                    class="mdi mdi-format-list-bulleted mdi-16px"></i></span>
-                                                <select name="country" id="" class="form-control country requiredDD"
-                                                        disabled>
-                                                    <option value="99">India</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                            <span class="input-group-addon"><i
-                                                        class="mdi mdi-email-open-outline mdi-16px"></i></span>
-                                                <input onkeypress="return false" tabindex="-1" onkeydown="return false"
-                                                       name="email" placeholder="Email" maxlength="50"
-                                                       readonly="readonly"
-                                                       class="form-control not_allowed"
-                                                       value="{{$user->email}}" type="text"/>
-                                                <input name="user_id" placeholder="user_id" id="user_master_id"
-                                                       class="form-control user_id"
-                                                       value="{{$user->id}}" type="hidden"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {{--<div class="col-sm-6">--}}
-                                    {{--<div class="form-group">--}}
-                                    {{--<div class="input-group">--}}
-                                    {{--<span class="input-group-addon"><i class="mdi mdi-clipboard-account mdi-16px"></i></span>--}}
-                                    {{--<input name="password" placeholder="Age" class="form-control"  type="text" />--}}
-                                    {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--</div>--}}
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                        <span class="input-group-addon"><i
-                                                    class="mdi mdi-phone mdi-16px"></i></span>
-                                                <input onkeypress="return false" onkeydown="return false" name="contact"
-                                                       placeholder="Contact" readonly="readonly"
-                                                       class="form-control not_allowed" tabindex="-1"
-                                                       value="{{$user->contact}}" type="text"/>
-                                                {{--                                        <label>{{$user->contact}}</label>--}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="radio">
-                                            <input id="radio-1" value="male" class="gender" name="gender_radio"
-                                                   type="radio" {{$user->gender == 'male'?'checked':''}} >
-                                            <label for="radio-1" class="radio-label">Male</label>
-                                        </div>
-
-                                        <div class="radio">
-                                            <input id="radio-2" value="female" class="gender" name="gender_radio"
-                                                   type="radio" {{$user->gender == 'female'?'checked':''}}>
-                                            <label for="radio-2" class="radio-label">Female</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                <span class="input-group-addon"><i
-                                            class="mdi mdi-format-list-checks mdi-16px"></i></span>
-                                                <input name="city" onpaste="return false;" placeholder="City"
-                                                       value="{{$user->city}}"
-                                                       class="form-control txt textWithSpace required city"
-                                                       type="text"/>
-
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-
-                                </div>
-
-
-                                <div class="form-group">
-                                    <div class="input-group">
-                                    <span class="input-group-addon"><i
-                                                class="mdi mdi-account-settings mdi-16px"></i></span>
-                                        {{--<select class="form-control requiredDD selectpicker" name="profession" id="profession">--}}
-                                        {{--<option class="greenText" value="">Profession</option>--}}
-                                        {{--<option value="Doctor">Doctor</option>--}}
-                                        {{--<option value="Engineer">Engineer</option>--}}
-                                        {{--<option value="Enterprener">Enterprener</option>--}}
-                                        {{--<option value="Other">Other</option>--}}
-                                        {{--</select>--}}
-                                        {!! Form::select('profession', array('0' => 'Select Profession', 'Doctor' => 'Doctor', 'Engineer' => 'Engineer', 'Entrepreneur' => 'Entrepreneur', 'Other' => 'Other'), $user->profession,['class' => 'form-control requiredDD', 'id'=>'profession']) !!}
-                                    </div>
-                                </div>
-
-                                <div class="form-group glo_otherbox" id="other_block">
-                                    <div class="input-group">
-                                    <span class="input-group-addon"><i
-                                                class="mdi mdi-account-settings mdi-16px"></i></span>
-                                        <input name="profession_other" maxlength="40"
-                                               placeholder="Please enter other profession" id="other_pro"
-                                               class="form-control txt textWithSpace"
-                                               type="text"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i
-                                                    class="mdi mdi-format-list-checks mdi-16px"></i></span>
-                                        <input name="address" placeholder="Address" value="{{$user->address}}"
-                                               class="form-control txt" type="text"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-xs-12 col-md-12">
-                            <div class="btn_block">
-                                <button class="glo_button mdi" id="profile_submit" type="submit"></button>
-                                {{--                            {!! Form::submit('Submit', ['class' => 'glo_button mdi']) !!}--}}
-                            </div>
-                        </div>
-                        {{--</form>--}}
-                        {!! Form::close() !!}
-                        <p id="err"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <div id="myModal_TermsAccepted" class="connect_LBbox modal fade in" role="dialog" aria-hidden="false"></div>
-    <div id="modal_crop" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Crop and Download your image</h4>
-                </div>
-                <div class="modal-body">
-                    <main class="page">
-                        <div class="box">
-                            <div class="input-group">
-            <span class="input-group-btn">
-                <span class="btn btn-default btn-file">
-                    Browse… <input type="file" id="file-input"/>
-                </span>
-            </span>
-                                <input type="text" id="file_text_crop" class="form-control" readonly=""/>
-                            </div>
-                            <p class="note_forcrop">
-                                You can easily rotate, move and crop the image. double click are used to change the
-                                event like move to 360 degree. ( image and crop frame )
-                            </p>
-                        </div>
-                        <div class="box-2">
-                            <div class="result">
-                                <img class="cropped" id="image_frout" src="{{url('images/NoPreview_CropImg.png')}}"
-                                     alt="">
-                            </div>
-                        </div>
-                        <div class="box-2 img-result hide">
-                            <img class="cropped" id="image_frout" src="" alt="">
-                        </div>
-                        <div class="box" id="cropbtn_setting">
-                            <!--<div class="options hide">
-                                <label> Width</label>
-                                <input type="text" class="img-w" value="300" min="100" max="1200"/>
-                            </div>-->
-                            <button class="btn btn-info btn-sm" disabled="disabled" id="btn_RotateLeft">
-                                <i class="mdi mdi-format-rotate-90 basic_icon_margin"></i>Rotate Left
-                            </button>
-                            <button class="btn btn-warning btn-sm center_btnmargin" disabled="disabled"
-                                    id="btn_RotateRight">
-                                <i class="mdi mdi-rotate-right basic_icon_margin"></i>Rotate Right
-                            </button>
-                            <button class="btn btn-danger btn-sm" disabled="disabled" id="btn_RotateReset">
-                                <i class="mdi mdi-rotate-3d basic_icon_margin"></i>Reset
-                            </button>
-                            <!-- <button class="btn btn-success" id="btn_getRounded">
-                                 <i class="mdi mdi-rotate-3d basic_icon_margin"></i>Rounded</button>-->
-                        </div>
-                    </main>
-                </div>
-                <div class="modal-footer">
-                    <a href="" target="_blank" class="btn btn-default download" disabled="disabled"
-                       id="btncrop_download" download="imagename.png">
-                        <i class="mdi mdi-folder-download basic_icon_margin"></i>Download</a>
-                    <button class="btn btn-primary save" id="save" disabled="disabled"><i
-                                class="mdi mdi-crop basic_icon_margin"></i>Cropped
-                    </button>
-                    <button class="btn btn-success upload-result" disabled="disabled" id="save_toserver"
-                            onclick="setprofile();"><i class="mdi mdi-account-check basic_icon_margin"></i>Set
-                        Profile
-                    </button>
-                </div>
-            </div>
-
-        </div>
-    </div>
     <script type="text/javascript">
+        function getSelectCity(dis) {
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: "{{ url('getStateCity') }}",
+                data: {state: $(dis).val()},
+                success: function (data) {
+                    $('#city_by_state_edit').html(data);
+                },
+                error: function (xhr, status, error) {
+                    $('#city_by_state_edit').html(xhr.responseText);
+                }
+            });
+        }
+        function selectedgetSelectCity(dis) {
+            var city = '{{$user->city}}';
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: "{{ url('selectedgetStateCity') }}",
+                data: {state: dis, 'city': city},
+                success: function (data) {
+                    $('#city_by_state_edit').html(data);
+                },
+                error: function (xhr, status, error) {
+                    $('#city_by_state_edit').html(xhr.responseText);
+                }
+            });
+        }
+
         function removeProfile() {
             var user_id = $('#user_master_id').val();
             swal({
@@ -523,30 +564,73 @@
                 buttons: true,
                 dangerMode: true,
             }).then((okk) => {
-                if (okk) {
-                    $.ajax({
-                        type: "get",
-                        contentType: "application/json; charset=utf-8",
-                        url: "{{ url('removeProfile') }}",
-                        data: {user_id: user_id},
-                        success: function (data) {
+                    if (okk) {
+                        $.ajax({
+                            type: "get",
+                            contentType: "application/json; charset=utf-8",
+                            url: "{{ url('removeProfile') }}",
+                            data: {user_id: user_id},
+                            success: function (data) {
 //                            alert(jQuery.parseJSON(data).response);
-                            swal("Success!", jQuery.parseJSON(data).response, "success");
-                            setTimeout(function () {
-                                window.location.reload();
-                            }, 2000);
-                        },
-                        error: function (xhr, status, error) {
-                            alert(error);
-                            swal("Server Issue", "Something went wrong", "info");
+//                                swal("Success!", jQuery.parseJSON(data).response, "success");
+                                success_noti(jQuery.parseJSON(data).response);
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 2000);
+                            },
+                            error: function (xhr, status, error) {
+                                alert(error);
+                                swal("Server Issue", "Something went wrong", "info");
 
-                        }
-                    });
+                            }
+                        });
+                    }
+
                 }
+            );
+        }
 
-            });
+        function deactivate_account() {
+            var user_id = $('#user_master_id').val();
+            swal({
+                title: "Confirmation",
+                text: "Are you sure you want to deactivate your account?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((okk) => {
+                    if (okk) {
+                        $.ajax({
+                            type: "get",
+                            contentType: "application/json; charset=utf-8",
+                            url: "{{ url('deactivate_account') }}",
+                            data: {user_id: user_id},
+                            success: function (data) {
+                                if (jQuery.parseJSON(data).response == "Account has been deactivated") {
+                                    window.location.href = '{{url('/')}}';
+                                }
+//                            alert(jQuery.parseJSON(data).response);
+                                success_noti(jQuery.parseJSON(data).response);
+//                            swal("Success!", jQuery.parseJSON(data).response, "success");
+//                            setTimeout(function () {
+//                            }, 2000);
+                            },
+                            error: function (xhr, status, error) {
+                                alert(error);
+                                swal("Server Issue", "Something went wrong", "info");
+
+                            }
+                        });
+                    }
+
+                }
+            );
         }
         $(document).ready(function () {
+            var state = '{{$user->state}}';
+            if (state != '') {
+                selectedgetSelectCity(state);
+            }
             $('#date_of_birth').datepicker({
                 format: 'dd-M-yyyy', autoclose: true,
                 endDate: '-18y'
@@ -579,12 +663,12 @@
             }
         });
     </script>
-    @if(session()->has('message'))
-        <script type="text/javascript">
-            setTimeout(function () {
-                swal("Success!", "{{ session()->get('message') }}", "success");
-            }, 500);
-        </script>
-    @endif
+    {{--@if(session()->has('message'))--}}
+        {{--<script type="text/javascript">--}}
+            {{--setTimeout(function () {--}}
+                {{--swal("Success!", "{{ session()->get('message') }}", "success");--}}
+            {{--}, 500);--}}
+        {{--</script>--}}
+    {{--@endif--}}
 
 @stop

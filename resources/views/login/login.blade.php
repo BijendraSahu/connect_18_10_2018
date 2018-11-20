@@ -163,6 +163,10 @@
                         </div>
                         {{--                        {!! Form::close() !!}--}}
                     </form>
+                    @php
+                        $states = DB::select("select * from cities where City IS NULL order by State ASC");
+
+                    @endphp
                     {!! Form::open(['url' => 'register', 'id'=>'frmReg']) !!}
                     {{--                    <form id="frmReg" action="{{url('register')}}">--}}
                     <div class="regis_block main_scale0">
@@ -281,9 +285,13 @@
                                 <div class="input-group">
                                     <span class="input-group-addon"><i
                                                 class="mdi mdi-format-list-bulleted mdi-16px"></i></span>
-                                    {{--                                    {!! Form::select('country', $country, null,['class' => 'form-control country requiredDD']) !!}--}}
-                                    <select name="country" id="" class="form-control country requiredDD" disabled>
-                                        <option value="99">India</option>
+                                    {{--                                    {!! Form::select('states', $states, null,['class' => 'form-control country requiredDD']) !!}--}}
+                                    <select name="state" onchange="getCity(this);" id=""
+                                            class="form-control country requiredDD">
+                                        <option value="0">Select State</option>
+                                        @foreach($states as $state)
+                                            <option value="{{$state->State}}">{{$state->State}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -293,9 +301,12 @@
                                 <div class="input-group">
                                         <span class="input-group-addon"><i
                                                     class="mdi mdi-format-list-checks mdi-16px"></i></span>
-                                    <input name="city" placeholder="City*" onpaste="return false;" autocomplete="off"
-                                           class="form-control city textWithSpace required" maxlength="30"
-                                           type="text"/>
+                                    <select id="city_by_state" class="form-control">
+                                        <option value="0" selected>Select City</option>
+                                    </select>
+                                    {{--<input name="city" placeholder="City*" onpaste="return false;" autocomplete="off"--}}
+                                    {{--class="form-control city textWithSpace required" maxlength="30"--}}
+                                    {{--type="text"/>--}}
                                 </div>
                             </div>
                         </div>
@@ -759,7 +770,7 @@
         $('[data-toggle="tooltip"]').tooltip();
         $('#rcode').tooltip({
             'trigger': 'focus',
-            'title': 'Use Your Friend Refferal Code or Promo Code You Recieved on Succesful Completion of the Survey'
+            'title': 'Use Your Friend Referral Code or Promo Code You Received on Successful Completion of the Survey'
         });
         $('#rcode').focusout(function () {
             var txt_val = $(this).val();
@@ -915,6 +926,21 @@
     });
 </script>
 <script type="text/javascript">
+    function getCity(dis) {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            url: "{{ url('getStateCity') }}",
+            data: {state: $(dis).val()},
+            success: function (data) {
+                $('#city_by_state').html(data);
+            },
+            error: function (xhr, status, error) {
+                $('#city_by_state').html(xhr.responseText);
+            }
+        });
+    }
+
     $('#confirm_show_password').focusout(function () {
         var password = $('#show_password').val();
         var c_password = $(this).val();
