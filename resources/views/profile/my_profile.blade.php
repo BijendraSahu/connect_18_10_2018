@@ -321,7 +321,6 @@
                     warning_noti("You can upload maximum 10 images for post");
                     HideOnpageLoopader1();
                 } else {
-                    $('#post_img_src').val(JSON.stringify(img_ids));
                     swal({
                         title: "Are you sure?",
                         text: "You want to submit this post...!",
@@ -330,7 +329,7 @@
                         dangerMode: true,
                     }).then((okk) => {
                         if (okk) {
-
+                            (img_ids.length > 0) ? $('#post_img_src').val(JSON.stringify(img_ids)) : $('#post_img_src').val('');
                             $.ajax({
                                 type: 'POST',
                                 url: "{{ url('userpost') }}",

@@ -79,40 +79,35 @@
                         <div class="tradingview-widget-copyright"><span class="blue-text">Stock Market Update</span> By
                             Connecting-One
                         </div>
-                        <script type="text/javascript"
-                                src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
                             {
-                                "symbols"
-                            :
-                                [
-                                    {
-                                        "description": "NIFTY 50",
-                                        "proName": "NSE:NIFTY"
-                                    },
-                                    {
-                                        "description": "S&P BSE SENSEX",
-                                        "proName": "BSE:SENSEX"
-                                    },
-                                    {
-                                        "description": "BSE",
-                                        "proName": "NSE:BSE"
-                                    },
-                                    {
-                                        "description": "BSE:DOLLAR",
-                                        "proName": "BSE:DOLLAR"
-                                    },
-                                    {
-                                        "description": "GDP INDIA",
-                                        "proName": "FRED:GDP"
-                                    }
-                                ],
-                                    "locale"
-                            :
-                                "in"
+                                "symbols": [
+                                {
+                                    "description": "BSE",
+                                    "proName": "NSE:BSE"
+                                },
+                                {
+                                    "description": "BANK NIFTY",
+                                    "proName": "NSE:BANKNIFTY"
+                                },
+                                {
+                                    "description": "BSE SENSEX",
+                                    "proName": "BSE:SENSEX"
+                                },
+                                {
+                                    "description": "NIFTY 50",
+                                    "proName": "NSE:NIFTY"
+                                }
+                            ],
+                                "locale": "in"
                             }
                         </script>
                     </div>
                     <!-- TradingView Widget END -->
+                    {{--{--}}
+                    {{--"description": "BSE:DOLLAR",--}}
+                    {{--"proName": "BSE:DOLLAR"--}}
+                    {{--},--}}
 
 
 
@@ -969,9 +964,11 @@
                 });
 
                 var files = img_ids;
-//                alert(img_ids);
+//                alert(img_ids.length);
 //                console.log(img_ids);
 //                var files = $('#upload_file_image').val();
+//                alert(img_ids.length);
+//                (img_ids.length > 0) ? $('#post_img_src').val(JSON.stringify(img_ids)) : $('#post_img_src').val('');
                 var videos = $('#upload_file_video').val();
                 var adverimg_length = $('.upimg_box').length;
                 if (textval == '' && files == '' && videos == '') {
@@ -981,8 +978,7 @@
                     warning_noti("You can upload maximum 10 images for post");
                     HideOnpageLoopader1();
                 } else {
-
-                    (img_ids.length > 0) ? $('#post_img_src').val(JSON.stringify(img_ids)) : $('#post_img_src').val('');
+//                    $('#post_img_src').val(JSON.stringify(files));
                     swal({
                         title: "Are you sure?",
                         text: "You want to submit this post...!",
@@ -991,47 +987,48 @@
                         dangerMode: true,
                     }).then((okk) => {
                             if (okk) {
-                                {{--$.ajax({--}}
-                                {{--type: 'POST',--}}
-                                {{--url: "{{ url('userpost') }}",--}}
-                                {{--data: new FormData(this),--}}
-                                {{--contentType: false,--}}
-                                {{--cache: false,--}}
-                                {{--processData: false,--}}
-                                {{--beforeSend: function () {--}}
-                                {{--$('#userpostForm').css("opacity", ".5");--}}
-                                {{--$("#publish").attr("disabled", "disabled");--}}
-                                {{--$('#loader').css('display', 'block');--}}
-                                {{--round_info_noti("WE ARE UPLOADING YOUR POST QUICKLY");--}}
-                                {{--},--}}
-                                {{--success: function (data) {--}}
-                                {{--$('#loader').css('display', 'none');--}}
-                                {{--HideOnpageLoopader1();--}}
-                                {{--//                                    swal("Success!", "Your post has been uploaded...", "success");--}}
-                                {{--success_noti("Your post has been uploaded...");--}}
-                                {{--// ShowSuccessPopupMsg('Your post has been uploaded...');--}}
-                                {{--//                                        setprivacy('Public');--}}
-                                {{--$('#post_img_src').val('');--}}
-                                {{--$('#location-input').val('');--}}
-                                {{--$('#image_preview').text('');--}}
-                                {{--$('.emojionearea-editor').empty();--}}
-                                {{--$('#post_text_emoji').text('');--}}
-                                {{--$('#posttext').val('');--}}
-                                {{--$('#upload_file_image').val('');--}}
-                                {{--$('#upload_file_video').val('');--}}
-                                {{--$('.upload_limittxt').text('');--}}
-                                {{--$('#userpostForm').css("opacity", "");--}}
-                                {{--$("#publish").removeAttr("disabled", "disabled");--}}
-                                {{--latest_dashboardpostload();--}}
-                                {{--},--}}
-                                {{--error: function (xhr, status, error) {--}}
-                                {{--$('#err1').html(xhr.responseText);--}}
-                                {{--$('#userpostForm').css("opacity", "");--}}
-                                {{--$("#publish").removeAttr("disabled", "disabled");--}}
-                                {{--//                                    swal("Oops!", "Post has not been finished...Please try again", "info");--}}
-                                {{--warning_noti("Post has not been finished...Please try again");--}}
-                                {{--}--}}
-                                {{--});--}}
+                                (img_ids.length > 0) ? $('#post_img_src').val(JSON.stringify(img_ids)) : $('#post_img_src').val('');
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "{{ url('userpost') }}",
+                                    data: new FormData(this),
+                                    contentType: false,
+                                    cache: false,
+                                    processData: false,
+                                    beforeSend: function () {
+                                        $('#userpostForm').css("opacity", ".5");
+                                        $("#publish").attr("disabled", "disabled");
+                                        $('#loader').css('display', 'block');
+                                        round_info_noti("WE ARE UPLOADING YOUR POST QUICKLY");
+                                    },
+                                    success: function (data) {
+                                        $('#loader').css('display', 'none');
+                                        HideOnpageLoopader1();
+                                        //                                    swal("Success!", "Your post has been uploaded...", "success");
+                                        success_noti("Your post has been uploaded...");
+                                        // ShowSuccessPopupMsg('Your post has been uploaded...');
+                                        //                                        setprivacy('Public');
+                                        $('#post_img_src').val('');
+                                        $('#location-input').val('');
+                                        $('#image_preview').text('');
+                                        $('.emojionearea-editor').empty();
+                                        $('#post_text_emoji').text('');
+                                        $('#posttext').val('');
+                                        $('#upload_file_image').val('');
+                                        $('#upload_file_video').val('');
+                                        $('.upload_limittxt').text('');
+                                        $('#userpostForm').css("opacity", "");
+                                        $("#publish").removeAttr("disabled", "disabled");
+                                        latest_dashboardpostload();
+                                    },
+                                    error: function (xhr, status, error) {
+                                        $('#err1').html(xhr.responseText);
+                                        $('#userpostForm').css("opacity", "");
+                                        $("#publish").removeAttr("disabled", "disabled");
+                                        //                                    swal("Oops!", "Post has not been finished...Please try again", "info");
+                                        warning_noti("Post has not been finished...Please try again");
+                                    }
+                                });
                             }
                         }
                     );
