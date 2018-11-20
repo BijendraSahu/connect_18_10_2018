@@ -556,7 +556,9 @@ function PreviewImage() {
                         var append_image = "<div class='upimg_box'><i class='thumb_close mdi mdi-close' onclick='Remove_uploadimg(this);'></i>" +
                             "<img class='up_img' src='" + tmppath + "' />" +
                             "<input class='profile-upload-pic dynamic_fileappend' type='file' val='" + _file.item(i).name + "'  /></div>";
+
                         $('#image_preview').append(append_image);
+
                         $('#files_block').show();
                         current_uploadfile++;
                         // });
