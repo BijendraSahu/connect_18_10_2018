@@ -3104,9 +3104,9 @@
 .net_internaldiv {
     width: 100%;
     background-color: #f5f5f5;
-    min-height: 200px;
     padding: 10px 10px 20px 10px;
     position: relative;
+    min-height: calc(100vh - 270px);
 }
 
 .user_image_containner {
@@ -3171,7 +3171,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     color: #f8c301;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 .connected_totalmember {

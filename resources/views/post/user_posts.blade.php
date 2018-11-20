@@ -32,7 +32,10 @@
             {{--<div class="exislike"><i class="basic_icons mdi mdi-thumb-down"></i>02</div>--}}
             {{--</div>--}}
         </div>
-        <div class="exis_txtblock">{!! \ChristofferOK\LaravelEmojiOne\LaravelEmojiOneFacade::shortnameToImage($post->description) !!}</div>
+        <div class="exis_txtblock">
+            @if(isset($post[$i]['checkin'])) <i class="basic_icons mdi mdi-map-marker">at</i>{!! $post[$i]['checkin'] !!}
+            <br> @endif
+            {!! \ChristofferOK\LaravelEmojiOne\LaravelEmojiOneFacade::shortnameToImage($post->description) !!}</div>
 
         {{--<input type="hidden" class="glo_emojishow" id="demo{{$post->id}}" value="{!! $post->description  !!}">--}}
         {{--<div class="exis_txtblock" id="container{{$post->id}}"></div>--}}

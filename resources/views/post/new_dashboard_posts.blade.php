@@ -369,34 +369,7 @@
 
     function Gatcommenttxt(dis) {
         var comment_txt = $(dis).text();
-//        if (comment_txt.length > 0) {
-//            $(dis).parent().parent().find('.comment_postbtn').removeAttr('disabled', 'disabled');
-//        } else {
-//            $(dis).parent().parent().find('.comment_postbtn').attr('disabled', 'disabled');
-//        }
     }
-
-    /*******comment append*/
-    {{--$('.exis_comments_msgbox').each(function () {--}}
-    {{--var post_id = $(this).attr('data-content');--}}
-    {{--$.ajax({--}}
-    {{--type: "Get",--}}
-    {{--contentType: "application/json; charset=utf-8",--}}
-    {{--url: "{{ url('getcommentlist') }}",--}}
-    {{--data: {post_id: post_id},--}}
-    {{--success: function (data) {--}}
-    {{--//                console.log(data);--}}
-    {{--$('#commentlist' + post_id).html(data);--}}
-    {{--//                dashboardpostload();--}}
-    {{--},--}}
-    {{--error: function (xhr, status, error) {--}}
-    {{--//                alert(xhr.responseText);--}}
-    {{--$('.modal-body').html(xhr.responseText);--}}
-    {{--}--}}
-    {{--});--}}
-    {{--//        alert(post_id);--}}
-    {{--//        postcomment(post_id)--}}
-    {{--});--}}
 
     $(document).ready(function () {
         InitializeEmoji();

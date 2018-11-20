@@ -108,7 +108,7 @@ class NetworkController extends Controller
                 $network_user = UserModel::find($chlds->child_id);
                 $getUserDetailsByID = $tmln::select('fname', 'lname', 'avatar_id')->where('id', $network_user->timeline_id)->get();
 
-                $t = $t . '<div class="col-sm-3">';
+                $t = $t . '<div class="col-sm-3 col-xs-6">';
                 $t = $t . '<div class="network_user_block" onclick="location.href=\'' . $default_root . 'subchild/' . $chlds->child_id . '\';" onmouseover="Dynamic_AddClass(this);" onmouseleave="MouseOut(this);">';
                 $t = $t . '<div class="connected_imgbox"><img src="' . $default_root . $network_user->profile_pic . '"></div>';
                 $t = $t . '<div class="connected_name">' . $getUserDetailsByID[0]->fname . ' ' . $getUserDetailsByID[0]->lname . '</div>';
@@ -176,7 +176,7 @@ class NetworkController extends Controller
                 //$getUserDetailsByID  =  $suser::select('email','contact')->where('id', $chlds->child_id)->get();
                 $getUserDetailsByID = $tmln::select('fname', 'lname', 'avatar_id')->where('id', $network_user->timeline_id)->get();
 
-                $t = $t . '<div class="col-sm-3">';
+                $t = $t . '<div class="col-sm-3 col-xs-6">';
                 $t = $t . '<div class="network_user_block" onclick="location.href=\'' . $default_root . 'subchild/' . $chlds->child_id . '\';" onmouseover="Dynamic_AddClass(this);" onmouseleave="MouseOut(this);">';
                 $t = $t . '<div class="connected_imgbox"><img src="' . $default_root . $network_user->profile_pic . '"></div>';
                 $t = $t . '<div class="connected_name">' . $getUserDetailsByID[0]->fname . ' ' . $getUserDetailsByID[0]->lname . '</div>';

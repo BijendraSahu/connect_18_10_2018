@@ -4,58 +4,66 @@
 @section('title', 'My Network')
 
 @section('head')
-    <section class="member_profileblk">
-        <div class="container">
+    <section class="notofication_containner">
+        <div class="container mob_pad0">
             <div class="row">
-                <div class="col-sm-3">
-                    <div class="basic_thumb res_network networkfirst_top">
-                        <div class="icon_circle" style="background-color: #f8c301; ">
-                            <i class="mdi mdi-sitemap"></i>
+                <div class="col-sm-3 col-sm-12">
+
+                    <div class="all_left_brics_container">
+                        <div class="left_common_block">
+                            <div class="basic_heading">
+                                About
+                            </div>
+                            <div class="profile_follow">
+                                <i class="profile_icons mdi mdi-account"></i>
+                                {{ucfirst($user->timeline->name)}}
+                            </div>
+                            <div class="profile_follow">
+                                <i class="profile_icons mdi mdi-calendar"></i>
+                                {{ date_format(date_create($user->birthday), "d-M-Y")}}
+                            </div>
+                            <div class="profile_follow"><i class="profile_icons mdi mdi-phone"></i>{{$user->contact}}</div>
+                            <div class="profile_follow" style="margin-bottom: 0px;border: none;"><i
+                                        class="profile_icons mdi mdi-map-marker"></i>{{isset($user->address) ? $user->address:'-'}}
+                            </div>
                         </div>
-                        <div class="basic_heading">
-                            My Networks {{$user->member_type == 'paid' ? '('.$user->rc.')' : ''}}
-                            {{--<button class="btn btn-primary post_btn_photo" data-toggle="modal"--}}
-                            {{--data-target="#Mymodal_AddNewMamber"><i class="basic_icons mdi mdi-plus"></i>Add New--}}
-                            {{--</button>--}}
+                        <div class="left_common_block">
+                            <div class="icon_circle" style="background-color: #f8c301; ">
+                                <i class="mdi mdi-sitemap"></i>
+                            </div>
+                            <div class="basic_heading">
+                                My Networks {{$user->member_type == 'paid' ? '('.$user->rc.')' : ''}}
+                                {{--<button class="btn btn-primary post_btn_photo" data-toggle="modal"--}}
+                                {{--data-target="#Mymodal_AddNewMamber"><i class="basic_icons mdi mdi-plus"></i>Add New--}}
+                                {{--</button>--}}
+                            </div>
+                            <div class="basic_count" style="color: #f8c301;">{{$MembersCount}} </div>
                         </div>
-                        <div class="basic_count" style="color: #f8c301;">{{$MembersCount}} </div>
-                    </div>
-                    <div class="basic_thumb res_about" style="margin-top: 0px;">
-                        <div class="basic_heading">
-                            About
+
+                        <div class="left_common_block">
+                            <div class="icon_circle" style="background-color: #007cc2;">
+                                <i class="mdi mdi-currency-inr"></i>
+                            </div>
+                            <div class="basic_heading">
+                                My Earning
+                                <a href="{{url('my-earning')}}" class="btn btn-primary post_btn_photo"><i
+                                            class="basic_icons mdi mdi-view-module"></i>View All
+                                </a>
+                            </div>
+                            <div class="basic_count" style="color: #007cc2;">Rs {{$amnt}} /-</div>
                         </div>
-                        <div class="profile_name network_name">{{$timeline->name}}</div>
-                        <div class="profile_follow"><i
-                                    class="profile_icons mdi mdi-calendar"></i>{{ date_format(date_create($user->birthday), "d-M-Y")}}
+                        <div class="left_common_block">
+                            <div class="icon_circle" style="background-color: #07a20d;">
+                                <i class="mdi mdi-chemical-weapon"></i>
+                            </div>
+                            <div class="basic_heading">
+                                My Friends
+                                <a href="{{url('member')}}" class="btn btn-primary post_btn_photo"><i
+                                            class="basic_icons mdi mdi-view-module"></i>View All
+                                </a>
+                            </div>
+                            <div class="basic_count" style="color: #07a20d;">{{$friend_count}}</div>
                         </div>
-                        <div class="profile_follow"><i class="profile_icons mdi mdi-phone"></i>{{$user->contact}}</div>
-                        <div class="profile_follow" style="margin-bottom: 0px;border: none;"><i
-                                    class="profile_icons mdi mdi-map-marker"></i>{{$user->address}}
-                        </div>
-                    </div>
-                    <div class="basic_thumb res_earning" style="">
-                        <div class="icon_circle" style="background-color: #007cc2;">
-                            <i class="mdi mdi-currency-inr"></i>
-                        </div>
-                        <div class="basic_heading">
-                            My Earning
-                            <a href="{{url('my-earning')}}" class="btn btn-primary post_btn_photo"><i
-                                        class="basic_icons mdi mdi-view-module"></i>View All
-                            </a>
-                        </div>
-                        <div class="basic_count" style="color: #007cc2;">Rs {{$amnt}} /-</div>
-                    </div>
-                    <div class="basic_thumb">
-                        <div class="icon_circle" style="background-color: #07a20d;">
-                            <i class="mdi mdi-chemical-weapon"></i>
-                        </div>
-                        <div class="basic_heading">
-                            My Friends
-                            <a href="{{url('member')}}" class="btn btn-primary post_btn_photo"><i
-                                        class="basic_icons mdi mdi-view-module"></i>View All
-                            </a>
-                        </div>
-                        <div class="basic_count" style="color: #07a20d;">{{$friend_count}}</div>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-9">
@@ -65,8 +73,7 @@
                                 <img src="{{url('/'.$suser->profile_pic)}}" class=""/>
                             </div>
                         </div>
-                        <p style="text-align: center; font-size: 18px; font-weight: 400"
-                           id="uname">{{$suser->timeline->name}}</p>
+                        <p class="user_name" id="uname">{{$suser->timeline->name}}</p>
                         <input type="hidden" value="{{$suser->id}}" id="child_id">
                         <input type="hidden" value="{{isset($child_level)?$child_level:'0'}}" id="child_level">
 
@@ -337,20 +344,33 @@
                 </div>
                 <div class="modal-body">
                     <div class="terms_modelblock">
-                        <p>1. Membership to be given to the authenticated person who is having Mo No., Bank Account. Valid E-Mail Id. And PAN / Adhar card.</p>
-                        <p>2. As a Member, Person have the role and responsibility to maintain the decorum of the membership, and should not violate any rules and regulation, and Privacy of the company.
+                        <p>1. Membership to be given to the authenticated person who is having Mo No., Bank Account.
+                            Valid E-Mail Id. And PAN / Adhar card.</p>
+                        <p>2. As a Member, Person have the role and responsibility to maintain the decorum of the
+                            membership, and should not violate any rules and regulation, and Privacy of the company.
                         </p>
-                        <p>3. If any member found guilty of violation of policy ,their membership will be terminated without notice.</p>
-                        <p>4. Member will get reward point after completing online surveys/advertisement promo scheme decided as per policy of connecting one which keep changes from time to time with notification to member.</p>
-                        <p>5. Member can upload there paid advertisement at our platform and get benefited of 50% of the advertisement directly after settlement of bills.</p>
-                        <p>6. Member can redeem their credit points/ Money at any moment of time( Min amount – Rs. 10/-)</p>
+                        <p>3. If any member found guilty of violation of policy ,their membership will be terminated
+                            without notice.</p>
+                        <p>4. Member will get reward point after completing online surveys/advertisement promo scheme
+                            decided as per policy of connecting one which keep changes from time to time with
+                            notification to member.</p>
+                        <p>5. Member can upload there paid advertisement at our platform and get benefited of 50% of the
+                            advertisement directly after settlement of bills.</p>
+                        <p>6. Member can redeem their credit points/ Money at any moment of time( Min amount – Rs.
+                            10/-)</p>
                         <p>7. At the time of redemption 10% of the total income will be deducted as service charges.</p>
                         <p>8. Membership fee is non refundable.</p>
                         <p>9. Max Capping of level is Level-250,</p>
-                        <p>10. By visiting this Portal, you agree that the laws of the Republic of India (state of Madhya Pradesh, City Jabalpur)  without regard to its conflict of laws principles, govern this Privacy Policy and any dispute arising in respect hereof shall be subject to and governed by the dispute resolution process set out in the Terms and Conditions. You and Connecting-One.com agree to submit to the personal and exclusive jurisdiction of the court located within Jabalpur, Madhya Pradesh.</p>
+                        <p>10. By visiting this Portal, you agree that the laws of the Republic of India (state of
+                            Madhya Pradesh, City Jabalpur) without regard to its conflict of laws principles, govern
+                            this Privacy Policy and any dispute arising in respect hereof shall be subject to and
+                            governed by the dispute resolution process set out in the Terms and Conditions. You and
+                            Connecting-One.com agree to submit to the personal and exclusive jurisdiction of the court
+                            located within Jabalpur, Madhya Pradesh.</p>
                         <p>11. You are not allowed to share your account with any other individual.</p>
                         <p>12. Payment/Redemption settlement will be carried out in 7 working dates. </p>
-                        <p>13. Your membership will terminate immediately in the unfortunate event of your death. Service accounts are not transferable upon death or otherwise by operation of law.</p>
+                        <p>13. Your membership will terminate immediately in the unfortunate event of your death.
+                            Service accounts are not transferable upon death or otherwise by operation of law.</p>
                         <div class="terms_imgbox">
                             <img src="{{url('images/level.png')}}"/>
                         </div>

@@ -72,7 +72,7 @@
                 {{--</script>--}}
                 {{--</div>--}}
                 <!-- TradingView Widget END -->
-                    <!-- TradingView Widget BEGIN -->
+
                     <!-- TradingView Widget BEGIN -->
                     <div class="tradingview-widget-container">
                         <div class="tradingview-widget-container__widget"></div>
@@ -94,12 +94,12 @@
                                         "proName": "BSE:SENSEX"
                                     },
                                     {
-                                        "description": "NSE BANKNIFTY",
-                                        "proName": "NSE:BANKNIFTY"
+                                        "description": "BSE",
+                                        "proName": "NSE:BSE"
                                     },
                                     {
-                                        "description": "BSE IT",
-                                        "proName": "BSE:IT"
+                                        "description": "BSE:DOLLAR",
+                                        "proName": "BSE:DOLLAR"
                                     },
                                     {
                                         "description": "GDP INDIA",
@@ -113,6 +113,7 @@
                         </script>
                     </div>
                     <!-- TradingView Widget END -->
+
 
 
                 </div>
@@ -144,7 +145,7 @@
                                                multiple/>
                                         <i class="basic_icons mdi mdi-image"></i>Photo
                                     </a>
-                                    <input type="text" id="post_img_src" name="post_img_src">
+                                    <input type="hidden" id="post_img_src" name="post_img_src">
                                     {{--<input class="-upload-pic" accept=".png,.jpg, .jpeg, .gif" type="file"--}}
                                     {{--id="post_file_image" name="post_upload_file[]"--}}
                                     {{--multiple/>--}}
