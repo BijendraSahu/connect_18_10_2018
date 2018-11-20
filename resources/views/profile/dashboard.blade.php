@@ -62,16 +62,53 @@
                 {{--gainTicker.start();--}}
                 {{--</script>--}}
                 <!-- TradingView Widget BEGIN -->
+                    {{--<div class="tradingview-widget-container">--}}
+                        {{--<div class="tradingview-widget-container__widget"></div>--}}
+                        {{--<div class="tradingview-widget-copyright"><span class="blue-text">Stock Market Update</span> By--}}
+                            {{--Connecting-One--}}
+                        {{--</div>--}}
+                        {{--<script type="text/javascript"--}}
+                                {{--src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>--}}
+                        {{--</script>--}}
+                    {{--</div>--}}
+                    <!-- TradingView Widget END -->
+                    <!-- TradingView Widget BEGIN -->
+                    <!-- TradingView Widget BEGIN -->
                     <div class="tradingview-widget-container">
                         <div class="tradingview-widget-container__widget"></div>
                         <div class="tradingview-widget-copyright"><span class="blue-text">Stock Market Update</span> By
                             Connecting-One
                         </div>
-                        <script type="text/javascript"
-                                src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
+                            {
+                                "symbols": [
+                                {
+                                    "description": "NIFTY 50",
+                                    "proName": "NSE:NIFTY"
+                                },
+                                {
+                                    "description": "BSE SENSEX",
+                                    "proName": "BSE:SENSEX"
+                                },
+                                {
+                                    "description": "NSE BANKNIFTY",
+                                    "proName": "NSE:BANKNIFTY"
+                                },
+                                {
+                                    "description": "BSE IT",
+                                    "proName": "BSE:IT"
+                                },
+                                {
+                                    "description": "GDP INDIA",
+                                    "proName": "FRED:GDP"
+                                }
+                            ],
+                                "locale": "in"
+                            }
                         </script>
                     </div>
                     <!-- TradingView Widget END -->
+
 
                 </div>
                 <div class="col-md-8 col-sm-12">
