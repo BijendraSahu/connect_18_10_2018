@@ -103,6 +103,7 @@ Route::get('view_report_post', 'AdminController@view_report_post');
 Route::get('buy', 'BuySellController@buy');
 Route::get('myads', 'BuySellController@myads');
 Route::get('myads/{id}/delete', 'BuySellController@delete');
+Route::get('myads/{id}/close', 'BuySellController@close_ad');
 /*******Ads***********/
 
 /**************Admin*************/
@@ -290,6 +291,8 @@ Route::post('success', 'CartController@payment_success');
 Route::post('e_atom_payment', 'CartController@e_atom_payment');
 Route::post('failed', 'CartController@payment_failed');
 
+
+Route::post('contact_us', 'LoginController@contact_us');
 
 Route::get('getStateCity', 'LoginController@getStateCity');
 Route::get('selectedgetStateCity', 'LoginController@selectedgetStateCity');

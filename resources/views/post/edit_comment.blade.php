@@ -1,19 +1,32 @@
-<div class="exis_comments_post">
-    <div class="post_imgblock"><img src="{{url('').'/'.$user->profile_pic}}"/></div>
 
-    <div class="comment_txtboxblock">
-                <textarea class="new_comment_txt comment_emoji_div" id="commentpost1{{$comment->post_id}}"
-                          placeholder="Write a comment...">{!! \ChristofferOK\LaravelEmojiOne\LaravelEmojiOneFacade::shortnameToImage($comment->description) !!}</textarea>
-        <button class="btn btn-primary btn-sm comment_postbtn"
-                onclick="editpostcomment('{{$comment->post_id}}','{{$comment->id}}')"><i class="mdi mdi-send"></i>
-        </button>
+<div class="modal-body">
+    <div class="basic_lb_row">
+        <div class="exis_comments_post" id="edit_comment_popup">
+            <div class="post_imgblock"><img src="{{url('').'/'.$user->profile_pic}}"/></div>
+            <div class="comment_txtboxblock">
+                <textarea class="new_comment_txt comment_emoji_div edit_emoji" id="commentpost1{{$comment->post_id}}"
+                          placeholder="Write a comment...">{{$comment->description}}</textarea>
+                <button class="btn btn-primary btn-sm comment_postbtn"
+                        onclick="editpostcomment('{{$comment->post_id}}','{{$comment->id}}')"><i class="mdi mdi-send"></i>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
-<script>
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+</div>
+<script type="text/javascript">
     $(document).ready(function () {
-        InitializeEmoji();
-        {{--$('.emojionearea-editor').text('{!! \ChristofferOK\LaravelEmojiOne\LaravelEmojiOneFacade::shortnameToImage($comment->description) !!}');--}}
+        InitializeEditEmoji();
     });
+    function InitializeEditEmoji() {
+        $(".edit_emoji").emojioneArea({
+            pickerPosition: "bottom",
+            tonesStyle: "bullet",
+            placeholder: "write a comments"
+        });
+    }
     function Requiredtxt(me) {
         var text = $.trim($(me).val());
         if (text == '') {

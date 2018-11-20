@@ -7,9 +7,12 @@
             <div class="exis_name_post">
                 @if($post[$i]['user_id'] != $user->id)
                     <a class="posted_name"
-                       href="{{url('friend?search=').$post[$i]['user_id']}}">{{$post[$i]['name']}}</a>
+                       href="{{url('friend?search=').$post[$i]['user_id']}}">{{$post[$i]['name']}}</a>@if(isset($post[$i]['checkin']))
+                        <i class="basic_icons mdi mdi-map-marker">at</i>{!! $post[$i]['checkin'] !!} @endif
                 @else
-                    <a class="posted_name" href="{{url('my-profile')}}">{{$post[$i]['name']}}</a>
+                    <a class="posted_name"
+                       href="{{url('my-profile')}}">{{$post[$i]['name']}}</a>@if(isset($post[$i]['checkin'])) <i
+                            class="basic_icons mdi mdi-map-marker">at</i>{!! $post[$i]['checkin'] !!} @endif
                 @endif
                 <div class="posted_date"><i
                             class="basic_icons mdi mdi-calendar"></i>{{ date_format(date_create($post[$i]['created_at']), "d-M-Y h:i A")}}
@@ -160,11 +163,13 @@
                       data-toggle="modal">{{count($post[$i]['like'])}}</span>
             </div>
             @if(isset($dislike))
-                <div class="dislike_block you_dislike" id="{{$post[$i]['id']}}" onclick="DislikePost(this);"><i class="dislike_icon mdi mdi-thumb-down"></i>Dislike
+                <div class="dislike_block you_dislike" id="{{$post[$i]['id']}}" onclick="DislikePost(this);"><i
+                            class="dislike_icon mdi mdi-thumb-down"></i>Dislike
                     <span class="count_dislike">{{$post[$i]['dislike']}}</span>
                 </div>
             @else
-                <div class="dislike_block" id="{{$post[$i]['id']}}" onclick="DislikePost(this);"><i class="dislike_icon mdi mdi-thumb-down"></i>Dislike
+                <div class="dislike_block" id="{{$post[$i]['id']}}" onclick="DislikePost(this);"><i
+                            class="dislike_icon mdi mdi-thumb-down"></i>Dislike
                     <span class="count_dislike">{{$post[$i]['dislike']}}</span>
                 </div>
             @endif
@@ -295,24 +300,24 @@
 
     /*******comment append*/
     {{--$('.exis_comments_msgbox').each(function () {--}}
-        {{--var post_id = $(this).attr('data-content');--}}
-        {{--$.ajax({--}}
-            {{--type: "Get",--}}
-            {{--contentType: "application/json; charset=utf-8",--}}
-            {{--url: "{{ url('getcommentlist') }}",--}}
-            {{--data: {post_id: post_id},--}}
-            {{--success: function (data) {--}}
-{{--//                console.log(data);--}}
-                {{--$('#commentlist' + post_id).html(data);--}}
-{{--//                dashboardpostload();--}}
-            {{--},--}}
-            {{--error: function (xhr, status, error) {--}}
-{{--//                alert(xhr.responseText);--}}
-                {{--$('.modal-body').html(xhr.responseText);--}}
-            {{--}--}}
-        {{--});--}}
-{{--//        alert(post_id);--}}
-{{--//        postcomment(post_id)--}}
+    {{--var post_id = $(this).attr('data-content');--}}
+    {{--$.ajax({--}}
+    {{--type: "Get",--}}
+    {{--contentType: "application/json; charset=utf-8",--}}
+    {{--url: "{{ url('getcommentlist') }}",--}}
+    {{--data: {post_id: post_id},--}}
+    {{--success: function (data) {--}}
+    {{--//                console.log(data);--}}
+    {{--$('#commentlist' + post_id).html(data);--}}
+    {{--//                dashboardpostload();--}}
+    {{--},--}}
+    {{--error: function (xhr, status, error) {--}}
+    {{--//                alert(xhr.responseText);--}}
+    {{--$('.modal-body').html(xhr.responseText);--}}
+    {{--}--}}
+    {{--});--}}
+    {{--//        alert(post_id);--}}
+    {{--//        postcomment(post_id)--}}
     {{--});--}}
 
 
@@ -350,7 +355,7 @@
                 var curr_count = Number($('#count_comment' + post_id).text());
                 $('#count_comment' + post_id).text(curr_count + 1);
                 $('#commentpost' + post_id).parent().find('.emojionearea-editor').text('');
-                $('#commentbox'+ post_id).append(data);
+                $('#commentbox' + post_id).append(data);
 //                loadcommentlist(post_id);
             },
             error: function (xhr, status, error) {

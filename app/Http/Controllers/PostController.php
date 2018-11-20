@@ -45,7 +45,7 @@ class PostController extends Controller
         $newpost->created_at = Carbon::now('Asia/Kolkata');;
         $newpost->checkin = request('checkin') != '' ? request('checkin') : null;
         $newpost->post_privacy = request('post_privacy_set') == 'Public' ? 'public' : 'friends';
-//        $newpost->save();
+        $newpost->save();
 
         if (request('post_img_src') != null) {
 //                $tids = explode("=,", request('post_img_src'));
@@ -53,25 +53,21 @@ class PostController extends Controller
             foreach (json_decode($tids) as $obj) {
                 $post_media = new Post_media();
                 $post_media->post_id = $newpost->id;
-//                    $str = str_replace(' ', '', $obj);
-//                    $encodedData = str_replace(' ','+',$obj);
-
-//                    $data = "data:image/png;base64,$encodedData";
-                echo $obj;
-//                $data = base64_decode($obj); //base64_decode($data);
-//                $image_name = str_random(6) . ".png";
-//                $destinationPath = './userposts/' . $user->id . '/' . $image_name;
-//                $directory = "userposts/" . $user->id;
-//                if (!file_exists($directory)) {
-//                    File::makeDirectory($directory);
-//                }
-//                file_put_contents($destinationPath, $data);
-//                $post_media->media_url = 'userposts/' . $user->id . '/' . $image_name;
-//                $post_media->media_type = 'img';
-//                $post_media->save();
+                list($type, $obj) = explode(';', $obj);
+                list(, $obj) = explode(',', $obj);
+                $data = base64_decode($obj); //base64_decode($data);
+                $image_name = str_random(6) . '.png';
+                $destinationPath = './userposts/' . $user->id . '/' . $image_name;
+                $directory = "userposts/" . $user->id;
+                if (!file_exists($directory)) {
+                    File::makeDirectory($directory);
+                }
+                file_put_contents($destinationPath, $data);
+                $post_media->media_url = 'userposts/' . $user->id . '/' . $image_name;
+                $post_media->media_type = 'img';
+                $post_media->save();
             }
         }
-
         /* if (request('upload_file') != null) {
              for ($i = 0; $i < $upload_file; $i++) {
                  $arr = [];
@@ -176,7 +172,7 @@ class PostController extends Controller
         $media_re = array();
         $comment_re = array();
         $like_re = array();
-        $s = "select p.id as id, p.description, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where p.user_id=$user_id and p.active = 1 ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
+        $s = "select p.id as id, p.description,p.checkin, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where p.user_id=$user_id and p.active = 1 ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
         $posts = DB::select($s);
         if (count($posts) > 0) {
             foreach ($posts as $post) {
@@ -191,7 +187,7 @@ class PostController extends Controller
                 $dislike = DB::select("SELECT t.name, u.profile_pic, u.id FROM post_unlike pl, users u, timelines t WHERE pl.user_id = u.id and u.timeline_id = t.id and pl.post_id=$post->id");
 
 //                $results[] = ['id' => $post->id, 'description' => $post->description, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'media' => $media_re, 'comment' => $comment_re, 'like' => $like_re];
-                $results[] = ['id' => $post->id, 'description' => $post->description, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'media' => $media_re, 'comment' => $comment_re, 'like' => $like_re, 'spam' => count($spam_re), 'dislike' => count($dislike)];
+                $results[] = ['id' => $post->id, 'checkin' => $post->checkin, 'description' => $post->description, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'media' => $media_re, 'comment' => $comment_re, 'like' => $like_re, 'spam' => count($spam_re), 'dislike' => count($dislike)];
             }
             return view('post.new_user_posts')->with(['post' => $results, 'user' => $user, 'ses_user' => $ses_user, 'count_post' => count($posts1)]);
         }
@@ -229,7 +225,7 @@ class PostController extends Controller
         $media_re = array();
         $comment_re = array();
         $like_re = array();
-        $s = "select p.id as id, p.description, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where  p.active = 1 and p.user_id=$user_id or  p.user_id in  (select fr.user_id from friends fr, users unn where fr.status='friends' and fr.friend_id=$user_id and unn.id=fr.user_id and unn.active = 1) or p.user_id in (select f.friend_id from friends f, users un where f.status='friends' and f.user_id=$user_id and un.id= f.friend_id and un.active = 1) ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
+        $s = "select p.id as id, p.description,p.checkin, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where  p.active = 1 and p.user_id=$user_id or  p.user_id in  (select fr.user_id from friends fr, users unn where fr.status='friends' and fr.friend_id=$user_id and unn.id=fr.user_id and unn.active = 1) or p.user_id in (select f.friend_id from friends f, users un where f.status='friends' and f.user_id=$user_id and un.id= f.friend_id and un.active = 1) ORDER BY p.id DESC LIMIT $offset,$rowsperpage";
 //        echo $s;
         $posts = DB::select($s);
 
@@ -246,7 +242,7 @@ class PostController extends Controller
                 $dislike = DB::select("SELECT t.name, u.profile_pic, u.id FROM post_unlike pl, users u, timelines t WHERE pl.user_id = u.id and u.timeline_id = t.id and pl.post_id=$post->id");
 
 
-                $results[] = ['id' => $post->id, 'description' => $post->description, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'media' => $media_re, 'comment' => $comment_re, 'like' => $like_re, 'spam' => count($spam_re), 'dislike' => count($dislike)];
+                $results[] = ['id' => $post->id, 'checkin' => $post->checkin, 'description' => $post->description, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'media' => $media_re, 'comment' => $comment_re, 'like' => $like_re, 'spam' => count($spam_re), 'dislike' => count($dislike)];
             }
             return view('post.new_dashboard_posts')->with(['post' => $results, 'user' => $user, 'count_post' => count($posts1)]);
         } else {
@@ -260,7 +256,8 @@ class PostController extends Controller
         $user = UserModel::find($ses_user->id);
         $post_id = request('post_id');
         $user_id = $user->id;
-        $posts = "select p.id as id, p.description, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where p.id = $post_id and p.user_id=$user_id";
+        $posts = "select p.id as id, p.description,p.checkin, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where p.id = $post_id and p.user_id=$user_id";
+//        $posts1 = DB::select("select p.id as id, p.description, p.checkin, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where  p.active = 1 and p.user_id=$user_id or  p.user_id in  (select fr.user_id from friends fr where fr.status='friends' and fr.friend_id=$user_id) or p.user_id in (select f.friend_id from friends f where f.status='friends' and f.user_id=$user_id) ORDER BY p.id DESC");
 //        echo $s;
         $post = DB::selectOne($posts);
 //echo $posts;
@@ -277,7 +274,7 @@ class PostController extends Controller
             $dislike = DB::select("SELECT t.name, u.profile_pic, u.id FROM post_unlike pl, users u, timelines t WHERE pl.user_id = u.id and u.timeline_id = t.id and pl.post_id=$user_id");
 
 
-            $results[] = ['id' => $user_id, 'description' => isset($post->description) ? $post->description : '', 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'media' => $media_re, 'comment' => $comment_re, 'like' => $like_re, 'spam' => count($spam_re), 'dislike' => count($dislike)];
+            $results[] = ['id' => $user_id, 'checkin' => $post->checkin, 'description' => isset($post->description) ? $post->description : '', 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'media' => $media_re, 'comment' => $comment_re, 'like' => $like_re, 'spam' => count($spam_re), 'dislike' => count($dislike)];
 //            }
             return view('post.notification_post')->with(['post' => $results, 'user' => $user, 'count_post' => 1]);
         } else {
@@ -356,9 +353,9 @@ class PostController extends Controller
         $ses_user = $_SESSION['user_master'];
         $user = UserModel::find($ses_user->id);
         $user_id = $user->id;
-        $posts1 = DB::select("select p.id as id, p.description, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where  p.active = 1 and p.user_id=$user_id or  p.user_id in  (select fr.user_id from friends fr where fr.status='friends' and fr.friend_id=$user_id) or p.user_id in (select f.friend_id from friends f where f.status='friends' and f.user_id=$user_id) ORDER BY p.id DESC");
+        $posts1 = DB::select("select p.id as id, p.description, p.checkin, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where  p.active = 1 and p.user_id=$user_id or  p.user_id in  (select fr.user_id from friends fr where fr.status='friends' and fr.friend_id=$user_id) or p.user_id in (select f.friend_id from friends f where f.status='friends' and f.user_id=$user_id) ORDER BY p.id DESC");
 
-        $sql = "select p.id,p.description,t.name,p.user_id,p.created_at,u.profile_pic,p.active from posts p,timelines t,users u where p.id=(select max(id) from posts where user_id=$user_id) and p.user_id=u.id and t.id=u.timeline_id";
+        $sql = "select p.id,p.description,p.checkin,t.name,p.user_id,p.created_at,u.profile_pic,p.active from posts p,timelines t,users u where p.id=(select max(id) from posts where user_id=$user_id) and p.user_id=u.id and t.id=u.timeline_id";
         $posts = DB::select($sql);
         $results = array();
         $media_re = array();
@@ -376,7 +373,7 @@ class PostController extends Controller
 
                 $dislike = DB::select("SELECT t.name, u.profile_pic, u.id FROM post_unlike pl, users u, timelines t WHERE pl.user_id = u.id and u.timeline_id = t.id and pl.post_id=$user_id");
 
-                $results[] = ['id' => $post->id, 'description' => $post->description, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'media' => $media_re, 'comment' => $comment_re, 'like' => $like_re, 'spam' => count($spam_re), 'dislike' => count($dislike)];
+                $results[] = ['id' => $post->id, 'checkin' => $post->checkin, 'description' => $post->description, 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'media' => $media_re, 'comment' => $comment_re, 'like' => $like_re, 'spam' => count($spam_re), 'dislike' => count($dislike)];
             }
             return view('post.latest_post')->with(['post' => $results, 'user' => $user, 'count_post' => count($posts1)]);
         } else {
@@ -580,25 +577,25 @@ class PostController extends Controller
         $comment->save();
 
         /******Notification*******/
-//        $post = Posts::find(request('post_id'));
-//        $user_post_by = UserModel::find($post->posted_by);
-//        if (isset($user_post_by->token) && $user->id != $post->posted_by) {
-//            $user_comment = UserModel::find($user->id);
-//            $comment_by = $user_comment->timeline->name;
-//            $title = "Post Comment";
-//            $message = "$comment_by is commented on your post";
-//            $token = $user_post_by->token;
-//            $data = $post;
-//            $user_notification = new UserNotifications();
-//            $user_notification->post_id = $post->id;
-//            $user_notification->user_id = $post->posted_by;
-//            $user_notification->notified_by = $user->id;
-//            $user_notification->description = "<b>$comment_by</b> is commented on your post";
-//            $user_notification->created_at = Carbon::now('Asia/Kolkata');
-//            $user_notification->save();
+        $post = Posts::find(request('post_id'));
+        $user_post_by = UserModel::find($post->posted_by);
+        if (isset($user_post_by->token) && $user->id != $post->posted_by) {
+            $user_comment = UserModel::find($user->id);
+            $comment_by = $user_comment->timeline->name;
+            $title = "Post Comment";
+            $message = "$comment_by is commented on your post";
+            $token = $user_post_by->token;
+            $data = $post;
+            $user_notification = new UserNotifications();
+            $user_notification->post_id = $post->id;
+            $user_notification->user_id = $post->posted_by;
+            $user_notification->notified_by = $user->id;
+            $user_notification->description = "<b>$comment_by</b> is commented on your post";
+            $user_notification->created_at = Carbon::now('Asia/Kolkata');
+            $user_notification->save();
 //            //event(new StatusLiked($post->posted_by));
 //            AdminModel::getNotification($token, $title, $message, $data);
-//        }
+        }
         /******Notification*******/
 
         return view('post.comment_list')->with(['comment' => $comment]);

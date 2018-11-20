@@ -80,6 +80,7 @@ class SurveyController extends Controller
         $survey->save();
         return redirect('survey')->with('message', 'Survey has been Inactivated...!');
     }
+
     public
     function show($id)
     {
@@ -93,7 +94,9 @@ class SurveyController extends Controller
     {
         $id = request('survey_id');
         $survey = Survey::find($id);
-        return view('front_survey.view_survey')->with(['survey' => $survey]);
+        $user = $_SESSION['user_master'];
+        $user_survey = UserSurveyAmount::where(['survey_id' => $id, 'user_id' => $user->id])->first();
+        return view('front_survey.view_survey')->with(['survey' => $survey, 'user_survey' => $user_survey]);
     }
 
     public function save_survey()
@@ -116,6 +119,7 @@ class SurveyController extends Controller
                 $user_survey_amt->user_id = $user->id;
                 $user_survey_amt->survey_id = $id;
                 $user_survey_amt->amt = $amt;
+                $user_survey_amt->survey_ans = request('survey_ans');
                 $user_survey_amt->save();
                 $survey->total_distributed += $amt;
                 $survey->save();
@@ -127,6 +131,32 @@ class SurveyController extends Controller
                 $com->save();
                 /********Survey View Amt(Commision)*********/
             }
+        } else {
+            $survey_count = SurveyCount::where(['survey_id' => $survey->id])->first();
+            if ($user_survey->survey_ans == 1)
+                $survey_count->option1_count -= 1;
+            elseif ($user_survey->survey_ans == 2)
+                $survey_count->option2_count -= 1;
+            elseif ($user_survey->survey_ans == 3)
+                $survey_count->option3_count -= 1;
+            elseif ($user_survey->survey_ans == 4)
+                $survey_count->option4_count -= 1;
+            $survey_count->save();
+
+            if (request('survey_ans') == 1)
+                $survey_count->option1_count += 1;
+            elseif (request('survey_ans') == 2)
+                $survey_count->option2_count += 1;
+            elseif (request('survey_ans') == 3)
+                $survey_count->option3_count += 1;
+            elseif (request('survey_ans') == 4)
+                $survey_count->option4_count += 1;
+            $survey_count->save();
+
+            $user_survey->survey_ans = request('survey_ans');
+            $user_survey->save();
+
+
         }
         return 'Success';
     }

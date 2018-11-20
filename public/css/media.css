@@ -1,4 +1,8 @@
 @media screen and (min-width: 320px) and (max-width: 479px) {
+    .animate_announcement
+    {
+        width: 290px;
+    }
     .caption_count
     {
         font-size: 11px;
@@ -312,6 +316,7 @@
         width: 100%;
         display: inline-block;
         border: none !important;
+        padding: 5px 5px 0px 5px !important;
     }
 
     .width_65 {
@@ -461,6 +466,13 @@
     .links_ul li {
         margin-right: 0px;
         padding: 5px 6px;
+    }
+    .comment_block
+    {
+        margin-bottom: 5px;
+    }
+    .menu_basic_block {
+        width: 30px !important;
     }
 }
 
@@ -632,7 +644,7 @@
         max-width: 730px;
         position: initial;
         margin-top: 30px;
-        padding: 15px;
+        padding: 10px;
     }
 
     .privacy_images {
@@ -945,6 +957,35 @@
      {
          display: none;
      }*/
+    .faq_quesbox
+    {
+        padding: 5px 10px 10px 10px;
+    }
+    .faq_ul li:before
+    {
+        top: 4px;
+    }
+    .innershow_block
+    {
+        padding: 10px;
+    }
+    .ecommerce_product_block
+    {
+        margin-bottom: 10px;
+    }
+    .adver_mainblock
+    {
+        margin-top: 100px;
+    }
+    .res_menu_hide
+    {
+        display: none;
+    }
+    .left_side_fixed
+    {
+        position: relative;
+        top: 0px;
+    }
     .dashboard_center_padding
     {
         margin-top: 95px;
@@ -1104,7 +1145,8 @@
 
     .network_block {
         /* margin-top: 240px;
-         margin-bottom: 60px;*/
+         */
+        margin-top: 40px;
     }
 
     .basic_thumb_show {
@@ -1148,8 +1190,16 @@
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1199px) {
+    .profile_basic_menu_block
+    {
+        padding: 10px 5px 0px;
+    }
+    .profile_name
+    {
+        font-size: 18px;
+    }
     .overall_containner {
-        padding: 0px 5px;
+        /*padding: 0px 5px;*/
     }
 
     .left_menu_fixed {
@@ -1257,6 +1307,10 @@
 
 /*------------------Master css for user---------------*/
 @media screen and (min-width: 320px) and (max-width: 479px) {
+    .emojionearea .emojionearea-editor
+    {
+        font-size: 12px;
+    }
     .loader {
         top: 90px;
         left: 0px;
@@ -1300,10 +1354,6 @@
         padding-left: 5px;
         padding-right: 5px;
         font-size: 14px;
-    }
-
-    .com_logo img {
-        max-width: 90px !important;
     }
 
     .user-info {
@@ -1585,7 +1635,7 @@
 
 @media screen and (min-width: 1024px) and (max-width: 1199px) {
     .overall_containner {
-        padding: 0px 5px;
+        /*padding: 0px 5px;*/
     }
 
     .left_menu_fixed {

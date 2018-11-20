@@ -46,7 +46,7 @@ class TimelineController extends Controller
             $user = UserModel::find($user_ses->id);
             // Top 10 Earners
             $com = new com();
-            $cm_id = $com::select('ParentID as UserID', DB::raw("SUM(Com) as Commission"))->groupBy('ParentID')->limit('10')->get();
+            $cm_id = $com::select('ParentID as UserID', DB::raw("SUM(Com) as Commission"))->groupBy('ParentID')->limit('10')->orderBy('Commission','desc')->get();
 
             $t = '';
             $usr = new User();
@@ -69,7 +69,7 @@ class TimelineController extends Controller
                         $t = $t . '<a class="earn_txtname" href="' . $default_root_ . 'friend?search=' . $q_un->id . '">' . $q_un->fname . ' ' . $q_un->lname . '</a>';
                     else
                         $t = $t . '<a class="earn_txtname" href="' . $default_root_ . 'my-profile">' . $q_un->fname . ' ' . $q_un->lname . '</a>';
-                    $t = $t . '<div class="earn_money"><i class="mdi mdi-currency-inr"></i>' . $cmsn->Commission . '</div>';
+                    $t = $t . '<div class="earn_money"><i class="mdi mdi-currency-inr"></i>' . round($cmsn->Commission, 2) . '</div>';
                     $t = $t . '</div>';
                     $t = $t . '</li>';
                 }

@@ -133,7 +133,7 @@
                                     <i class="basic_icons mdi mdi-image"></i>Photo
                                 </button>
                                 {{---------------}}
-                                <input type="text" id="post_img_src" name="post_img_src">
+                                <input type="hidden" id="post_img_src" name="post_img_src">
                                 {{---------------}}
                                 {{--<input class="-upload-pic" accept=".png,.jpg, .jpeg, .gif" type="file"--}}
                                 {{--id="post_file_image" name="post_upload_file[]"--}}
@@ -149,11 +149,11 @@
                                     <div class="location_icon">
                                         <i class="mdi mdi-map-marker"></i>
                                     </div>
-                                    <input id="location-input" class="form-control" type="text"
+                                    <input id="location-input" class="form-control" name="checkin" type="text"
                                            placeholder="Enter a location">
                                 </div>
                                 <div class="post_text_block emoji_div"
-                                     placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}..."
+                                     placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}...😀"
                                      id="post_text">
                                     <!--<textarea class="post_textarea" id="ta1" placeholder="What's on your mind"></textarea>-->
                                     <!-- <div class="post_textarea txtwithemoji_block" contenteditable="true" id="ta"
@@ -286,7 +286,7 @@
                     $('.profile_basic_menu_block').addClass('left_menu_fixed');
                     $('.all_right_block').addClass('right_menu_fixed');
                 }
-                if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+                if ($(window).scrollTop() + window.innerHeight == $(document).height()) {
                     if (parseFloat($('#see_id').val()) <= parseFloat($('#pcount').val())) {
                         getmorepost();
                     }
@@ -345,13 +345,12 @@
                                     round_info_noti("WE ARE UPLOADING YOUR POST QUICKLY");
                                 },
                                 success: function (data) {
-                                                                        console.log(data);
                                     $('#loader').css('display', 'none');
                                     HideOnpageLoopader1();
-                                    //                                    swal("Success!", "Your post has been uploaded...", "success");
                                     success_noti("SUCESSFULLY POSTED,KEEP GOING");
-                                    // ShowSuccessPopupMsg('Your post has been uploaded...');
                                     $('#image_preview').text('');
+                                    $('#location-input').val('');
+                                    $('#post_img_src').val('');
                                     $('#post_text').val('');
                                     $('.emojionearea-editor').empty();
                                     $('#posttext').text('');

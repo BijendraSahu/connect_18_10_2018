@@ -5,7 +5,7 @@
 
 @section('head')
     <section class="notofication_containner">
-        <div class="container">
+        <div class="container mob_pad0">
             <div class="row">
                 <div class="col-md-3 col-sm-12">
                     <div class="all_left_brics_container">
@@ -67,7 +67,7 @@
                                 <img src="{{url('/'.$user->profile_pic)}}" class=""/>
                             </div>
                         </div>
-                        <p style="text-align: center; font-size: 18px; font-weight: 400"
+                        <p class="user_name"
                            id="uname">{{$user->timeline->name}}</p>
                         <div class="net_arrow_blk">
                             <div class="arrow_blk">

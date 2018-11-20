@@ -230,11 +230,13 @@
             </ul>
         </li>
 
-
+        @php
+            $ads_request = \App\Ads::where(['status'=>'Pending'])->count();
+        @endphp
         <li class="right_menu_li">
             <a href="{{url('ads')}}">
                 <span class="dash_arrow mdi mdi-cart-outline global_color"></span>
-                Ads Request List
+                Ads Request List <span class="badge">{{$ads_request>0?$ads_request:''}}</span>
             </a>
         </li>
 
@@ -279,6 +281,12 @@
             <a href="{{url('report_post')}}">
                 <span class="dash_arrow mdi mdi-comment-account-outline global_color"></span>
                 Report Posts
+            </a>
+        </li>
+        <li class="right_menu_li">
+            <a href="{{url('survey')}}">
+                <span class="dash_arrow mdi mdi-comment-account-outline global_color"></span>
+                Survey
             </a>
         </li>
 

@@ -8,9 +8,9 @@
             <div class="exis_name_post">
                 @if($post[$i]['user_id'] != $user->id)
                     <a class="posted_name"
-                       href="{{url('friend?search=').$post[$i]['user_id']}}">{{$post[$i]['name']}}</a>
+                       href="{{url('friend?search=').$post[$i]['user_id']}}">{{$post[$i]['name']}}</a>@if(isset($post[$i]['checkin'])) <i class="basic_icons mdi mdi-map-marker">at</i>{!! $post[$i]['checkin'] !!} @endif
                 @else
-                    <a class="posted_name" href="{{url('my-profile')}}">{{$post[$i]['name']}}</a>
+                    <a class="posted_name" href="{{url('my-profile')}}">{{$post[$i]['name']}}</a>@if(isset($post[$i]['checkin'])) <i class="basic_icons mdi mdi-map-marker">at</i>{!! $post[$i]['checkin'] !!} @endif
                 @endif
                 <div class="posted_date"><i
                             class="basic_icons mdi mdi-calendar"></i>{{ date_format(date_create($post[$i]['created_at']), "d-M-Y h:i A")}}
@@ -250,13 +250,13 @@
                                             </button>
                                             <div class="dropdown-menu show notifi_options scalenoti">
                                                 <div class="noti_opti_row"
-                                                     onclick="EditPostComment(comment_row_id_{{$uni_id}}, count_comment{{$post[$i]['id']}}, '{{$comment->id}}');">
+                                                     onclick="EditPostComment(this ,comment_row_id_{{$uni_id}}, count_comment{{$post[$i]['id']}}, '{{$comment->id}}');">
                                                     <i
                                                             class="mdi mdi-pencil basic_icon_margin"
                                                             style="color: #07d;"></i>Edit
                                                 </div>
                                                 <div class="noti_opti_row"
-                                                     onclick="DeletePostComment(comment_row_id_{{$uni_id}}, count_comment{{$post[$i]['id']}}, '{{$comment->id}}');">
+                                                     onclick="DeletePostComment(this, comment_row_id_{{$uni_id}}, count_comment{{$post[$i]['id']}}, '{{$comment->id}}');">
                                                     <i class="mdi mdi-delete color_red basic_icon_margin"
                                                        style="color: #ff0000;"></i>Delete
                                                 </div>
@@ -298,7 +298,8 @@
 <input type="hidden" id="pcount" value="{{$count_post}}"/>
 {{--<input type="hidden" id="p_count" value="{{$p_count}}"/>--}}
 <script type="text/javascript">
-    function DeletePostComment(row_id, comment_counter_id, comment_id) {
+    function DeletePostComment(dis, row_id, comment_counter_id, comment_id) {
+        $(dis).parent().addClass('scalenoti');
         swal({
             title: "Are you sure?",
             text: "You want to delete this comment...!",
@@ -329,7 +330,8 @@
             }
         });
     }
-    function EditPostComment(row_id, comment_counter_id, comment_id) {
+    function EditPostComment(dis, row_id, comment_counter_id, comment_id) {
+        $(dis).parent().addClass('scalenoti');
         $('#myModal').modal('show');
         $('#modal_type').removeClass('modal-lg');
         $('#modal_type').addClass('modal-md');

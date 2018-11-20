@@ -181,7 +181,7 @@ if (is_null($_SESSION['user_master'])) {
                             {{--class="theme_img"/>--}}
                             {{--@endif--}}
 
-                            <img src="{{isset($user->theme_img) ? $user->theme_img : url('images/NoPreview_Img.png.png')}}"
+                            <img src="{{isset($user->theme_img) ? $user->theme_img : url('images/NoPreview_Img.png')}}"
                                  id="theme_uploadimg" class="theme_img"/>
 
 
@@ -465,15 +465,27 @@ if (is_null($_SESSION['user_master'])) {
                             <td class="width_65" id="adver_status">-</td>
                         </tr>
                         <tr>
-                            <td class="width_35 title-more">Contact No. :</td>
+                            <td class="width_35 title-more">Contact/Email :</td>
                             <td class="width_65" id="adver_contact">
+                                {{-- <div class="status excepted">Excepted</div>--}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="width_35 title-more">Location :</td>
+                            <td class="width_65" id="adver_location">
+                                {{-- <div class="status excepted">Excepted</div>--}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="width_35 title-more">Total Images. :</td>
+                            <td class="width_65" id="adver_image_count">
                                 {{-- <div class="status excepted">Excepted</div>--}}
                             </td>
                         </tr>
 
                         </tbody>
                     </table>
-                    <div class="latest_updateimg">
+                    <div class="latest_updateimg" id="advertise_append_img">
                         <img src="{{url('images/Adver_mainimg1.jpg')}}" id="adver_image"/>
                     </div>
                 </div>
@@ -531,14 +543,17 @@ if (is_null($_SESSION['user_master'])) {
                     <div class="advertise_details_box">
                         <div class="latest_update_title" id="adver_title_lb"></div>
                         <div class="latest_updatetxt" id="adver_details_lb"></div>
-                        <div class="latest_updatetxt">
+                        <div class="latest_updatetxt" id="amt_lb_details">
                             <span><i class="mdi mdi-currency-inr"></i> <span id="adver_price_lb"></span></span>
                             <span><i class="mdi mdi-map-marker"></i> <span id="adver_city_lb"></span></span>
-                            <span><i class="mdi mdi-home-automation basic_icon_margin"></i><span id="adver_type_lb"></span></span>
+                            <span><i class="mdi mdi-home-automation basic_icon_margin"></i><span
+                                        id="adver_type_lb"></span></span>
                         </div>
                         <div class="latest_otr_details" id="otr_lb_details">
-                            <span><i class="mdi mdi-phone-incoming basic_icon_margin"></i><span id="adver_contact_lb"></span></span>
-                            <span><i class="mdi mdi-email basic_icon_margin"></i><span id="adver_email_lb"></span></span>
+                            <span><i class="mdi mdi-phone-incoming basic_icon_margin"></i><span
+                                        id="adver_contact_lb"></span></span>
+                            <span><i class="mdi mdi-email basic_icon_margin"></i><span
+                                        id="adver_email_lb"></span></span>
                         </div>
                     </div>
                     <div class="latest_updateimg">
@@ -553,25 +568,24 @@ if (is_null($_SESSION['user_master'])) {
     </div>
 </div>
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
-    <div class="modal-dialog modal-lg" id="modal_type">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                 <h4 id="modal_title" class="modal-title">Title</h4>
             </div>
-            <div id="modal_body" class="modal-body">
+            <div id="modal_body">
                 <p>One fine body&hellip;</p>
             </div>
-            <div class="modal-footer">
-                <div class=" pull-right">
-                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
-                    &nbsp;
-                </div>
-                &nbsp;
-                <div id="modalBtn" class="pull-right">&nbsp;</div>
-                {{--<button id="extraBtn1" type="button" class="btn btn-primary" style="display:none">Save changes</button>--}}
-            </div>
+            {{--<div class="modal-footer">--}}
+            {{--<div class=" pull-right">--}}
+            {{--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>--}}
+            {{--&nbsp;--}}
+            {{--</div>--}}
+            {{--&nbsp;--}}
+            {{--<div id="modalBtn" class="pull-right">&nbsp;</div>             --}}
+            {{--</div>--}}
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -756,25 +770,25 @@ $friendC = count($friendlist);
         $('body').css('overflow', 'auto');
     }
 
-//    function Show_Topearner() {
-//        var check_class = $('.top_earner_block').attr('class');
-//        $('.top_earner_block').removeClass('show_fixed_rightblk');
-//        if (check_class == "panel top_earner_block panel-default") {
-//            $('.top_earner_block').addClass('show_fixed_rightblk');
-//            $('.overlay_res').show();
-//            $('body').css('overflow', 'hidden');
-//        }
-//    }
+    //    function Show_Topearner() {
+    //        var check_class = $('.top_earner_block').attr('class');
+    //        $('.top_earner_block').removeClass('show_fixed_rightblk');
+    //        if (check_class == "panel top_earner_block panel-default") {
+    //            $('.top_earner_block').addClass('show_fixed_rightblk');
+    //            $('.overlay_res').show();
+    //            $('body').css('overflow', 'hidden');
+    //        }
+    //    }
 
-//    function Show_Followers() {
-//        var check_class = $('.followers_block').attr('class');
-//        $('.followers_block').removeClass('show_fixed_rightblk');
-//        if (check_class == "followers_block") {
-//            $('.followers_block').addClass('show_fixed_rightblk');
-//            $('.overlay_res').show();
-//            $('body').css('overflow', 'hidden');
-//        }
-//    }
+    //    function Show_Followers() {
+    //        var check_class = $('.followers_block').attr('class');
+    //        $('.followers_block').removeClass('show_fixed_rightblk');
+    //        if (check_class == "followers_block") {
+    //            $('.followers_block').addClass('show_fixed_rightblk');
+    //            $('.overlay_res').show();
+    //            $('body').css('overflow', 'hidden');
+    //        }
+    //    }
     function Show_LinkOptions() {
         var check_class = $('.menu_left').attr('class');
         if (check_class == "col-md-2 dashboard_fixed menu_left") {
@@ -827,20 +841,20 @@ $friendC = count($friendlist);
             $('body').css('overflow', 'auto');
         }
     }
-//    function Show_LinkOptions() {
-//        var check_class = $('.profile_basic_menu_block').attr('class');
-//        $('.profile_basic_menu_block').removeClass('bootom_menu_show');
-//        if (check_class == "profile_basic_menu_block") {
-//            $('.profile_basic_menu_block').addClass('profile_basic_menu_block_show');
-//            $('.overlay_res').show();
-//            $('body').css('overflow', 'hidden');
-//        }
-//        else if (check_class == "profile_basic_menu_block left_menu_fixed") {
-//            $('.profile_basic_menu_block').addClass('profile_basic_menu_block_show');
-//            $('.overlay_res').show();
-//            $('body').css('overflow', 'hidden');
-//        }
-//    }
+    //    function Show_LinkOptions() {
+    //        var check_class = $('.profile_basic_menu_block').attr('class');
+    //        $('.profile_basic_menu_block').removeClass('bootom_menu_show');
+    //        if (check_class == "profile_basic_menu_block") {
+    //            $('.profile_basic_menu_block').addClass('profile_basic_menu_block_show');
+    //            $('.overlay_res').show();
+    //            $('body').css('overflow', 'hidden');
+    //        }
+    //        else if (check_class == "profile_basic_menu_block left_menu_fixed") {
+    //            $('.profile_basic_menu_block').addClass('profile_basic_menu_block_show');
+    //            $('.overlay_res').show();
+    //            $('body').css('overflow', 'hidden');
+    //        }
+    //    }
 
 
     function RemoveTheameByUser(dis) {
@@ -897,6 +911,7 @@ $friendC = count($friendlist);
 
     /******************************************Bijendra**********************************************/
     $(document).ready(function () {
+        activatPlaceSearch();
         $('[data-toggle="tooltip"]').tooltip();
         /********Pinku***********/
 //        $("#earners_block").bootstrapNews({
@@ -1270,7 +1285,7 @@ $friendC = count($friendlist);
             data: {post_id: post_id},//'{"data":"' + id + '"}',
             success: function (data) {
                 $('#notif_body').html(data);
-                ViewMarkRead(post_id ,dis);
+                ViewMarkRead(post_id, dis);
             },
             error: function (xhr, status, error) {
                 $('#notif_body').html(xhr.responseText);
@@ -1278,7 +1293,7 @@ $friendC = count($friendlist);
             }
         });
     }
-    function ViewMarkRead(post_id ,dis) {
+    function ViewMarkRead(post_id, dis) {
         var editurl = '{{ url('make_as_read_noti') }}';
         $.ajax({
             type: "GET",
@@ -1322,5 +1337,52 @@ $friendC = count($friendlist);
     </script>
 @endif
 <script src="{{url('dist/js/lightbox.js')}}"></script>
+<script type="text/javascript">
+    function activatPlaceSearch() {
+        var input = document.getElementById('location-input');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+    }
+</script>
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&libraries=places&callback=activatPlaceSearch">
+</script>
+{{--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&callback=activatPlaceSearch"--}}
+        {{--type="text/javascript"></script>--}}
+{{--<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y"></script>--}}
+{{--<script type="text/javascript"--}}
+        {{--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&libraries=places&callback=activatPlaceSearch">--}}
+{{--</script>--}}
+{{--<script type="text/javascript"--}}
+{{--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&sensor=true&libraries=places">--}}
+{{--</script>--}}
+{{--<script type="text/javascript"--}}
+{{--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&libraries=places&callback=activatPlaceSearch">--}}
+{{--</script>--}}
+{{--<script src="{{url('js/jquery.placepicker.js')}}"></script>--}}
+{{--<script type="text/javascript">--}}
+
+    {{--$(document).ready(function () {--}}
+
+{{--// Basic usage--}}
+        {{--$(".placepicker").placepicker();--}}
+
+{{--// Advanced usage--}}
+        {{--$("#advanced-placepicker").each(function () {--}}
+            {{--var target = this;--}}
+            {{--var $collapse = $(this).parents('.form-group').next('.collapse');--}}
+            {{--var $map = $collapse.find('.another-map-class');--}}
+
+            {{--var placepicker = $(this).placepicker({--}}
+                {{--map: $map.get(0),--}}
+                {{--placeChanged: function (place) {--}}
+                    {{--console.log("place changed: ", place.formatted_address, this.getLocation());--}}
+                {{--}--}}
+            {{--}).data('placepicker');--}}
+        {{--});--}}
+
+    {{--}); // END document.ready--}}
+
+{{--</script>--}}
+
 </body>
 </html>

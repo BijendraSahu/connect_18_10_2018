@@ -7,8 +7,7 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet"/>
     <style type="text/css">
 
-        .links_ul li
-        {
+        .links_ul li {
             background: rgba(0, 125, 195, 0.6);
         }
     </style>
@@ -34,58 +33,64 @@
                             frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
                     <div class="contact_form">
                         <h2 class="text-white text-center">Get in Touch</h2>
-                        <h3 class="text-white text-center">Feel free to contact with us
-                        <p>connectingoneenterprises@gmail.com</p>
+                        <h3 class="text-white text-center">Feel free to contact us
+                            <p>connectingoneenterprises@gmail.com</p>
                         </h3>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="mdi mdi-account mdi-16px"></i></span>
-                                    <input name="name" placeholder="Name" tabindex="1" autofocus="autofocus" value=""
-                                           class="form-control required" type="text">
+                        <form action="{{url('contact_us')}}" method="post" enctype="multipart/form-data"
+                              class="form-horizontal" id="contact_us">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="mdi mdi-account mdi-16px"></i></span>
+                                        <input name="name" placeholder="Name" tabindex="1" autofocus="autofocus"
+                                               value=""
+                                               class="form-control required textWithSpace" type="text">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="mdi mdi-email-open-outline mdi-16px"></i></span>
-                                    <input name="email_id" placeholder="Email Id*" tabindex="1" autofocus="autofocus"
-                                           value="" class="form-control required email" type="text">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i
+                                                    class="mdi mdi-email-open-outline mdi-16px"></i></span>
+                                        <input name="email" placeholder="Email Id*" tabindex="2" autofocus="autofocus"
+                                               value="" class="form-control required email" type="text">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="mdi mdi-phone-log mdi-16px"></i></span>
-                                    <input name="email_id" placeholder="Phone no." tabindex="1" autofocus="autofocus"
-                                           value="" class="form-control" type="text">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i
+                                                    class="mdi mdi-phone-log mdi-16px"></i></span>
+                                        <input name="contact" placeholder="Phone no." tabindex="3" maxlength="10" autofocus="autofocus"
+                                               value="" class="form-control required" type="text">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <div class="input-group">
-            <span class="input-group-btn">
-                <span class="btn btn-default btn-file">
-                    Browse… <input type="file" id="file-input" class="contact_file">
-                </span>
-            </span>
-                                    <input type="text" id="file_document" placeholder="Upload Documents" class="form-control" readonly="" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <textarea cols="1" rows="4" name="add_details" class="form-control txt_resize required"
-                                          placeholder="Massage" data-validate="Btn_advertise"
+                            {{--<div class="col-sm-12">--}}
+                            {{--<div class="form-group">--}}
+                            {{--<div class="input-group">--}}
+                            {{--<span class="input-group-btn">--}}
+                            {{--<span class="btn btn-default btn-file">--}}
+                            {{--Browse… <input type="file" id="file-input" class="contact_file">--}}
+                            {{--</span>--}}
+                            {{--</span>--}}
+                            {{--<input type="text" id="file_document" placeholder="Upload Documents" class="form-control" readonly="" />--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                <textarea cols="1" rows="4" name="message" class="form-control txt_resize required"
+                                          placeholder="Massage" data-validate="Btn_advertise" tabindex="4"
                                           maxlength="500"></textarea>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <button class="contact_btn" type="submit" id="contact_submit">Submit</button>
-                        </div>
+                            <div class="col-sm-12">
+                                <button class="contact_btn" type="submit" id="contact_submit">Submit</button>
+                            </div>
+                        </form>
                         <div class="col-sm-12">
                             <div class="contact_links_block">
                                 <ul class="links_ul">
@@ -103,6 +108,7 @@
         </div>
     </div>
 </section>
+<script src="{{ url('js/login_validation.js') }}"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         AOS.init({
