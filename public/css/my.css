@@ -6443,3 +6443,26 @@ div.scrollingtext {
     width: 24px;
     height: 24px;
 }
+.market_container{
+    width: 100%;
+    display: inline-block;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.tradingview-widget-container {
+    height: 60px !important;
+    margin-bottom: 10px;
+    min-width: 800px;
+}
+.tradingview-widget-container iframe .tv-widget-ticker__row a{
+    padding: 5px 15px 0px 15px !important;
+    height: 40px !important;
+}
+.tradingview-widget-container iframe {
+    height: 60px !important;
+}
+
+.tradingview-widget-container iframe .quote-ticker-inited {
+    padding: 5px 15px 0px 15px !important;
+    height: 40px !important;
+}

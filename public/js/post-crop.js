@@ -31,6 +31,7 @@ function readPostImage(file) {
                     "onclick='EditPostImage(this)'></i>" +
                     "<i class='thumb_close mdi mdi-close' onclick='Remove_uploadimg_post(this);'></i>" +
                     "<img class='up_img' src='" + image_src + "' /></div>";//
+                $('#image_preview').find('.video_box').remove();
                 $('#image_preview').append(append_image);
                 $('#files_block').show();
         });
