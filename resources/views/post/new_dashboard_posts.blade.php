@@ -8,9 +8,9 @@
             <div class="exis_name_post">
                 @if($post[$i]['user_id'] != $user->id)
                     <a class="posted_name"
-                       href="{{url('friend?search=').$post[$i]['user_id']}}">{{$post[$i]['name']}}</a>@if(isset($post[$i]['checkin'])) <i class="basic_icons mdi mdi-map-marker">at</i>{!! $post[$i]['checkin'] !!} @endif
+                       href="{{url('friend?search=').$post[$i]['user_id']}}">{{$post[$i]['name']}}</a>
                 @else
-                    <a class="posted_name" href="{{url('my-profile')}}">{{$post[$i]['name']}}</a>@if(isset($post[$i]['checkin'])) <i class="basic_icons mdi mdi-map-marker">at</i>{!! $post[$i]['checkin'] !!} @endif
+                    <a class="posted_name" href="{{url('my-profile')}}">{{$post[$i]['name']}}</a>
                 @endif
                 <div class="posted_date"><i
                             class="basic_icons mdi mdi-calendar"></i>{{ date_format(date_create($post[$i]['created_at']), "d-M-Y h:i A")}}
@@ -27,7 +27,10 @@
             {{--<div class="exislike"><i class="basic_icons mdi mdi-thumb-down"></i>02</div>--}}
             {{--</div>--}}
         </div>
-        <div class="exis_txtblock">{!! \ChristofferOK\LaravelEmojiOne\LaravelEmojiOneFacade::shortnameToImage($post[$i]['description']) !!}</div>
+        <div class="exis_txtblock">
+            @if(isset($post[$i]['checkin'])) <i class="basic_icons mdi mdi-map-marker">at</i>{!! $post[$i]['checkin'] !!}
+            <br> @endif
+            {!! \ChristofferOK\LaravelEmojiOne\LaravelEmojiOneFacade::shortnameToImage($post[$i]['description']) !!}</div>
 
         <input type="hidden" id="emtext" value="{!! $post[$i]['description']  !!}">
         @if(count($post[$i]['media']) > 0)

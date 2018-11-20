@@ -71,7 +71,7 @@
         <div class="inner_lbdiv">
             <div class="advertise_lefttxt" id="_TypeName">Advertise Details :</div>
             <textarea cols="1" rows="4" name="add_details"
-                      class="form-control txt_resize required" placeholder="Enter Details"
+                      class="form-control txt_resize required" id="ed_ads_de" placeholder="Enter Details"
                       data-validate="Btn_advertise" maxlength="500">{{$ad->ad_description}}</textarea>
         </div>
     </div>
@@ -164,13 +164,20 @@
 
             var tids = img_ids;
             if ($('#ed_ad_title').val() == '') {
-                warning_noti("Please enter advertisement title");$('#ed_ad_title').focus();
+                warning_noti("Please enter advertisement title");
+                $('#ed_ad_title').focus();
             } else if ($('#edit_ddcategory').val() == '0') {
-                warning_noti("Please select any category");$('#edit_ddcategory').focus();
+                warning_noti("Please select any category");
+                $('#edit_ddcategory').focus();
             } else if ($('#ed_a_city').val() == '0') {
-                warning_noti("Please select any city");$('#ed_a_city').focus();
+                warning_noti("Please select any city");
+                $('#ed_a_city').focus();
             } else if ($('#ed_selling_cost').val() == '') {
-                warning_noti("Please enter selling cost");$('#ed_selling_cost').focus();
+                warning_noti("Please enter selling cost");
+                $('#ed_selling_cost').focus();
+            } else if ($('#ed_ads_de').val() == '') {
+                warning_noti("Please enter advertisement details");
+                $('#ed_ads_de').focus();
             } else {
                 $('#img_src').val(tids);
                 $('#Modal_NewAdd').modal('hide');

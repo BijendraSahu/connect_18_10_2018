@@ -785,7 +785,7 @@
 }
 
 .logo_company {
-    max-width:95px;
+    max-width: 95px;
 }
 
 .com_logo {
@@ -865,7 +865,7 @@
     padding-left: 25px;
     padding-right: 10px;
     height: 40px;
-    line-height:33px;
+    line-height: 33px;
     float: right;
     cursor: pointer;
     position: relative;
@@ -3635,7 +3635,7 @@
 
 .footer_fixicon {
     display: inline-block;
-    width: 25%;
+    width: 24.9%;
     float: left;
     text-align: center;
     font-size: 30px;
@@ -6414,14 +6414,14 @@ div.scrollingtext {
     text-align: center;
     font-size: 18px;
     font-weight: 400;
-    margin:10px 0px 0px;
+    margin: 10px 0px 0px;
 }
-.news_containner table
-{
+
+.news_containner table {
     font-size: 14px;
 }
-.advertise_multiimg
-{
+
+.advertise_multiimg {
     width: 150px;
     height: 150px;
     padding: 5px;
@@ -6429,12 +6429,17 @@ div.scrollingtext {
     box-shadow: 5px 8px 20px rgba(199, 199, 199, 0.19), 0 2px 5px rgba(107, 100, 100, 0.23);
     -webkit-box-shadow: 5px 8px 20px rgba(199, 199, 199, 0.19), 0 2px 5px rgba(107, 100, 100, 0.23);
 }
-.adver_mainblock
-{
+
+.adver_mainblock {
     display: inline-block;
     width: 100%;
 }
-.margin0
-{
+
+.margin0 {
     margin: 0px !important;
+}
+
+.paid_img {
+    width: 24px;
+    height: 24px;
 }

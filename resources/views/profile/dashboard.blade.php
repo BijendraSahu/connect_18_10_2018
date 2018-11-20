@@ -62,16 +62,16 @@
                 {{--gainTicker.start();--}}
                 {{--</script>--}}
                 <!-- TradingView Widget BEGIN -->
-                    {{--<div class="tradingview-widget-container">--}}
-                        {{--<div class="tradingview-widget-container__widget"></div>--}}
-                        {{--<div class="tradingview-widget-copyright"><span class="blue-text">Stock Market Update</span> By--}}
-                            {{--Connecting-One--}}
-                        {{--</div>--}}
-                        {{--<script type="text/javascript"--}}
-                                {{--src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>--}}
-                        {{--</script>--}}
-                    {{--</div>--}}
-                    <!-- TradingView Widget END -->
+                {{--<div class="tradingview-widget-container">--}}
+                {{--<div class="tradingview-widget-container__widget"></div>--}}
+                {{--<div class="tradingview-widget-copyright"><span class="blue-text">Stock Market Update</span> By--}}
+                {{--Connecting-One--}}
+                {{--</div>--}}
+                {{--<script type="text/javascript"--}}
+                {{--src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>--}}
+                {{--</script>--}}
+                {{--</div>--}}
+                <!-- TradingView Widget END -->
                     <!-- TradingView Widget BEGIN -->
                     <!-- TradingView Widget BEGIN -->
                     <div class="tradingview-widget-container">
@@ -79,31 +79,36 @@
                         <div class="tradingview-widget-copyright"><span class="blue-text">Stock Market Update</span> By
                             Connecting-One
                         </div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
+                        <script type="text/javascript"
+                                src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
                             {
-                                "symbols": [
-                                {
-                                    "description": "NIFTY 50",
-                                    "proName": "NSE:NIFTY"
-                                },
-                                {
-                                    "description": "BSE SENSEX",
-                                    "proName": "BSE:SENSEX"
-                                },
-                                {
-                                    "description": "NSE BANKNIFTY",
-                                    "proName": "NSE:BANKNIFTY"
-                                },
-                                {
-                                    "description": "BSE IT",
-                                    "proName": "BSE:IT"
-                                },
-                                {
-                                    "description": "GDP INDIA",
-                                    "proName": "FRED:GDP"
-                                }
-                            ],
-                                "locale": "in"
+                                "symbols"
+                            :
+                                [
+                                    {
+                                        "description": "NIFTY 50",
+                                        "proName": "NSE:NIFTY"
+                                    },
+                                    {
+                                        "description": "S&P BSE SENSEX",
+                                        "proName": "BSE:SENSEX"
+                                    },
+                                    {
+                                        "description": "NSE BANKNIFTY",
+                                        "proName": "NSE:BANKNIFTY"
+                                    },
+                                    {
+                                        "description": "BSE IT",
+                                        "proName": "BSE:IT"
+                                    },
+                                    {
+                                        "description": "GDP INDIA",
+                                        "proName": "FRED:GDP"
+                                    }
+                                ],
+                                    "locale"
+                            :
+                                "in"
                             }
                         </script>
                     </div>
@@ -139,7 +144,7 @@
                                                multiple/>
                                         <i class="basic_icons mdi mdi-image"></i>Photo
                                     </a>
-                                    <input type="hidden" id="post_img_src" name="post_img_src">
+                                    <input type="text" id="post_img_src" name="post_img_src">
                                     {{--<input class="-upload-pic" accept=".png,.jpg, .jpeg, .gif" type="file"--}}
                                     {{--id="post_file_image" name="post_upload_file[]"--}}
                                     {{--multiple/>--}}
@@ -156,7 +161,8 @@
                                             <i class="mdi mdi-map-marker"></i>
                                         </div>
 
-                                        <input id="location-input" class="placepicker form-control" name="checkin" type="text"
+                                        <input id="location-input" class="placepicker form-control" name="checkin"
+                                               type="text"
                                                placeholder="Enter a location">
                                     </div>
 
@@ -523,13 +529,14 @@
 
 
                 </div>
-                {{--<a href="https://www.accuweather.com/en/in/jabalpur/204410/weather-forecast/204410" class="aw-widget-legal">--}}
-                    {{--<!----}}
-                    {{--By accessing and/or using this code snippet, you agree to AccuWeather’s terms and conditions (in English) which can be found at https://www.accuweather.com/en/free-weather-widgets/terms and AccuWeather’s Privacy Statement (in English) which can be found at https://www.accuweather.com/en/privacy.--}}
-                    {{---->--}}
-                {{--</a><div id="awcc1542631765607" class="aw-widget-current"  data-locationkey="204410" data-unit="c" data-language="en-us" data-useip="true" data-uid="awcc1542631765607"></div><script type="text/javascript" src="https://oap.accuweather.com/launch.js"></script>--}}
-            <!-- weather widget start --><a target="_blank" href="https://www.booked.net/weather/jabalpur-36029"><img src="https://w.bookcdn.com/weather/picture/3_36029_1_1_3a618c_250_ffffff_333333_08488D_1_ffffff_333333_0_6.png?scode=124&domid=w209&anc_id=68429"  alt="booked.net"/></a><!-- weather widget end -->
-
+            {{--<a href="https://www.accuweather.com/en/in/jabalpur/204410/weather-forecast/204410" class="aw-widget-legal">--}}
+            {{--<!----}}
+            {{--By accessing and/or using this code snippet, you agree to AccuWeather’s terms and conditions (in English) which can be found at https://www.accuweather.com/en/free-weather-widgets/terms and AccuWeather’s Privacy Statement (in English) which can be found at https://www.accuweather.com/en/privacy.--}}
+            {{---->--}}
+            {{--</a><div id="awcc1542631765607" class="aw-widget-current"  data-locationkey="204410" data-unit="c" data-language="en-us" data-useip="true" data-uid="awcc1542631765607"></div><script type="text/javascript" src="https://oap.accuweather.com/launch.js"></script>--}}
+            <!-- weather widget start --><a target="_blank" href="https://www.booked.net/weather/jabalpur-36029"><img
+                            src="https://w.bookcdn.com/weather/picture/3_36029_1_1_3a618c_250_ffffff_333333_08488D_1_ffffff_333333_0_6.png?scode=124&domid=w209&anc_id=68429"
+                            alt="booked.net"/></a><!-- weather widget end -->
 
 
             </div>
@@ -973,7 +980,8 @@
                     warning_noti("You can upload maximum 10 images for post");
                     HideOnpageLoopader1();
                 } else {
-                    $('#post_img_src').val(JSON.stringify(img_ids));
+
+                    (img_ids.length > 0) ? $('#post_img_src').val(JSON.stringify(img_ids)) : $('#post_img_src').val('');
                     swal({
                         title: "Are you sure?",
                         text: "You want to submit this post...!",
@@ -982,47 +990,47 @@
                         dangerMode: true,
                     }).then((okk) => {
                             if (okk) {
-                                $.ajax({
-                                    type: 'POST',
-                                    url: "{{ url('userpost') }}",
-                                    data: new FormData(this),
-                                    contentType: false,
-                                    cache: false,
-                                    processData: false,
-                                    beforeSend: function () {
-                                        $('#userpostForm').css("opacity", ".5");
-                                        $("#publish").attr("disabled", "disabled");
-                                        $('#loader').css('display', 'block');
-                                        round_info_noti("WE ARE UPLOADING YOUR POST QUICKLY");
-                                    },
-                                    success: function (data) {
-                                        $('#loader').css('display', 'none');
-                                        HideOnpageLoopader1();
-//                                    swal("Success!", "Your post has been uploaded...", "success");
-                                        success_noti("Your post has been uploaded...");
-                                        // ShowSuccessPopupMsg('Your post has been uploaded...');
-//                                        setprivacy('Public');
-                                        $('#post_img_src').val('');
-                                        $('#location-input').val('');
-                                        $('#image_preview').text('');
-                                        $('.emojionearea-editor').empty();
-                                        $('#post_text_emoji').text('');
-                                        $('#posttext').val('');
-                                        $('#upload_file_image').val('');
-                                        $('#upload_file_video').val('');
-                                        $('.upload_limittxt').text('');
-                                        $('#userpostForm').css("opacity", "");
-                                        $("#publish").removeAttr("disabled", "disabled");
-                                        latest_dashboardpostload();
-                                    },
-                                    error: function (xhr, status, error) {
-                                        $('#err1').html(xhr.responseText);
-                                        $('#userpostForm').css("opacity", "");
-                                        $("#publish").removeAttr("disabled", "disabled");
-//                                    swal("Oops!", "Post has not been finished...Please try again", "info");
-                                        warning_noti("Post has not been finished...Please try again");
-                                    }
-                                });
+                                {{--$.ajax({--}}
+                                {{--type: 'POST',--}}
+                                {{--url: "{{ url('userpost') }}",--}}
+                                {{--data: new FormData(this),--}}
+                                {{--contentType: false,--}}
+                                {{--cache: false,--}}
+                                {{--processData: false,--}}
+                                {{--beforeSend: function () {--}}
+                                {{--$('#userpostForm').css("opacity", ".5");--}}
+                                {{--$("#publish").attr("disabled", "disabled");--}}
+                                {{--$('#loader').css('display', 'block');--}}
+                                {{--round_info_noti("WE ARE UPLOADING YOUR POST QUICKLY");--}}
+                                {{--},--}}
+                                {{--success: function (data) {--}}
+                                {{--$('#loader').css('display', 'none');--}}
+                                {{--HideOnpageLoopader1();--}}
+                                {{--//                                    swal("Success!", "Your post has been uploaded...", "success");--}}
+                                {{--success_noti("Your post has been uploaded...");--}}
+                                {{--// ShowSuccessPopupMsg('Your post has been uploaded...');--}}
+                                {{--//                                        setprivacy('Public');--}}
+                                {{--$('#post_img_src').val('');--}}
+                                {{--$('#location-input').val('');--}}
+                                {{--$('#image_preview').text('');--}}
+                                {{--$('.emojionearea-editor').empty();--}}
+                                {{--$('#post_text_emoji').text('');--}}
+                                {{--$('#posttext').val('');--}}
+                                {{--$('#upload_file_image').val('');--}}
+                                {{--$('#upload_file_video').val('');--}}
+                                {{--$('.upload_limittxt').text('');--}}
+                                {{--$('#userpostForm').css("opacity", "");--}}
+                                {{--$("#publish").removeAttr("disabled", "disabled");--}}
+                                {{--latest_dashboardpostload();--}}
+                                {{--},--}}
+                                {{--error: function (xhr, status, error) {--}}
+                                {{--$('#err1').html(xhr.responseText);--}}
+                                {{--$('#userpostForm').css("opacity", "");--}}
+                                {{--$("#publish").removeAttr("disabled", "disabled");--}}
+                                {{--//                                    swal("Oops!", "Post has not been finished...Please try again", "info");--}}
+                                {{--warning_noti("Post has not been finished...Please try again");--}}
+                                {{--}--}}
+                                {{--});--}}
                             }
                         }
                     );

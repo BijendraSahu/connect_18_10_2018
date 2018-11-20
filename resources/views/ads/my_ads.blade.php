@@ -322,7 +322,7 @@
                             <div class="col-sm-6">
                                 <div class="inner_lbdiv">
                                     <div class="advertise_lefttxt" id="_TypeName">Advertise Details* :</div>
-                                    <textarea cols="1" rows="4" name="add_details"
+                                    <textarea cols="1" rows="4" name="add_details" id="ads_de"
                                               class="form-control txt_resize required" placeholder="Enter Details"
                                               data-validate="Btn_advertise" maxlength="500"></textarea>
                                 </div>
@@ -687,6 +687,8 @@
                     warning_noti("Please select any city");$('#a_city').focus();
                 } else if ($('#selling_cost').val() == '') {
                     warning_noti("Please enter selling cost");$('#selling_cost').focus();
+                } else if ($('#ads_de').val() == '') {
+                    warning_noti("Please enter advertisement details");$('#ads_de').focus();
                 } else if (tids == '') {
                     warning_noti("Please select any image");
                     $('#img_src').val('');
