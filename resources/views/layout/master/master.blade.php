@@ -1346,43 +1346,20 @@ $friendC = count($friendlist);
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&libraries=places&callback=activatPlaceSearch">
 </script>
+{{--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>--}}
+{{--<script type="text/javascript">--}}
+    {{--google.maps.event.addDomListener(window, 'load', function () {--}}
+        {{--var places = new google.maps.places.Autocomplete(document.getElementById('location-input'));--}}
+        {{--google.maps.event.addListener(places, 'place_changed', function () {--}}
+
+        {{--});--}}
+    {{--});--}}
+{{--</script>--}}
 {{--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&callback=activatPlaceSearch"--}}
         {{--type="text/javascript"></script>--}}
 {{--<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y"></script>--}}
 {{--<script type="text/javascript"--}}
         {{--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&libraries=places&callback=activatPlaceSearch">--}}
 {{--</script>--}}
-{{--<script type="text/javascript"--}}
-{{--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&sensor=true&libraries=places">--}}
-{{--</script>--}}
-{{--<script type="text/javascript"--}}
-{{--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&libraries=places&callback=activatPlaceSearch">--}}
-{{--</script>--}}
-{{--<script src="{{url('js/jquery.placepicker.js')}}"></script>--}}
-{{--<script type="text/javascript">--}}
-
-    {{--$(document).ready(function () {--}}
-
-{{--// Basic usage--}}
-        {{--$(".placepicker").placepicker();--}}
-
-{{--// Advanced usage--}}
-        {{--$("#advanced-placepicker").each(function () {--}}
-            {{--var target = this;--}}
-            {{--var $collapse = $(this).parents('.form-group').next('.collapse');--}}
-            {{--var $map = $collapse.find('.another-map-class');--}}
-
-            {{--var placepicker = $(this).placepicker({--}}
-                {{--map: $map.get(0),--}}
-                {{--placeChanged: function (place) {--}}
-                    {{--console.log("place changed: ", place.formatted_address, this.getLocation());--}}
-                {{--}--}}
-            {{--}).data('placepicker');--}}
-        {{--});--}}
-
-    {{--}); // END document.ready--}}
-
-{{--</script>--}}
-
 </body>
 </html>
