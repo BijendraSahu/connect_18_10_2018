@@ -338,6 +338,7 @@ Route::get('deleteads', 'APIController@deleteads'); //user ad_list
 Route::get('uadsdelete', 'APIController@myadsdelete'); //user ad_list
 Route::get('pdelete', 'APIController@post_delete'); //user ad_list
 Route::get('notice', 'APIController@notice'); //show notification
+Route::get('notice_count', 'APIController@notice_count'); //show notification
 Route::get('panic', 'APIController@addpanic'); //add panic
 Route::get('editpanic', 'APIController@editpanic'); //edit panic
 Route::get('showpanic', 'APIController@showpanic'); //show panic

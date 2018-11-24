@@ -1276,7 +1276,7 @@ $friendC = count($friendlist);
     function show_notification_post(post_id, dis) {
         $('#Mymodal_notification').modal('show');
         $('#notif_title').html('View Post');
-        $('#notif_body').html('<img height="50px" class="center-block" src="{{url('assets/img/loading.gif')}}"/>');
+        $('#notif_body').html('<img height="50px" class="center-block" src="{{url('images/loading.gif')}}"/>');
         var editurl = '{{ url('show_notification_post') }}';
         $.ajax({
             type: "GET",
@@ -1285,7 +1285,7 @@ $friendC = count($friendlist);
             data: {post_id: post_id},//'{"data":"' + id + '"}',
             success: function (data) {
                 $('#notif_body').html(data);
-                ViewMarkRead(post_id, dis);
+                ViewMarkRead($(dis).attr('id'), dis);
             },
             error: function (xhr, status, error) {
                 $('#notif_body').html(xhr.responseText);

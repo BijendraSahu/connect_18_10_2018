@@ -155,14 +155,14 @@ class APIController extends Controller
         if (isset($user_f->token)) {
             $request_by = ucwords($user_s->timeline->name);
             $title = "Friend Request";
-            $message = "$request_by is send you an friend request";
+            $message = "$request_by is send you a friend request";
             $token = $user_f->token;
             $data = $user_f;
             $user_notification = new UserNotifications();
 //            $user_notification->post_id = $post->id;
             $user_notification->user_id = $user_f->id;
             $user_notification->notified_by = $user_s->id;
-            $user_notification->description = "<b>$request_by</b> is send you an friend request";
+            $user_notification->description = "<b>$request_by</b> is send you a friend request";
             $user_notification->created_at = Carbon::now('Asia/Kolkata');
             $user_notification->save();
             //event(new StatusLiked($post->posted_by));
@@ -1338,6 +1338,20 @@ class APIController extends Controller
             echo json_encode($ret);
         }
     }
+
+    public function notice_count()
+    {
+        $user_id = request('user_id');
+        $notification = UserNotifications::where(['seen' => 0, 'user_id' => $user_id])->count();
+        $friendlist = DB::select("select u.id as fid, (select t.name from timelines t where t.id=u.timeline_id) as name,u.profile_pic from users u where u.id in (select f.user_id from friends f where f.status='pending' and f.friend_id=$user_id)");
+
+        $result = ['notification_count' => $notification, 'friend_request_count' => count($friendlist)];
+        if (count($result) > 0) {
+            return $this->sendResponse($result, 'User Record');
+        } else {
+            return $this->sendError('No record available', '');
+        }
+    }
     /*******Notification******/
 
     /*******panic******/
@@ -2140,7 +2154,7 @@ class APIController extends Controller
     public function make_as_read_noti()
     {
         $noti = UserNotifications::find(request('notification_id'));
-        if (isset($noti)) {
+        if (isset($noti) && $noti->seen == 0) {
             $noti->seen = 1;
             $noti->save();
             $ret['response'] = "Notification marked as read";

@@ -169,7 +169,7 @@
                                                         <li>
                                                             <a id="{{$ad->id}}"
                                                                onclick="ShowConformationPopupMsg('Are You Sure To close this Advertisement.');"
-                                                               class="border_none btnClose"><i
+                                                               class="btnClose"><i
                                                                         class="mdi mdi-close optiondrop_icon delete_color"></i>Close</a>
                                                         </li>
                                                     @endif

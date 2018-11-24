@@ -963,7 +963,7 @@
 //                (img_ids.length > 0) ? $('#post_img_src').val(JSON.stringify(img_ids)) : $('#post_img_src').val('');
                 var videos = $('#upload_file_video').val();
                 var adverimg_length = $('.upimg_box').length;
-                if (textval == '' && files == '' && videos == '') {
+                if (textval.trim() == '' && files == '' && videos == '') {
                     warning_noti("You can't post without any text or image or video");
                     HideOnpageLoopader1();
                 } else if (adverimg_length > 10) {

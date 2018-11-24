@@ -28,7 +28,7 @@
                     {{--</div>--}}
 
                     @if(isset($notification->post_id))
-                        <div class="menu_popup_text" onclick="show_notification_post('{{$notification->post_id}}', this)"
+                        <div class="menu_popup_text" id="{{$notification->id}}" onclick="show_notification_post('{{$notification->post_id}}', this)"
                              data-toggle="modal"
                              data-target="#Mymodal_notification">
                             <div class="popup_text">{!! $notification->description !!}</div>

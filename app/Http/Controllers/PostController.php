@@ -257,24 +257,24 @@ class PostController extends Controller
         $post_id = request('post_id');
         $user_id = $user->id;
         $posts = "select p.id as id, p.description,p.checkin, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where p.id = $post_id and p.user_id=$user_id";
-//        $posts1 = DB::select("select p.id as id, p.description, p.checkin, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where  p.active = 1 and p.user_id=$user_id or  p.user_id in  (select fr.user_id from friends fr where fr.status='friends' and fr.friend_id=$user_id) or p.user_id in (select f.friend_id from friends f where f.status='friends' and f.user_id=$user_id) ORDER BY p.id DESC");
+//        $posts = DB::select("select p.id as id, p.description, p.checkin, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name,p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where  p.active = 1 and p.user_id=$user_id or  p.user_id in  (select fr.user_id from friends fr where fr.status='friends' and fr.friend_id=$user_id) or p.user_id in (select f.friend_id from friends f where f.status='friends' and f.user_id=$user_id) ORDER BY p.id DESC");
 //        echo $s;
         $post = DB::selectOne($posts);
 //echo $posts;
         if (isset($post) > 0) {
 //            foreach ($posts as $post) {
-            $media_re = DB::select("select pm.media_url,pm.media_type from post_media pm where pm.post_id=$user_id");
+            $media_re = DB::select("select pm.media_url,pm.media_type from post_media pm where pm.post_id=$post_id");
 
-            $comment_re = DB::select("select c.id, c.user_id, t.name, u.profile_pic, c.description from comments c, users u, timelines t where c.user_id = u.id and u.timeline_id = t.id and c.post_id=$user_id");
+            $comment_re = DB::select("select c.id, c.user_id, t.name, u.profile_pic, c.description from comments c, users u, timelines t where c.user_id = u.id and u.timeline_id = t.id and c.post_id=$post_id");
 
-            $like_re = DB::select("SELECT t.name, u.profile_pic, u.id FROM post_likes pl, users u, timelines t WHERE pl.user_id = u.id and u.timeline_id = t.id and pl.post_id=$user_id");
+            $like_re = DB::select("SELECT t.name, u.profile_pic, u.id FROM post_likes pl, users u, timelines t WHERE pl.user_id = u.id and u.timeline_id = t.id and pl.post_id=$post_id");
 
-            $spam_re = DB::select("SELECT t.name, u.profile_pic, u.id FROM post_spam pl, users u, timelines t WHERE pl.user_id = u.id and u.timeline_id = t.id and pl.post_id=$user_id");
+            $spam_re = DB::select("SELECT t.name, u.profile_pic, u.id FROM post_spam pl, users u, timelines t WHERE pl.user_id = u.id and u.timeline_id = t.id and pl.post_id=$post_id");
 
-            $dislike = DB::select("SELECT t.name, u.profile_pic, u.id FROM post_unlike pl, users u, timelines t WHERE pl.user_id = u.id and u.timeline_id = t.id and pl.post_id=$user_id");
+            $dislike = DB::select("SELECT t.name, u.profile_pic, u.id FROM post_unlike pl, users u, timelines t WHERE pl.user_id = u.id and u.timeline_id = t.id and pl.post_id=$post_id");
 
 
-            $results[] = ['id' => $user_id, 'checkin' => $post->checkin, 'description' => isset($post->description) ? $post->description : '', 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'media' => $media_re, 'comment' => $comment_re, 'like' => $like_re, 'spam' => count($spam_re), 'dislike' => count($dislike)];
+            $results[] = ['id' => $post_id, 'checkin' => $post->checkin, 'description' => isset($post->description) ? $post->description : '', 'name' => $post->name, 'profile_pic' => $post->profile_pic, 'created_at' => $post->created_at, 'user_id' => $post->user_id, 'media' => $media_re, 'comment' => $comment_re, 'like' => $like_re, 'spam' => count($spam_re), 'dislike' => count($dislike)];
 //            }
             return view('post.notification_post')->with(['post' => $results, 'user' => $user, 'count_post' => 1]);
         } else {
