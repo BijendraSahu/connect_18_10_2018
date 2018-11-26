@@ -189,6 +189,8 @@ Route::get('wunfriend', 'ProfileController@unfriend');
 
 /*******Post Load*******/
 Route::POST('userpost', 'PostController@post_store');
+Route::POST('user_post', 'PostController@post_store');
+Route::POST('new_user_post', 'PostController@new_user_post');
 
 //Route::post('postload', 'PostController@postload');
 Route::post('postload', 'PostController@getPost');

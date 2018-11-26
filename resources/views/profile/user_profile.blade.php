@@ -148,6 +148,12 @@
                     </div>-->
                     <div class="statusMsg"></div>
                     <div class="post_block">
+                        <div class="loader" id="loader">
+                            <div class="internal_bg">
+                                <img src="{{url('images/logo.png')}}" class="top_loader" />
+                                <img class="loader_main" src="{{url('images/1L.gif')}}"/>
+                            </div>
+                        </div>
                         {{--<form role="form" name="userpostForm" id="userpostForm" action="" method="post"--}}
                         {{--enctype="multipart/form-data">--}}
                         <form enctype="multipart/form-data" id="userpostForm">
@@ -158,7 +164,7 @@
                                 </button>
                                 <button class="btn btn-primary post_btn_video">
                                     <input class="profile-upload-pic" accept=".mp4, .3gp, .ogg, .avi, .wmv" type="file"
-                                           id="upload_file_video" name="upload_file_video[]"
+                                           id="upload_file_video" name="upload_file_video"
                                            onchange="PreviewVideo(this);"/>
                                     <i class="basic_icons mdi mdi-video"></i>Video
                                 </button>
@@ -442,6 +448,10 @@
                                     latest_dashboardpostload();
                                 },
                                 error: function (xhr, status, error) {
+                                    $('#loader').css('display', 'none');
+//                                    $('#err1').html(xhr.responseText);
+                                    $('#userpostForm').css("opacity", "");
+                                    $("#publish").removeAttr("disabled", "disabled");
 //                    console.log('Error:', data);
                                     ShowErrorPopupMsg('Error in uploading...');
 //                        $('#err1').html(xhr.responseText);

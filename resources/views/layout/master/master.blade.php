@@ -94,12 +94,12 @@ if (is_null($_SESSION['user_master'])) {
 <!-- Page Content -->
 @yield('head')
 @yield('content')
-<div class="loader" id="loader">
-    <div class="internal_bg">
+{{--<div class="loader" id="loader">--}}
+    {{--<div class="internal_bg">--}}
         {{--            <img src="{{url('assets/images/logo_loader.png')}}" class="top_loader" />--}}
-    </div>
-    <img class="loader_main" src="{{url('images/1L.gif')}}"/>
-</div>
+        {{--<img class="loader_main" src="{{url('images/1L.gif')}}"/>--}}
+    {{--</div>--}}
+{{--</div>--}}
 <!-- Page Content -->
 <p id="errorall"></p>
 <div class="Globalloading" id="main_pageloader">

@@ -3,6 +3,11 @@
 @section('title', 'My Profile')
 <link href="{{url('css/cropper.min.css')}}" type="text/css" rel="stylesheet"/>
 @section('head')
+    <style>
+        #preview img {
+            height: 100px;
+        }
+    </style>
     <section class="member_profileblk">
         <div class="container">
             <div class="member_profile_imgcontainner">
@@ -107,13 +112,15 @@
                     </div>-->
                     <div class="statusMsg"></div>
                     <div class="post_block">
+                        <div class="loader" id="loader">
+                            <div class="internal_bg">
+                                <img src="{{url('images/logo.png')}}" class="top_loader" />
+                                <img class="loader_main" src="{{url('images/1L.gif')}}"/>
+                            </div>
+                        </div>
                         {{--<form role="form" name="userpostForm" id="userpostForm" action="" method="post"--}}
                         {{--enctype="multipart/form-data">--}}
-                        <style>
-                            #preview img {
-                                height: 100px;
-                            }
-                        </style>
+
                         <form enctype="multipart/form-data" id="userpostForm">
                             <div class="post_head">
                                 <span class="post_title"><i class="mdi mdi-pencil"></i>Make Post</span>
@@ -122,7 +129,7 @@
                                 </button>
                                 <button class="btn btn-primary post_btn_video">
                                     <input class="profile-upload-pic" accept=".mp4, .3gp, .ogg, .avi, .wmv" type="file"
-                                           id="upload_file_video" name="upload_file_video[]"
+                                           id="upload_file_video" name="upload_file_video"
                                            onchange="PreviewVideo(this);"/>
                                     <i class="basic_icons mdi mdi-video"></i>Video
                                 </button>
@@ -364,8 +371,12 @@
                                     //                                    ShowErrorPopupMsg('Error in uploading...');
 //                                    warning_noti("Error in uploading...");
 //                                    $('#userpostForm').css("opacity", "");
+                                    $('#loader').css('display', 'none');
+//                                        $('#err1').html(xhr.responseText);
+                                    $('#userpostForm').css("opacity", "");
+                                    $(".btn_post").removeAttr("disabled", "disabled");
 
-                                    $('#userpostForm').html(xhr.responseText);
+//                                    $('#userpostForm').html(xhr.responseText);
                                 }
                             });
                         }

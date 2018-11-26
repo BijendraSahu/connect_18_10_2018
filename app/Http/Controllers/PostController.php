@@ -24,7 +24,7 @@ session_start();
 
 class PostController extends Controller
 {
-    public $data = [];
+//    public $data = [];
 
     public function post_store(Request $request)
     {
@@ -32,7 +32,7 @@ class PostController extends Controller
 //        echo request('posttext');
 //        try {
         // $upload_file = count($_FILES['upload_file']['name']);-----
-        $upload_file_video = count($_FILES['upload_file_video']['name']);
+
         $user = $_SESSION['user_master'];
 
         $newpost = new Posts();
@@ -46,8 +46,7 @@ class PostController extends Controller
         $newpost->checkin = request('checkin') != '' ? request('checkin') : null;
         $newpost->post_privacy = request('post_privacy_set') == 'Public' ? 'public' : 'friends';
         $newpost->save();
-
-        if (request('post_img_src') != null) {
+        if ($request->input('post_img_src') != null) {
 //                $tids = explode("=,", request('post_img_src'));
             $tids = $request->input('post_img_src');
             foreach (json_decode($tids) as $obj) {
@@ -67,7 +66,27 @@ class PostController extends Controller
                 $post_media->media_type = 'img';
                 $post_media->save();
             }
+        } elseif (request('upload_file_video') != null) {
+//            $upload_file_video = count($_FILES['upload_file_video']['name']);
+//            for ($i = 0; $i < $upload_file_video; $i++) {
+            $arr = [];
+            $i = 1;
+            $destinationPath = 'userposts/' . $user->id . '/';
+//                foreach (request('upload_file_video') as $file) {
+            $file = $request->file('upload_file_video');
+            $post_media = new Post_media();
+            $post_media->post_id = $newpost->id;
+
+            $temp = str_random(6) . '_post_user_id_' . $user->id . '_' . $file->getClientOriginalName();
+            $file->move($destinationPath, $temp);
+//            $i++;
+            $post_media->media_type = 'vd';
+            $post_media->media_url = $destinationPath . $temp;
+
+            $post_media->save();
+//                }
         }
+//        echo request('post_img_src');
         /* if (request('upload_file') != null) {
              for ($i = 0; $i < $upload_file; $i++) {
                  $arr = [];
@@ -85,25 +104,125 @@ class PostController extends Controller
                  }
              }
          }*/
-        if (request('upload_file_video') != null) {
-            for ($i = 0; $i < $upload_file_video; $i++) {
-                $arr = [];
-                $i = 1;
-                $destinationPath = 'userposts/' . $user->id . '/';
-                foreach (request('upload_file_video') as $file) {
-                    $post_media = new Post_media();
-                    $post_media->post_id = $newpost->id;
 
-                    $arr[] = $temp = str_random(6) . '_post_user_id_' . $user->id . '_' . $file->getClientOriginalName();
-                    $file->move($destinationPath, $temp);
-                    $i++;
-                    $post_media->media_type = 'vd';
-                    $post_media->media_url = $destinationPath . $temp;
+//        } catch (\Exception $ex) {
+//            return $ex->getMessage();
+//        }
+    }
 
-                    $post_media->save();
+//    function callAPI($method, $url, $data){
+//        $curl = curl_init();
+//
+//        switch ($method){
+//            case "POST":
+//                curl_setopt($curl, CURLOPT_POST, 1);
+//                if ($data)
+//                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+//                break;
+//            case "PUT":
+//                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+//                if ($data)
+//                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+//                break;
+//            default:
+//                if ($data)
+//                    $url = sprintf("%s?%s", $url, http_build_query($data));
+//        }
+//
+//        // OPTIONS:
+//        curl_setopt($curl, CURLOPT_URL, $url);
+//        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+//            'APIKEY: 111111111111111111111',
+//            'Content-Type: application/json',
+//        ));
+//        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+//        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+//
+//        // EXECUTE:
+//        $result = curl_exec($curl);
+//        if(!$result){die("Connection Failure");}
+//        curl_close($curl);
+//        return $result;
+//    }
+
+    public function new_user_post(Request $request)
+    {
+//        ini_set('memory_limit','256M');
+//        echo request('posttext');
+//        try {
+
+        $user = $_SESSION['user_master'];
+
+        $newpost = new Posts();
+        $newpost->description = request('description');
+        $newpost->timeline_id = $user->timeline_id;
+        $newpost->user_id = $user->id;
+        $newpost->posted_by = $user->id;
+        $newpost->description = LaravelEmojiOneFacade::toShort(request('posttext'));
+        $newpost->description2 = request('posttext');
+        $newpost->created_at = Carbon::now('Asia/Kolkata');;
+        $newpost->checkin = request('checkin') != '' ? request('checkin') : null;
+        $newpost->post_privacy = request('post_privacy_set') == 'Public' ? 'public' : 'friends';
+        $newpost->save();
+        if ($request->input('post_img_src') != null) {
+//                $tids = explode("=,", request('post_img_src'));
+            $tids = $request->input('post_img_src');
+            foreach (json_decode($tids) as $obj) {
+                $post_media = new Post_media();
+                $post_media->post_id = $newpost->id;
+                list($type, $obj) = explode(';', $obj);
+                list(, $obj) = explode(',', $obj);
+                $data = base64_decode($obj); //base64_decode($data);
+                $image_name = str_random(6) . '.png';
+                $destinationPath = './userposts/' . $user->id . '/' . $image_name;
+                $directory = "userposts/" . $user->id;
+                if (!file_exists($directory)) {
+                    File::makeDirectory($directory);
                 }
+                file_put_contents($destinationPath, $data);
+                $post_media->media_url = 'userposts/' . $user->id . '/' . $image_name;
+                $post_media->media_type = 'img';
+                $post_media->save();
             }
+        } elseif (request('upload_file_video') != null) {
+//            $upload_file_video = count($_FILES['upload_file_video']['name']);
+//            for ($i = 0; $i < $upload_file_video; $i++) {
+            $arr = [];
+            $i = 1;
+            $destinationPath = 'userposts/' . $user->id . '/';
+//                foreach (request('upload_file_video') as $file) {
+            $file = $request->file('upload_file_video');
+            $post_media = new Post_media();
+            $post_media->post_id = $newpost->id;
+
+            $temp = str_random(6) . '_post_user_id_' . $user->id . '_' . $file->getClientOriginalName();
+            $file->move($destinationPath, $temp);
+//            $i++;
+            $post_media->media_type = 'vd';
+            $post_media->media_url = $destinationPath . $temp;
+
+            $post_media->save();
+//                }
         }
+//        echo request('post_img_src');
+        /* if (request('upload_file') != null) {
+             for ($i = 0; $i < $upload_file; $i++) {
+                 $arr = [];
+                 $i = 1;
+                 $destinationPath = 'userposts/' . $user->id . '/';
+                 foreach (request('upload_file') as $file) {
+                     $post_media = new Post_media();
+                     $post_media->post_id = $newpost->id;
+                     $arr[] = $temp = str_random(6) . '_post_user_id_' . $user->id . '_' . $file->getClientOriginalName();
+                     $file->move($destinationPath, $temp);
+                     $i++;
+                     $post_media->media_type = 'img';
+                     $post_media->media_url = $destinationPath . $temp;
+                     $post_media->save();
+                 }
+             }
+         }*/
+
 //        } catch (\Exception $ex) {
 //            return $ex->getMessage();
 //        }

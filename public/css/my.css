@@ -1442,6 +1442,8 @@
     background-color: #ffffff;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02), 0 1px 5px rgba(0, 0, 0, 0.05);
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02), 0 1px 5px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 5;
 }
 
 .post_head {
@@ -5732,22 +5734,22 @@
 .loader {
     width: 100%;
     height: 100%;
-    top: 53px;
-    left: 245px;
-    position: fixed;
+    top: 0px;
+    left: 0px;
+    position: absolute;
     display: none;
-    z-index: 150;
+    z-index: 55;
     background: #ffffffb5;
     text-align: center;
 }
 
-.loader_main {
-    width: 100px;
-    position: absolute;
-    top: 50%;
-    margin-left: -350px;
-    margin-top: -295px;
-}
+/*.loader_main {*/
+    /*width: 100px;*/
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*margin-left: -350px;*/
+    /*margin-top: -295px;*/
+/*}*/
 
 /**********Loading****************/
 .unseen {

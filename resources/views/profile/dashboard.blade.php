@@ -5,8 +5,9 @@
 @section('head')
     {{--<link href="http://widgets.freestockcharts.com/WidgetServer/WBITickerblue.css"--}}
     {{--rel="stylesheet" type="text/css"/>--}}
-    <script src="http://widgets.freestockcharts.com/script/WBIHorizontalTicker2.js?ver=12334"
-            type="text/javascript"></script>
+    {{--<script src="http://widgets.freestockcharts.com/script/WBIHorizontalTicker2.js?ver=12334"--}}
+            {{--type="text/javascript"></script>--}}
+
     <section class="container-fluid overall_containner dash_respad">
         <div class="row">
             <div class="col-md-2 dashboard_fixed menu_left">
@@ -73,31 +74,35 @@
                         <div class="tradingview-widget-container">
                             <div class="tradingview-widget-container__widget"></div>
                             {{--<div class="tradingview-widget-copyright"><span class="blue-text">Stock Market Update</span>--}}
-                                {{--By--}}
-                                {{--Connecting-One--}}
+                            {{--By--}}
+                            {{--Connecting-One--}}
                             {{--</div>--}}
                             <script type="text/javascript"
                                     src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
                                 {
-                                    "symbols": [
-                                    {
-                                        "description": "BSE",
-                                        "proName": "NSE:BSE"
-                                    },
-                                    {
-                                        "description": "BANK NIFTY",
-                                        "proName": "NSE:BANKNIFTY"
-                                    },
-                                    {
-                                        "description": "BSE SENSEX",
-                                        "proName": "BSE:SENSEX"
-                                    },
-                                    {
-                                        "description": "NIFTY 50",
-                                        "proName": "NSE:NIFTY"
-                                    }
-                                ],
-                                    "locale": "in"
+                                    "symbols"
+                                :
+                                    [
+                                        {
+                                            "description": "BSE",
+                                            "proName": "NSE:BSE"
+                                        },
+                                        {
+                                            "description": "BANK NIFTY",
+                                            "proName": "NSE:BANKNIFTY"
+                                        },
+                                        {
+                                            "description": "BSE SENSEX",
+                                            "proName": "BSE:SENSEX"
+                                        },
+                                        {
+                                            "description": "NIFTY 50",
+                                            "proName": "NSE:NIFTY"
+                                        }
+                                    ],
+                                        "locale"
+                                :
+                                    "in"
                                 }
                             </script>
                         </div>
@@ -107,6 +112,12 @@
                 <div class="col-md-8 col-sm-12">
                     <div class="dynamic_overlay">
                         <div class="post_block">
+                            <div class="loader" id="loader">
+                                <div class="internal_bg">
+                                    <img src="{{url('images/logo.png')}}" class="top_loader"/>
+                                    <img class="loader_main" src="{{url('images/1L.gif')}}"/>
+                                </div>
+                            </div>
                             <form enctype="multipart/form-data" id="userpostForm">
                                 <div class="post_head">
                                     <span class="post_title"><i class="mdi mdi-pencil"></i>Make Post</span>
@@ -120,7 +131,7 @@
                                                onchange="PreviewVideo(this);"/>--}}
 
                                         <input class="profile-upload-pic" accept=".mp4, .3gp" type="file"
-                                               id="upload_file_video" name="upload_file_video[]"
+                                               id="upload_file_video" name="upload_file_video"
                                                onchange="PreviewVideo(this);"/>
                                         <i class="basic_icons mdi mdi-video"></i>Video
                                     </a>
@@ -979,10 +990,14 @@
                         dangerMode: true,
                     }).then((okk) => {
                             if (okk) {
-                                (img_ids.length > 0) ? $('#post_img_src').val(JSON.stringify(img_ids)) : $('#post_img_src').val('');
+                                //$('#post_img_src').val(JSON.stringify(files));
+
+
+//                                alert($('#post_img_src').val());
+                                $('#post_img_src').val(JSON.stringify(files));
                                 $.ajax({
                                     type: 'POST',
-                                    url: "{{ url('userpost') }}",
+                                    url: "{{ url('new_user_post') }}",
                                     data: new FormData(this),
                                     contentType: false,
                                     cache: false,
@@ -994,12 +1009,11 @@
                                         round_info_noti("WE ARE UPLOADING YOUR POST QUICKLY");
                                     },
                                     success: function (data) {
+                                        console.log(data);
                                         $('#loader').css('display', 'none');
                                         HideOnpageLoopader1();
-                                        //                                    swal("Success!", "Your post has been uploaded...", "success");
                                         success_noti("Your post has been uploaded...");
-                                        // ShowSuccessPopupMsg('Your post has been uploaded...');
-                                        //                                        setprivacy('Public');
+                                        //setprivacy('Public');
                                         $('#post_img_src').val('');
                                         $('#location-input').val('');
                                         $('#image_preview').text('');
@@ -1014,9 +1028,11 @@
                                         latest_dashboardpostload();
                                     },
                                     error: function (xhr, status, error) {
-                                        $('#err1').html(xhr.responseText);
+                                        $('#loader').css('display', 'none');
+//                                        $('#err1').html(xhr.responseText);
                                         $('#userpostForm').css("opacity", "");
                                         $("#publish").removeAttr("disabled", "disabled");
+                                        console.log(xhr.responseText);
                                         //                                    swal("Oops!", "Post has not been finished...Please try again", "info");
                                         warning_noti("Post has not been finished...Please try again");
                                     }
