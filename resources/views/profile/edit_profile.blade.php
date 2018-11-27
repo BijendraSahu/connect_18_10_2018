@@ -317,7 +317,7 @@
                         {{--</form>--}}
                         {!! Form::close() !!}
                         <p id="err"></p>
-                        <button class="mdi glo_button" onclick="deactivate_account()">Deactivate Account</button>
+                        {{--<button class="mdi glo_button" onclick="deactivate_account()">Deactivate Account</button>--}}
                     </div>
                 </div>
             </div>
@@ -590,42 +590,42 @@
             );
         }
 
-        function deactivate_account() {
-            var user_id = $('#user_master_id').val();
-            swal({
-                title: "Confirmation",
-                text: "Are you sure you want to deactivate your account?",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((okk) => {
-                    if (okk) {
-                        $.ajax({
-                            type: "get",
-                            contentType: "application/json; charset=utf-8",
-                            url: "{{ url('deactivate_account') }}",
-                            data: {user_id: user_id},
-                            success: function (data) {
-                                if (jQuery.parseJSON(data).response == "Account has been deactivated") {
-                                    window.location.href = '{{url('/')}}';
-                                }
-//                            alert(jQuery.parseJSON(data).response);
-                                success_noti(jQuery.parseJSON(data).response);
-//                            swal("Success!", jQuery.parseJSON(data).response, "success");
-//                            setTimeout(function () {
-//                            }, 2000);
-                            },
-                            error: function (xhr, status, error) {
-                                alert(error);
-                                swal("Server Issue", "Something went wrong", "info");
+        {{--function deactivate_account() {--}}
+            {{--var user_id = $('#user_master_id').val();--}}
+            {{--swal({--}}
+                {{--title: "Confirmation",--}}
+                {{--text: "Are you sure you want to deactivate your account?",--}}
+                {{--icon: "warning",--}}
+                {{--buttons: true,--}}
+                {{--dangerMode: true,--}}
+            {{--}).then((okk) => {--}}
+                    {{--if (okk) {--}}
+                        {{--$.ajax({--}}
+                            {{--type: "get",--}}
+                            {{--contentType: "application/json; charset=utf-8",--}}
+                            {{--url: "{{ url('deactivate_account') }}",--}}
+                            {{--data: {user_id: user_id},--}}
+                            {{--success: function (data) {--}}
+                                {{--if (jQuery.parseJSON(data).response == "Account has been deactivated") {--}}
+                                    {{--window.location.href = '{{url('/')}}';--}}
+                                {{--}--}}
+{{--//                            alert(jQuery.parseJSON(data).response);--}}
+                                {{--success_noti(jQuery.parseJSON(data).response);--}}
+{{--//                            swal("Success!", jQuery.parseJSON(data).response, "success");--}}
+{{--//                            setTimeout(function () {--}}
+{{--//                            }, 2000);--}}
+                            {{--},--}}
+                            {{--error: function (xhr, status, error) {--}}
+                                {{--alert(error);--}}
+                                {{--swal("Server Issue", "Something went wrong", "info");--}}
 
-                            }
-                        });
-                    }
+                            {{--}--}}
+                        {{--});--}}
+                    {{--}--}}
 
-                }
-            );
-        }
+                {{--}--}}
+            {{--);--}}
+        {{--}--}}
         $(document).ready(function () {
             var state = '{{$user->state}}';
             if (state != '') {

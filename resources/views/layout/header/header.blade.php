@@ -66,6 +66,13 @@
                             Change Password
                         </a>
                     </div>
+
+                    <div class="menu_popup_settingrow effect" onclick="deactivate_account()">
+                        <a href="#" class="menu_setting_row">
+                            <i class="mdi mdi-account-off"></i>
+                            Deactivate Account
+                        </a>
+                    </div>
                     <div class="menu_popup_settingrow effect">
                         <a href="{{url('logout')}}" class="menu_setting_row">
                             <i class="mdi mdi-logout"></i>
@@ -314,6 +321,44 @@
 <script src="https://js.pusher.com/4.3/pusher.min.js"></script>
 {{--<script src="//js.pusher.com/3.1/pusher.min.js"></script>--}}
 <script type="text/javascript">
+
+    function deactivate_account() {
+        var user_id = $('#user_master_id').val();
+        swal({
+            title: "Confirmation",
+            text: "Are you sure you want to deactivate your account?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((okk) => {
+                if (okk) {
+                    $.ajax({
+                        type: "get",
+                        contentType: "application/json; charset=utf-8",
+                        url: "{{ url('deactivate_account') }}",
+                        data: {user_id: user_id},
+                        success: function (data) {
+                            if (jQuery.parseJSON(data).response == "Account has been deactivated") {
+                                window.location.href = '{{url('/')}}';
+                            }
+//                            alert(jQuery.parseJSON(data).response);
+                            success_noti(jQuery.parseJSON(data).response);
+//                            swal("Success!", jQuery.parseJSON(data).response, "success");
+//                            setTimeout(function () {
+//                            }, 2000);
+                        },
+                        error: function (xhr, status, error) {
+                            alert(error);
+                            swal("Server Issue", "Something went wrong", "info");
+
+                        }
+                    });
+                }
+
+            }
+        );
+    }
+
     function get_alert_sound() {
         var audio = document.getElementById("alert_tone");
         audio.src = '{{url('alert_tone/success.mp3')}}';

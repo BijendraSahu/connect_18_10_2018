@@ -1212,7 +1212,7 @@
     border-bottom: solid thin #e1e1e1;
     color: #666666;
     height: auto;
-    line-height: 35px;
+    line-height: 30px;
     float: left;
 }
 
@@ -6471,4 +6471,10 @@ div.scrollingtext {
 .tradingview-widget-container iframe .quote-ticker-inited {
     padding: 5px 15px 0px 15px !important;
     height: 40px !important;
+}
+.payutxt
+{
+    width: 100%;
+    display: inline-block;
+    float: right;
 }
