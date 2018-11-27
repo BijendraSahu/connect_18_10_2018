@@ -6,7 +6,7 @@
     {{--<link href="http://widgets.freestockcharts.com/WidgetServer/WBITickerblue.css"--}}
     {{--rel="stylesheet" type="text/css"/>--}}
     {{--<script src="http://widgets.freestockcharts.com/script/WBIHorizontalTicker2.js?ver=12334"--}}
-            {{--type="text/javascript"></script>--}}
+    {{--type="text/javascript"></script>--}}
 
     <section class="container-fluid overall_containner dash_respad">
         <div class="row">
@@ -533,11 +533,27 @@
             {{--By accessing and/or using this code snippet, you agree to AccuWeather’s terms and conditions (in English) which can be found at https://www.accuweather.com/en/free-weather-widgets/terms and AccuWeather’s Privacy Statement (in English) which can be found at https://www.accuweather.com/en/privacy.--}}
             {{---->--}}
             {{--</a><div id="awcc1542631765607" class="aw-widget-current"  data-locationkey="204410" data-unit="c" data-language="en-us" data-useip="true" data-uid="awcc1542631765607"></div><script type="text/javascript" src="https://oap.accuweather.com/launch.js"></script>--}}
-            <!-- weather widget start --><a target="_blank" href="https://www.booked.net/weather/jabalpur-36029"><img
-                            src="https://w.bookcdn.com/weather/picture/3_36029_1_1_3a618c_250_ffffff_333333_08488D_1_ffffff_333333_0_6.png?scode=124&domid=w209&anc_id=68429"
-                            alt="booked.net"/></a><!-- weather widget end -->
+            <!-- weather widget start -->
 
+                {{--<a target="_blank" href="https://www.booked.net/weather/jabalpur-36029"><img--}}
+                {{--src="https://w.bookcdn.com/weather/picture/3_36029_1_1_3a618c_250_ffffff_333333_08488D_1_ffffff_333333_0_6.png?scode=124&domid=w209&anc_id=68429"--}}
+                {{--alt="booked.net"/></a><!-- weather widget end -->--}}
+                <script type="text/javascript" src="{{url('js/yahoo-weather-jquery-plugin.js')}}"></script>
+                <div class="panel top_earner_block panel-default">
+                    <div class="panel-heading basic_headgradian">
+                        <b>Weather Forecast</b>
+                        <div class="button_head glo_headbtn" id="earner_clkbtn"></div>
+                    </div>
+                    <div class="panel-body weather_forecast style-scroll">
 
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    const main = () => {
+                        $('.weather_forecast').yahooWeather();
+                    }
+                    $(document).ready(main);
+                </script>
             </div>
         </div>
     </section>
