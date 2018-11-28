@@ -2,6 +2,10 @@
 
 @section('title', 'Dashboard')
 <link href="{{url('css/cropper.min.css')}}" type="text/css" rel="stylesheet"/>
+<style type="text/css">
+
+
+</style>
 @section('head')
     {{--<link href="http://widgets.freestockcharts.com/WidgetServer/WBITickerblue.css"--}}
     {{--rel="stylesheet" type="text/css"/>--}}
@@ -545,11 +549,23 @@
                         <div class="button_head glo_headbtn" id="earner_clkbtn"></div>
                     </div>
                     <div class="panel-body weather_forecast style-scroll">
-
+                        {{--<div class="icon sun-shower">--}}
+                            {{--<div class="cloud"></div>--}}
+                            {{--<div class="sun">--}}
+                                {{--<div class="rays"></div>--}}
+                            {{--</div>--}}
+                            {{--<div class="rain"></div>--}}
+                            {{--<div class="lightning">--}}
+                                {{--<div class="bolt"></div>--}}
+                                {{--<div class="bolt"></div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                        {{--<div class="weat_temp">27°C</div>--}}
+                        {{--<div class="weat_location">Jabalpur, India</div>--}}
                     </div>
                 </div>
                 <script type="text/javascript">
-                    const main = () => {
+                    const main =()=> {
                         $('.weather_forecast').yahooWeather();
                     }
                     $(document).ready(main);
