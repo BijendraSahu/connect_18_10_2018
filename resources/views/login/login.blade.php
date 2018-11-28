@@ -67,8 +67,6 @@
                                 on the Play Store</a></li>
                         <li><a href="{{'contact'}}" target="_blank"> Contact Us</a></li>
                     </ul>
-<style>.OPP-powered-by-div{display:none;}</style>
- <script type="text/javascript" src="https://host1.easypolls.net/ext/scripts/emPoll.js?p=5bfd781de4b0daeb8ef9f7d1"></script><a class="OPP-powered-by" href="https://www.easypolls.net/" style="text-decoration:none;"><div style="font: 9px arial; color: gray;">online polls</div></a>
                 </div>
             </div>
         </div>
