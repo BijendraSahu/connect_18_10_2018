@@ -586,6 +586,9 @@
     {
         max-height: calc(100vh - 50vh);
     }
+    .top_earner_block {
+        height: 60%;
+    }
     .close_announce {
         transform: scale(1);
         -moz-transform: scale(1);
