@@ -379,7 +379,7 @@
                 </div>
                 <div class="modal-footer">
                     <a href="" target="_blank" class="btn btn-default download" disabled="disabled"
-                       id="btncrop_download" download="imagename.png">
+                       id="btncrop_download" download="imagename.png" style="display: none;">
                         <i class="mdi mdi-folder-download basic_icon_margin"></i>Download</a>
                     <button class="btn btn-primary save" id="save" disabled="disabled"><i
                                 class="mdi mdi-crop basic_icon_margin"></i>Cropped
@@ -481,6 +481,7 @@
                                 // cropbtn setting enabled
                                 $('#cropbtn_setting').find('.btn').removeAttr("disabled");
                                 $('#btncrop_download').attr("disabled", "true");
+                                $('#btncrop_download').hide();
                                 $('#save_toserver').attr("disabled", "true");
                                 save.removeAttr("disabled");
 
@@ -518,6 +519,7 @@
                 //dwn.download = 'imagename.png';
                 dwn.attr('href', imgSrc);
                 // download button enabled
+                $('#btncrop_download').show();
                 $('#btncrop_download').removeAttr("disabled");
                 $('#save_toserver').removeAttr("disabled");
             });
