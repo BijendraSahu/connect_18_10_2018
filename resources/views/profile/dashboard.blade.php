@@ -910,15 +910,7 @@
 
             }
         });
-        //        $(window).scroll(function () {
-        //            if ($(window).scrollTop() + $(window).height() == $(document).height()) {
-        //                debugger;
-        //                var limit = Number($('#see_id').val());
-        //                if (limit <= $('#p_count').val()) {
-        //                    dashboardpostload();
-        //                }
-        //            }
-        //        });
+
         function getallads() {
             ad_ids = new Array();
             $('.servey_imgbox_selector').each(function () {
@@ -965,7 +957,7 @@
                 }
             });
         }
-        gmfn();
+
         $(window).scroll(function (event) {
             var chk_scroll = $(window).scrollTop();
             if (chk_scroll > 70) {
@@ -984,6 +976,8 @@
 
         });
         $(document).ready(function () {
+            dashboardpostload();
+            gmfn();
             // globalloadershow();
             $("#userpostForm").on('submit', function (e) {
                 var textval = $('#post_text_emoji').text();
@@ -1075,7 +1069,7 @@
 
                 }
             });
-            dashboardpostload();
+
 //            $('.scrollingtext span').each(function () {
 //                debugger;
 //                var checktxt = $(this).text();
@@ -1083,6 +1077,7 @@
 //                    $(this).remove();
 //                }
 //            });
+            globalloaderhide();
         });
     </script>
     <script type="text/javascript" src="{{url('js/cropper.min.js')}}"></script>
