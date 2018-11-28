@@ -48,24 +48,19 @@
 
 		function template() {
 			return `
-				<div class="btn btn-default">
-					<i class="wi wi-yahoo-${this.condition}">
-						&nbsp;${this.temp}&deg;C  ${this.city}, ${this.country}
-					</i>
-					<div>
-						${this.date.getDate()}/${this.date.getMonth()}, 
-						${this.date.getHours()}:${
-							(this.date.getMinutes()<10) ? '0' + this.date.getMinutes() : this.date.getMinutes()
-						} 
-					</div>
-					<div>
-						&downarrow;t&deg;=${this.tLow}&deg;C,&nbsp; 		
-						&uparrow;t&deg;=${this.tHigh}&deg;C		
-					</div>
-					<!--<a href="https://www.yahoo.com/?ilc=401" target="_blank"> &lt;!&ndash;Yahoo obligates to insert this&ndash;&gt;-->
-						<!--<img src="https://poweredby.yahoo.com/purple.png" width="134" height="29"/> -->
-					<!--</a>-->
-				</div>
+				<div class="icon sun-shower">
+                 <div class="cloud"></div>
+                 <div class="sun">
+                     <div class="rays"></div>
+                 </div>
+                 <div class="rain"></div>
+                 <div class="lightning">
+                     <div class="bolt"></div>
+                     <div class="bolt"></div>
+                 </div>
+             </div>
+             <div class="weat_temp">${this.temp}&deg;C</div>
+             <div class="weat_location">${this.city}, ${this.country}</div>
 			`;
 		};
 	}

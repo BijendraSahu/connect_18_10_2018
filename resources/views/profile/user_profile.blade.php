@@ -466,6 +466,38 @@
         var append_loading_img = '<div class="feed_loadimg_block" id="load_img">' +
             '<img height="50px" class="center-block" src="{{ url('images/loading.gif') }}"/></div>';
 
+
+
+        function getmorepost() {
+            $("#load_img").remove();
+            append_loading_img = '<div class="feed_loadimg_block" id="load_img">' +
+                '<img height="50px" class="center-block" src="{{ url('images/loading.gif') }}"/></div>';
+            cp = 1;
+            cp += parseFloat($('#see_id').val());
+            $('#see_id').val(cp);
+            var formData = '_token=' + $('.token').val();
+            var search_user_id = $('.search-user').val();
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "{{ url('friendmorepostload') }}",
+//                data: '{"data":"' + endid + '"}',
+                data: '{"currentpage":"' + cp + '", "formData":"' + formData + '", "search_user_id":"' + search_user_id + '"}',
+                beforeSend: function () {
+                    // $('#dashboard_post').html('<img height="50px" class="center-block" src="{{ url('images/loading.gif') }}"/>');
+                    $('#userpost').append(append_loading_img);
+                    // $('#dashboard_post').insertAfter().append(append_loading_img);
+                },
+                success: function (data) {
+                    $("#load_img").remove();
+                    $("#userpost").append(data);
+                },
+                error: function (xhr, status, error) {
+                    $('#userpost').html(xhr.responseText);
+//                    ShowErrorPopupMsg('Error in uploading...');
+                }
+            });
+        }
         function postload() {
             var formData = '_token=' + $('.token').val();
             var search_user_id = $('.search-user').val();
@@ -503,38 +535,6 @@
         }
 
         postload();
-
-        function getmorepost() {
-            $("#load_img").remove();
-            append_loading_img = '<div class="feed_loadimg_block" id="load_img">' +
-                '<img height="50px" class="center-block" src="{{ url('images/loading.gif') }}"/></div>';
-            cp = 1;
-            cp += parseFloat($('#see_id').val());
-            $('#see_id').val(cp);
-            var formData = '_token=' + $('.token').val();
-            var search_user_id = $('.search-user').val();
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                url: "{{ url('friendmorepostload') }}",
-//                data: '{"data":"' + endid + '"}',
-                data: '{"currentpage":"' + cp + '", "formData":"' + formData + '", "search_user_id":"' + search_user_id + '"}',
-                beforeSend: function () {
-                    // $('#dashboard_post').html('<img height="50px" class="center-block" src="{{ url('images/loading.gif') }}"/>');
-                    $('#userpost').append(append_loading_img);
-                    // $('#dashboard_post').insertAfter().append(append_loading_img);
-                },
-                success: function (data) {
-                    $("#load_img").remove();
-                    $("#userpost").append(data);
-                },
-                error: function (xhr, status, error) {
-                    $('#userpost').html(xhr.responseText);
-//                    ShowErrorPopupMsg('Error in uploading...');
-                }
-            });
-        }
-
         //        setInterval(postload, 1000000);
 
         function latest_dashboardpostload() {
