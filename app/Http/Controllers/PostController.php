@@ -66,7 +66,7 @@ class PostController extends Controller
                 $post_media->media_type = 'img';
                 $post_media->save();
             }
-        } elseif (request('upload_file_video') != null) {
+        } else if (request('upload_file_video') != null) {
 //            $upload_file_video = count($_FILES['upload_file_video']['name']);
 //            for ($i = 0; $i < $upload_file_video; $i++) {
             $arr = [];
@@ -184,16 +184,19 @@ class PostController extends Controller
                 $post_media->media_type = 'img';
                 $post_media->save();
             }
-        } elseif (request('upload_file_video') != null) {
+        }
+        if (request('upload_file_video') != null) {
 //            $upload_file_video = count($_FILES['upload_file_video']['name']);
 //            for ($i = 0; $i < $upload_file_video; $i++) {
             $arr = [];
             $i = 1;
             $destinationPath = 'userposts/' . $user->id . '/';
+            if (!file_exists($destinationPath)) {
+                File::makeDirectory($destinationPath);
+            }
 //                foreach (request('upload_file_video') as $file) {
             $file = $request->file('upload_file_video');
             $post_media = new Post_media();
-            $post_media->post_id = $newpost->id;
 
             $temp = str_random(6) . '_post_user_id_' . $user->id . '_' . $file->getClientOriginalName();
             $file->move($destinationPath, $temp);
@@ -713,7 +716,7 @@ class PostController extends Controller
             $user_notification->created_at = Carbon::now('Asia/Kolkata');
             $user_notification->save();
 //            //event(new StatusLiked($post->posted_by));
-//            AdminModel::getNotification($token, $title, $message, $data);
+            AdminModel::getNotification($token, $title, $message, $data);
         }
         /******Notification*******/
 
