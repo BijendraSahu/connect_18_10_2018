@@ -323,7 +323,7 @@
 <script type="text/javascript">
 
     function deactivate_account() {
-        var user_id = $('#user_master_id').val();
+        var user_id = '{{$_SESSION['user_master']->id}}';
         swal({
             title: "Confirmation",
             text: "Are you sure you want to deactivate your account?",
@@ -348,7 +348,8 @@
 //                            }, 2000);
                         },
                         error: function (xhr, status, error) {
-                            alert(error);
+//                            alert(error);
+//                            console.log(xhr.responseText);
                             swal("Server Issue", "Something went wrong", "info");
 
                         }

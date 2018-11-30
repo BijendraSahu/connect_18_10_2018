@@ -22,11 +22,12 @@
 if (!isset($_SESSION)) {
     session_start();
 }
-if (is_null($_SESSION['user_master'])) {
-    //echo 'Please Login';
-    return redirect('/');
-}
 ?>
+@if(Session::has('user_master'))
+@php
+    return redirect('/');
+@endphp
+@endif
         <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,7 +66,8 @@ if (is_null($_SESSION['user_master'])) {
     {{--    <link rel="stylesheet" href="{{url('css/select2.min.css')}}">--}}
     {{--<script src="{{url('js/select2.min.js')}}"></script>--}}
     {{---------------Notification---------------}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{url('css/lobibox.min.css')}}">
     <script src="{{url('js/notifications.min.js')}}"></script>
     <script src="{{url('js/notification-custom-script.js')}}"></script>
@@ -95,10 +97,10 @@ if (is_null($_SESSION['user_master'])) {
 @yield('head')
 @yield('content')
 {{--<div class="loader" id="loader">--}}
-    {{--<div class="internal_bg">--}}
-        {{--            <img src="{{url('assets/images/logo_loader.png')}}" class="top_loader" />--}}
-        {{--<img class="loader_main" src="{{url('images/1L.gif')}}"/>--}}
-    {{--</div>--}}
+{{--<div class="internal_bg">--}}
+{{--            <img src="{{url('assets/images/logo_loader.png')}}" class="top_loader" />--}}
+{{--<img class="loader_main" src="{{url('images/1L.gif')}}"/>--}}
+{{--</div>--}}
 {{--</div>--}}
 <!-- Page Content -->
 <p id="errorall"></p>
@@ -1348,18 +1350,18 @@ $friendC = count($friendlist);
 </script>
 {{--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>--}}
 {{--<script type="text/javascript">--}}
-    {{--google.maps.event.addDomListener(window, 'load', function () {--}}
-        {{--var places = new google.maps.places.Autocomplete(document.getElementById('location-input'));--}}
-        {{--google.maps.event.addListener(places, 'place_changed', function () {--}}
+{{--google.maps.event.addDomListener(window, 'load', function () {--}}
+{{--var places = new google.maps.places.Autocomplete(document.getElementById('location-input'));--}}
+{{--google.maps.event.addListener(places, 'place_changed', function () {--}}
 
-        {{--});--}}
-    {{--});--}}
+{{--});--}}
+{{--});--}}
 {{--</script>--}}
 {{--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&callback=activatPlaceSearch"--}}
-        {{--type="text/javascript"></script>--}}
+{{--type="text/javascript"></script>--}}
 {{--<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y"></script>--}}
 {{--<script type="text/javascript"--}}
-        {{--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&libraries=places&callback=activatPlaceSearch">--}}
+{{--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&libraries=places&callback=activatPlaceSearch">--}}
 {{--</script>--}}
 </body>
 </html>

@@ -13,12 +13,12 @@
             <div class="row">
                 <div class="advertiselist_block">
                     <div class="advertise_withhead">
-                        <div class="col-sm-4 col-xs-12 head_caption">Buy & Sell List
+                        <div class="col-sm-4 col-xs-12 head_caption mob_res_none">Buy & Sell List
                             => {{$selected_category->category}}</div>
                         <div class="col-sm-8 col-md-5 col-xs-12 pull-right search_withview">
 
-                            <div class="viewtype_block">
-                                <div class="viewtype_txt">View</div>
+                            <div class="viewtype_block buy_viewtype mob_res_none">
+                                <div class="viewtype_txt mob_res_none">View</div>
                                 <div class="type_brics brics_selected" onclick="show_listview(this);"><i
                                             class="mdi mdi-view-list"></i></div>
                                 <div class="type_brics" onclick="showthumbview(this);"><i class="mdi mdi-view-grid"></i>
