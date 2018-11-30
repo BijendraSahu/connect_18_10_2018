@@ -937,7 +937,7 @@
 }
 
 .menu_basic_block {
-    width: 60px;
+    width: 50px;
     height: 40px;
     text-align: center;
     float: right;
@@ -4276,7 +4276,7 @@
     width: 100%;
     display: inline-block;
     padding: 8px 10px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     background: #ffffff;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02), 0 1px 5px rgba(0, 0, 0, 0.05);
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02), 0 1px 5px rgba(0, 0, 0, 0.05);
@@ -4354,6 +4354,7 @@
     position: sticky;
     top: 45px;
     bottom: 0;
+    z-index: 20;
 }
 
 .advertise_list_containner {
@@ -5522,14 +5523,14 @@
 
 .product_list_searchbox {
     position: relative;
-    padding-right: 80px;
+    padding-right: 70px;
     max-width: 420px;
     float: right;
 }
 
 .baskit_containner {
     display: inline-block;
-    margin-right: 30px;
+    margin-right: 20px;
     padding-right: 15px;
     position: absolute;
     right: 0px;
@@ -6055,6 +6056,7 @@ div.scrollingtext {
 
 .top_earner_block {
     height: 65%;
+    overflow: hidden;
 }
 
 .dashboard_fixed_first {
@@ -6166,7 +6168,7 @@ div.scrollingtext {
 
 .pics_counter_box {
     position: absolute;
-    z-index: 10;
+    z-index: 2;
     min-width: 35px;
     min-height: 35px;
     max-width: 60px;
@@ -6590,10 +6592,10 @@ div.scrollingtext {
 
 .weather_forecast {
     background: -webkit-linear-gradient(50deg, #45cafc, #303f9f)!important;
-    background: -o-linear-gradient(50deg, #45cafc, #303f9f)!important;
-    background: linear-gradient(40deg, #333333, #333333)!important;
     height: 100%;
     position: relative;
+    max-height: 200px;
+    color: #3e9ddef7;
 }
 .weat_temp {
     color: #ffffff;
