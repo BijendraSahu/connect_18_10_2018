@@ -4,8 +4,8 @@
 		const fahrenheitToCelsius = (f) => Math.ceil((f-32)/1.8);
 		const kharkivLocation = {
 			coords : {
-				latitude : 50.0346748,
-				longitude : 36.345833
+				latitude : 23.1815,
+				longitude : 79.9864
 			}
 		}
 		const config = {

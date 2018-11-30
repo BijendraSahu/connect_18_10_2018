@@ -168,37 +168,37 @@ class CartController extends Controller
 
     public function e_atom_payment()
     {
-        echo json_encode($_REQUEST);
-//        $status = $_REQUEST["f_code"];
-//        if ($status != 'F') {
-//            $user_ses = $_SESSION['user_master'];
-//            $timeline = Timeline::find($user_ses->timeline_id);
-//            $cart = Cart::content();;
-//            $user = UserModel::find($user_ses->id);
-//            if (count($cart) == 0) {
-//                return redirect('checkout')->withInput()->withErrors('Your cart is empty');
-//            } else {
-//                $order = new OrderMaster();
-//                $order->order_no = rand(100000, 999999);
-//                $order->status = 'Ordered';
-//                $order->user_id = $user->id;
-//                $order->address_id = request('udf4');
-//                $order->save();
-//                foreach ($cart as $row) {
-//                    $order_des = new OrderDescription();
-//                    $order_des->order_master_id = $order->id;
-//                    $order_des->item_master_id = $row->id;
-//                    $order_des->qty = $row->qty;
-//                    $order_des->unit_price = $row->price;
-//                    $order_des->total = $row->price * $row->qty;
-//                    $order_des->save();
-//                }
-//                Cart::destroy();
-//                return redirect('dashboard')->with('message', 'Your order has been successful...you will get confirmation mail');
-//            }
-//        }else{
-//            return redirect('dashboard')->withErrors(array('message' => 'Payment has been failed please try again...'));
-//        }
+        //echo json_encode($_REQUEST);
+        $status = $_REQUEST["f_code"];
+        if ($status != 'F') {
+            $user_ses = $_SESSION['user_master'];
+            $timeline = Timeline::find($user_ses->timeline_id);
+            $cart = Cart::content();;
+            $user = UserModel::find($user_ses->id);
+            if (count($cart) == 0) {
+                return redirect('checkout')->withInput()->withErrors('Your cart is empty');
+            } else {
+                $order = new OrderMaster();
+                $order->order_no = rand(100000, 999999);
+                $order->status = 'Ordered';
+                $order->user_id = $user->id;
+                $order->address_id = request('udf4');
+                $order->save();
+                foreach ($cart as $row) {
+                    $order_des = new OrderDescription();
+                    $order_des->order_master_id = $order->id;
+                    $order_des->item_master_id = $row->id;
+                    $order_des->qty = $row->qty;
+                    $order_des->unit_price = $row->price;
+                    $order_des->total = $row->price * $row->qty;
+                    $order_des->save();
+                }
+                Cart::destroy();
+                return redirect('dashboard')->with('message', 'Your order has been successful...you will get confirmation mail');
+            }
+        }else{
+            return redirect('dashboard')->withErrors(array('message' => 'Payment has been failed please try again...'));
+        }
     }
 
     public function payment_failed()
