@@ -54,7 +54,7 @@
             <div class="col-md-10 col-sm-12">
                 <div class="product_boxcontainner adver_mainblock">
                     <div class="advertise_withhead">
-                        <div class="col-sm-6 col-md-4 col-xs-5 head_caption">Products List
+                        <div class="col-sm-6 col-md-4 col-xs-5 head_caption mob_res_none">Products List
                            {{-- <input class="form-control" placeholder="Search by item name" name="srch-term"
                                    id="Search" type="text" onkeyup="getBuyItem()">--}}
                         </div>
@@ -160,8 +160,9 @@
                                         <div class="spinner_withbtn">
                                             <div class="input-group qty_box">
                                                 <span class="qty_txt">Qty</span>
-                                                <input type="number" class="form-control text-center qty_edittxt"
-                                                       min="1" onkeypress="return false" max="10" value="1" id="qty_{{$item->id}}">
+                                                <input onkeyup="checknumber(this);" pattern="([0-9]|[0-9]|[0-9])"
+                                                       class="form-control text-center qty_edittxt"
+                                                        maxlength="2" value="1" id="qty_{{$item->id}}" />
                                             </div>
                                             <button class="spinner_addcardbtn btn-primary" id="{{$item->id}}"
                                                     type="button"
@@ -258,7 +259,6 @@
                 }
             }
         }
-
         function ShowProductDetails(dis) {
             globalloadershow();
             //$('#Modal_ViewDetails_Ecommerce').show();
@@ -289,6 +289,9 @@
                     $("#cartload").html(xhr.responseText);
                 }
             });
+        }
+        function checknumber(dis) {
+            $(dis).val(dis.value.match(/[0-9]*/));
         }
     </script>
 @stop

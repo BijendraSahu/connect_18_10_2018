@@ -543,7 +543,7 @@
                 {{--src="https://w.bookcdn.com/weather/picture/3_36029_1_1_3a618c_250_ffffff_333333_08488D_1_ffffff_333333_0_6.png?scode=124&domid=w209&anc_id=68429"--}}
                 {{--alt="booked.net"/></a><!-- weather widget end -->--}}
                 <script type="text/javascript" src="{{url('js/yahoo-weather-jquery-plugin.js')}}"></script>
-                <div class="panel top_earner_block panel-default">
+                <div class="panel panel-default">
                     <div class="panel-heading basic_headgradian">
                         <b>Weather Forecast</b>
                         <div class="button_head glo_headbtn" id="earner_clkbtn"></div>
