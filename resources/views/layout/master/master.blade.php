@@ -607,7 +607,7 @@ if (!isset($_SESSION)) {
         </div>
     </div>
 </div>
-{{--@include('chat.chat_new')--}}
+@include('chat.chat')
 <!------Popup Box -->
 <div class="modal popup_bgcolor" id="sucess_popup">
     <div class="popup_box">
