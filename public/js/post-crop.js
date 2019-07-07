@@ -31,6 +31,7 @@ function readPostImage(file) {
                     "onclick='EditPostImage(this)'></i>" +
                     "<i class='thumb_close mdi mdi-close' onclick='Remove_uploadimg_post(this);'></i>" +
                     "<img class='up_img' src='" + image_src + "' /></div>";//
+                $('#image_preview').find('.video_box').remove();
                 $('#image_preview').append(append_image);
                 $('#files_block').show();
         });
@@ -97,6 +98,7 @@ function EditPostImage(dis) {
 
     // cropbtn setting enabled
     $('#cropbtn_setting').find('.btn').removeAttr("disabled");
+    $('#btncrop_download').hide();
     $('#btncrop_download').attr("disabled", "true");
     $('#save_toserver').attr("disabled", "true");
     save.removeAttr("disabled");
@@ -131,6 +133,7 @@ function Cropped_image() {
     //dwn.download = 'imagename.png';
     dwn.attr('href', imgSrc);
     // download button enabled
+    $('#btncrop_download').show();
     $('#btncrop_download').removeAttr("disabled");
     $('#save_toserver').removeAttr("disabled");
 }

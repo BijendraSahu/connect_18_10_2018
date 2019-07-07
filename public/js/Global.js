@@ -556,7 +556,9 @@ function PreviewImage() {
                         var append_image = "<div class='upimg_box'><i class='thumb_close mdi mdi-close' onclick='Remove_uploadimg(this);'></i>" +
                             "<img class='up_img' src='" + tmppath + "' />" +
                             "<input class='profile-upload-pic dynamic_fileappend' type='file' val='" + _file.item(i).name + "'  /></div>";
+
                         $('#image_preview').append(append_image);
+
                         $('#files_block').show();
                         current_uploadfile++;
                         // });
@@ -589,8 +591,9 @@ function PreviewVideo(dis) {
             $('#upload_file_video').val('');
             error_noti(overfilesname + " File size must not exceed 15 MB");
         } else {
-            var append_video = "<div class='upimg_box video_box'><i class='thumb_close mdi mdi-close' onclick='Remove_uploadvideo(this);'></i><span class='video_playicon'><i class='mdi mdi-play-circle-outline'></i></span><video autoplay='autoplay' poster='images/video_default.png' class='up_img'> <source src='" + window.URL.createObjectURL(event.target.files[i]) + "' type='video/mp4' /> </video></div>";
-            $('#image_preview').find('.video_box').remove();
+            var append_video = "<div class='upimg_box video_box'><i class='thumb_close mdi mdi-close' onclick='Remove_uploadvideo(this);'></i><span class='video_playicon'><i class='mdi mdi-play-circle-outline'></i></span><video autoplay='autoplay' poster='images/video_default.png' class='up_video'> <source src='" + window.URL.createObjectURL(event.target.files[i]) + "' type='video/mp4' /> </video></div>";
+            //$('#image_preview').find('.video_box').remove();
+            $('#image_preview').text('');
             $('#image_preview').append(append_video);
             $('#files_block').show();
         }

@@ -1,4 +1,16 @@
 @media screen and (min-width: 320px) and (max-width: 479px) {
+    .contact_form .form-group {
+        margin-bottom: 10px;
+    }
+    .paid_img
+    {
+        width: 16px;
+        height: 16px;
+    }
+    .login_accept
+    {
+        margin-bottom: 10px;
+    }
     .animate_announcement
     {
         width: 290px;
@@ -292,21 +304,33 @@
         display: block;
     }
 
-    .list_imgbox {
-        margin: 0px auto;
-        float: initial;
-        width: 100%;
-    }
-
     .list_details {
-        width: 100%;
+        width: 60%;
         padding: 0px;
     }
-
-    .adver_list_row {
-        margin-bottom: 15px;
+    .list_price
+    {
+        top:0px;
+        position: relative;
     }
-
+    .adver_list_row {
+        margin-bottom: 5px;
+        padding: 5px;
+    }
+    .list_description
+    {
+        display: none;
+    }
+    .list_contact
+    {
+        font-size: 12px;
+    }
+    .list_email
+    {
+        margin-right: 0px;
+        color: #ababab;
+        font-size: 12px;
+    }
     .no_pay_show {
         width: 96%;
         margin-left: 2%;
@@ -452,20 +476,41 @@
         padding: 3px 0px 5px 0px;
     }
 
+    .advertise_withhead
+    {
+        z-index: 3;
+        top:80px;
+    }
+    .list_imgbox
+    {
+        border: solid 3px #ffffff;
+        width: 38%;
+        margin-right: 2%;
+    }
 }
 
 @media screen and (min-width: 320px) and (max-width: 360px) {
+    .login_maintxt
+    {
+        font-size: 18px;
+    }
+    .regis_block .col-sm-6, .regis_block .col-sm-12 {
+        padding: 0px 5px;
+    }
     .all_right_block {
         width: 280px !important;
     }
-
+    .forgot_link
+    {
+        font-size: 12px;
+    }
     .privacy_heading h1 {
         font-size: 46px !important;
     }
 
     .links_ul li {
         margin-right: 0px;
-        padding: 5px 6px;
+        padding:0px;
     }
     .comment_block
     {
@@ -474,9 +519,22 @@
     .menu_basic_block {
         width: 30px !important;
     }
+    .left_maintxt h1
+    {
+        font-size: 18px !important;
+    }
+    .links_ul li a
+    {
+        padding: 5px 6px !important;
+    }
 }
 
 @media screen and (min-width: 480px) and (max-width: 767px) {
+    .advertise_withhead
+    {
+        z-index: 3;
+        top:90px;
+    }
     .menu_basic_popup {
         right: -100px;
         width: 320px;
@@ -549,15 +607,42 @@
     .adver_list_thumbview {
         width: 50%;
     }
+    .cart_popbox
+    {
+        right: 0px !important;
+    }
+    .cart_popbox:before
+    {
+        right: 20px !important;
+    }
 }
 
 @media screen and (min-width: 320px) and (max-width: 767px) {
+    .earn_body
+    {
+        max-height: calc(100vh - 50vh);
+    }
+    .top_earner_block {
+        height: 60%;
+    }
     .close_announce {
         transform: scale(1);
         -moz-transform: scale(1);
         -webkit-transform: scale(1);
     }
-
+    .contact_form
+    {
+        padding: 10px 0px 0px 0px;
+        top: 75px;
+        width: 100%;
+    }
+    .contact_form h2 {
+        margin-top: 0px;
+    }
+    .contact_form h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
     .exis_imgblock img {
         width: 100%;
         max-width: 100%;
@@ -845,9 +930,10 @@
 
     .adver_list_thumbview {
         width: 49%;
-        height: 220px;
+        height: 255px;
         padding: 5px;
         margin-bottom: 2%;
+        margin-right: 0px;
     }
 
     .adver_list_thumbview:nth-of-type(even) {
@@ -861,6 +947,7 @@
     .list_title {
         margin: 5px 0px 0px;
         font-size: 16px;
+        padding-right: 0px;
     }
 
     .list_description {
@@ -870,16 +957,29 @@
     .list_address {
         font-size: 12px;
     }
+    .list_address {
+        font-size: 12px;
+    }
 
 }
 
 @media screen and (min-width: 768px) and (max-width: 1023px) {
+    .advertise_withhead
+    {
+        top: 85px;
+        z-index: 3;
+    }
     .canvas_block {
         bottom: 0;
     }
 
     .basic_otherformbox {
         max-width: 970px;
+    }
+    .advertise_withhead
+    {
+        z-index: 3;
+        top:90px;
     }
 
     .reg_body {
@@ -922,7 +1022,7 @@
     }
 
     .adver_list_thumbview {
-        width: 33.3333%;
+        width: 32.7%;
     }
 
     .grid_btn_box .btn {
@@ -949,6 +1049,11 @@
 }
 
 @media screen and (min-width: 320px) and (max-width: 1023px) {
+    .dashboard_fixed_first
+    {
+        position: relative;
+        top: 0px;
+    }
     /* .logo_company_small
      {
          display: block;
@@ -1432,6 +1537,20 @@
 
     .post_head {
         padding: 5px;
+    }
+    .buy_viewtype
+    {
+        width: 80px;
+        right: 0px !important;
+        position: absolute;
+        z-index: 10;
+        background: #ffffff;
+        left: initial;
+        top:0px;
+    }
+    .pics_counter_box
+    {
+        top:50%;
     }
 }
 

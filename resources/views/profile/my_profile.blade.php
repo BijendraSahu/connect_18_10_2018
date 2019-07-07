@@ -3,6 +3,11 @@
 @section('title', 'My Profile')
 <link href="{{url('css/cropper.min.css')}}" type="text/css" rel="stylesheet"/>
 @section('head')
+    <style>
+        #preview img {
+            height: 100px;
+        }
+    </style>
     <section class="member_profileblk">
         <div class="container">
             <div class="member_profile_imgcontainner">
@@ -107,13 +112,15 @@
                     </div>-->
                     <div class="statusMsg"></div>
                     <div class="post_block">
+                        <div class="loader" id="loader">
+                            <div class="internal_bg">
+                                <img src="{{url('images/logo.png')}}" class="top_loader" />
+                                <img class="loader_main" src="{{url('images/1L.gif')}}"/>
+                            </div>
+                        </div>
                         {{--<form role="form" name="userpostForm" id="userpostForm" action="" method="post"--}}
                         {{--enctype="multipart/form-data">--}}
-                        <style>
-                            #preview img {
-                                height: 100px;
-                            }
-                        </style>
+
                         <form enctype="multipart/form-data" id="userpostForm">
                             <div class="post_head">
                                 <span class="post_title"><i class="mdi mdi-pencil"></i>Make Post</span>
@@ -122,7 +129,7 @@
                                 </button>
                                 <button class="btn btn-primary post_btn_video">
                                     <input class="profile-upload-pic" accept=".mp4, .3gp, .ogg, .avi, .wmv" type="file"
-                                           id="upload_file_video" name="upload_file_video[]"
+                                           id="upload_file_video" name="upload_file_video"
                                            onchange="PreviewVideo(this);"/>
                                     <i class="basic_icons mdi mdi-video"></i>Video
                                 </button>
@@ -133,7 +140,7 @@
                                     <i class="basic_icons mdi mdi-image"></i>Photo
                                 </button>
                                 {{---------------}}
-                                <input type="text" id="post_img_src" name="post_img_src">
+                                <input type="hidden" id="post_img_src" name="post_img_src">
                                 {{---------------}}
                                 {{--<input class="-upload-pic" accept=".png,.jpg, .jpeg, .gif" type="file"--}}
                                 {{--id="post_file_image" name="post_upload_file[]"--}}
@@ -149,11 +156,11 @@
                                     <div class="location_icon">
                                         <i class="mdi mdi-map-marker"></i>
                                     </div>
-                                    <input id="location-input" class="form-control" type="text"
+                                    <input id="location-input" class="form-control" name="checkin" type="text"
                                            placeholder="Enter a location">
                                 </div>
                                 <div class="post_text_block emoji_div"
-                                     placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}..."
+                                     placeholder="CREATE YOUR POST {{strtoupper($timeline->fname)}}...😀"
                                      id="post_text">
                                     <!--<textarea class="post_textarea" id="ta1" placeholder="What's on your mind"></textarea>-->
                                     <!-- <div class="post_textarea txtwithemoji_block" contenteditable="true" id="ta"
@@ -286,7 +293,7 @@
                     $('.profile_basic_menu_block').addClass('left_menu_fixed');
                     $('.all_right_block').addClass('right_menu_fixed');
                 }
-                if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+                if ($(window).scrollTop() + window.innerHeight == $(document).height()) {
                     if (parseFloat($('#see_id').val()) <= parseFloat($('#pcount').val())) {
                         getmorepost();
                     }
@@ -314,14 +321,13 @@
 //                var files = $('#upload_file_image').val();
                 var videos = $('#upload_file_video').val();
                 var adverimg_length = $('.upimg_box').length;
-                if (textval == '' && files == '' && videos == '') {
+                if (textval.trim() == '' && files == '' && videos == '') {
                     warning_noti("You can't post without any text or image or video");
                     HideOnpageLoopader1();
                 } else if (adverimg_length > 10) {
                     warning_noti("You can upload maximum 10 images for post");
                     HideOnpageLoopader1();
                 } else {
-                    $('#post_img_src').val(JSON.stringify(img_ids));
                     swal({
                         title: "Are you sure?",
                         text: "You want to submit this post...!",
@@ -330,7 +336,7 @@
                         dangerMode: true,
                     }).then((okk) => {
                         if (okk) {
-
+                            (img_ids.length > 0) ? $('#post_img_src').val(JSON.stringify(img_ids)) : $('#post_img_src').val('');
                             $.ajax({
                                 type: 'POST',
                                 url: "{{ url('userpost') }}",
@@ -345,13 +351,12 @@
                                     round_info_noti("WE ARE UPLOADING YOUR POST QUICKLY");
                                 },
                                 success: function (data) {
-                                                                        console.log(data);
                                     $('#loader').css('display', 'none');
                                     HideOnpageLoopader1();
-                                    //                                    swal("Success!", "Your post has been uploaded...", "success");
                                     success_noti("SUCESSFULLY POSTED,KEEP GOING");
-                                    // ShowSuccessPopupMsg('Your post has been uploaded...');
                                     $('#image_preview').text('');
+                                    $('#location-input').val('');
+                                    $('#post_img_src').val('');
                                     $('#post_text').val('');
                                     $('.emojionearea-editor').empty();
                                     $('#posttext').text('');
@@ -366,8 +371,12 @@
                                     //                                    ShowErrorPopupMsg('Error in uploading...');
 //                                    warning_noti("Error in uploading...");
 //                                    $('#userpostForm').css("opacity", "");
+                                    $('#loader').css('display', 'none');
+//                                        $('#err1').html(xhr.responseText);
+                                    $('#userpostForm').css("opacity", "");
+                                    $(".btn_post").removeAttr("disabled", "disabled");
 
-                                    $('#userpostForm').html(xhr.responseText);
+//                                    $('#userpostForm').html(xhr.responseText);
                                 }
                             });
                         }
@@ -454,7 +463,7 @@
                 </div>
                 <div class="modal-footer">
                     <a href="" target="_blank" class="btn btn-default download" disabled="disabled"
-                       id="btncrop_download" download="imagename.png">
+                       id="btncrop_download" download="imagename.png" style="display: none;">
                         <i class="mdi mdi-folder-download basic_icon_margin"></i>Download</a>
                     <button class="btn btn-primary save" id="save" onclick="Cropped_image();" disabled="disabled"><i
                                 class="mdi mdi-crop basic_icon_margin"></i>Cropped

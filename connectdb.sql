@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.7
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2018 at 08:41 AM
--- Server version: 10.1.30-MariaDB
--- PHP Version: 7.2.2
+-- Generation Time: Nov 29, 2018 at 01:30 PM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 7.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -131,12 +131,16 @@ INSERT INTO `admin_master` (`id`, `name`, `username`, `password`, `profile_pic`,
 CREATE TABLE `ads` (
   `id` int(11) NOT NULL,
   `ad_title` text,
-  `ad_description` longtext,
+  `ad_description` longtext CHARACTER SET utf8mb4,
   `ad_category_id` int(11) DEFAULT NULL,
   `other_cat` text,
   `user_id` int(11) DEFAULT NULL,
   `city` varchar(50) DEFAULT NULL,
-  `status` enum('Pending','Approved','Rejected') NOT NULL DEFAULT 'Pending',
+  `selling_cost` float DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `contact` varchar(15) DEFAULT NULL,
+  `location` varchar(300) DEFAULT NULL,
+  `status` enum('Pending','Approved','Rejected','Close') NOT NULL DEFAULT 'Pending',
   `reject_reason` varchar(500) DEFAULT NULL,
   `is_approved` tinyint(4) NOT NULL DEFAULT '0',
   `is_active` tinyint(4) NOT NULL DEFAULT '1',
@@ -147,21 +151,25 @@ CREATE TABLE `ads` (
 -- Dumping data for table `ads`
 --
 
-INSERT INTO `ads` (`id`, `ad_title`, `ad_description`, `ad_category_id`, `other_cat`, `user_id`, `city`, `status`, `reject_reason`, `is_approved`, `is_active`, `created_time`) VALUES
-(1, 'SPACIOUS 3 BED RESIDENCIES AT OUR FLAGSHIP PROJECT', ' Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor\r\n                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud\r\n                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 1, NULL, 2, 'Jabalpur', 'Approved', NULL, 1, 1, '2018-03-05 12:48:38'),
-(2, 'add title', 'gfdsa', 1, NULL, 2, 'Jabalpur', 'Rejected', 'fdgdfgfd', 1, 1, '2018-03-05 12:48:38'),
-(3, 'ads', 'dsada', 2, NULL, 2, 'Jabalpur', 'Rejected', NULL, 0, 1, '2018-03-05 12:48:38'),
-(4, NULL, NULL, 1, NULL, 2, NULL, 'Rejected', 'sgfgdfgdf', 0, 1, '2018-03-13 10:17:07'),
-(5, NULL, NULL, 1, NULL, 2, NULL, 'Pending', NULL, 0, 0, '2018-03-13 10:22:22'),
-(6, '.net Developer', 'asdasdasdasd', 3, NULL, 2, 'Jabalpur', 'Rejected', 'c', 1, 1, '2018-03-13 10:24:57'),
-(7, 'New Advertisation', 'dfdfdsf', 5, NULL, 2, 'Jabalpur', 'Rejected', 'jh', 0, 1, '2018-03-13 10:25:48'),
-(8, 'Test', 'safaf', 1, NULL, 4, 'Jabalpur', 'Rejected', ';klo\'[', 0, 0, '2018-04-06 09:23:21'),
-(9, NULL, NULL, 2, NULL, 2, NULL, 'Approved', NULL, 1, 1, '2018-04-09 06:51:23'),
-(10, 'ytrwy', 'fdasg', 3, NULL, 2, 'Jabalpur', 'Pending', NULL, 1, 1, '2018-04-09 08:48:25'),
-(11, 'Test Title', 'Test Description', 1, NULL, 39, 'Jabalpur City', 'Pending', NULL, 0, 1, '2018-04-17 13:10:04'),
-(12, 'test', 'das', 1, NULL, 4, 'dsa', 'Pending', NULL, 0, 1, '2018-08-08 11:44:18'),
-(13, 'ad title', 'Ad des', NULL, 'dfca', 2, 'Jabalpur', 'Pending', NULL, 0, 1, '2018-10-13 11:07:04'),
-(14, 'ad title', 'Ad des', NULL, 'dfca', 2, 'Jabalpur', 'Pending', NULL, 0, 1, '2018-10-13 11:07:53');
+INSERT INTO `ads` (`id`, `ad_title`, `ad_description`, `ad_category_id`, `other_cat`, `user_id`, `city`, `selling_cost`, `email`, `contact`, `location`, `status`, `reject_reason`, `is_approved`, `is_active`, `created_time`) VALUES
+(1, 'SPACIOUS 3 BED RESIDENCIES AT OUR FLAGSHIP PROJECT', ' Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor\r\n                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud\r\n                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.', 1, NULL, 2, 'Jabalpur', NULL, NULL, NULL, NULL, 'Approved', NULL, 1, 1, '2018-03-05 12:48:38'),
+(2, 'add title', 'gfdsa', 1, NULL, 2, 'Jabalpur', NULL, NULL, NULL, NULL, 'Rejected', 'fdgdfgfd', 1, 1, '2018-03-05 12:48:38'),
+(3, 'ads', 'dsada', 2, NULL, 2, 'Jabalpur', NULL, NULL, NULL, NULL, 'Rejected', NULL, 0, 1, '2018-03-05 12:48:38'),
+(4, NULL, NULL, 1, NULL, 2, NULL, NULL, NULL, NULL, NULL, 'Rejected', 'sgfgdfgdf', 0, 1, '2018-03-13 10:17:07'),
+(5, NULL, NULL, 1, NULL, 2, NULL, NULL, NULL, NULL, NULL, 'Pending', NULL, 0, 0, '2018-03-13 10:22:22'),
+(6, '.net Developer', 'asdasdasdasd', 3, NULL, 2, 'Jabalpur', NULL, NULL, NULL, NULL, 'Rejected', 'c', 1, 1, '2018-03-13 10:24:57'),
+(7, 'New Advertisation', 'dfdfdsf', 5, NULL, 2, 'Jabalpur', NULL, NULL, NULL, NULL, 'Rejected', 'jh', 0, 1, '2018-03-13 10:25:48'),
+(8, 'Test', 'safaf', 1, NULL, 4, 'Jabalpur', NULL, NULL, NULL, NULL, 'Rejected', ';klo\'[', 0, 0, '2018-04-06 09:23:21'),
+(9, NULL, NULL, 2, NULL, 2, NULL, NULL, NULL, NULL, NULL, 'Approved', NULL, 1, 1, '2018-04-09 06:51:23'),
+(10, 'ytrwy', 'fdasg', 3, NULL, 2, 'Jabalpur', NULL, NULL, NULL, NULL, 'Pending', NULL, 1, 1, '2018-04-09 08:48:25'),
+(11, 'Test Title', 'Test Description', 1, NULL, 39, 'Jabalpur City', NULL, NULL, NULL, NULL, 'Pending', NULL, 0, 1, '2018-04-17 13:10:04'),
+(12, 'test', 'das', 1, NULL, 4, 'dsa', NULL, NULL, NULL, NULL, 'Pending', NULL, 0, 0, '2018-08-08 11:44:18'),
+(13, 'ad title', 'Ad des', NULL, 'dfca', 2, 'Jabalpur', NULL, NULL, NULL, NULL, 'Pending', NULL, 0, 1, '2018-10-13 11:07:04'),
+(14, 'ad title', 'Ad des', NULL, 'dfca', 2, 'Jabalpur', NULL, NULL, NULL, NULL, 'Pending', NULL, 0, 1, '2018-10-13 11:07:53'),
+(15, '5898989892', 'dsa', 1, NULL, 4, 'Jabalpur', 1000, 'bijendrasahu888@gmail.com', NULL, 'dsa', 'Pending', NULL, 0, 1, '2018-11-10 07:31:24'),
+(16, 'dsa', 'xsa Details', 1, NULL, 4, 'Jabalpur', 1500, 'bijendrasahu888@gmail.com', '8989988989', 'Jabalpur', 'Pending', NULL, 0, 1, '2018-11-16 07:44:59'),
+(17, 'Test', 'as', 1, NULL, 4, 'Jabalpur', 4500, 'test@gmail.com', '8989892844', 'djoa', 'Pending', NULL, 0, 1, '2018-11-16 08:08:38'),
+(18, 'xsca', 'dwa', 2, NULL, 4, 'Jabalpur', 45000, 'dsa@gmail.com', '5646456454', 'dsqa', 'Approved', NULL, 1, 1, '2018-11-16 08:11:49');
 
 -- --------------------------------------------------------
 
@@ -187,14 +195,14 @@ INSERT INTO `ads_clicked` (`id`, `user_id`, `ad_id`, `click_count`, `clicked_dat
 (2, 39, 5, 3, '2018-05-18', 1),
 (3, 39, 6, 3, '2018-05-18', 1),
 (4, 39, 7, 3, '2018-05-18', 1),
-(5, 2, 1, 42, '2018-10-17', 1),
-(6, 2, 5, 42, '2018-10-17', 1),
-(7, 2, 6, 42, '2018-10-17', 1),
-(8, 2, 7, 42, '2018-10-17', 1),
-(9, 4, 1, 48, '2018-10-30', 1),
-(10, 4, 5, 48, '2018-10-30', 1),
-(11, 4, 6, 48, '2018-10-30', 1),
-(12, 4, 7, 48, '2018-10-30', 1),
+(5, 2, 1, 48, '2018-11-20', 1),
+(6, 2, 5, 48, '2018-11-20', 1),
+(7, 2, 6, 48, '2018-11-20', 1),
+(8, 2, 7, 48, '2018-11-20', 1),
+(9, 4, 1, 62, '2018-11-28', 1),
+(10, 4, 5, 62, '2018-11-28', 1),
+(11, 4, 6, 62, '2018-11-28', 1),
+(12, 4, 7, 62, '2018-11-28', 1),
 (13, 10, 1, 2, '2018-08-17', 1),
 (14, 10, 5, 2, '2018-08-17', 1),
 (15, 10, 6, 2, '2018-08-17', 1),
@@ -276,7 +284,19 @@ INSERT INTO `ad_images` (`id`, `ad_id`, `image_url`, `is_active`) VALUES
 (7, 11, 'buysell/ssvWMU_igezqr_post_user_id_2_b1.jpg', 1),
 (8, 12, 'buysell/N0AcgY_banner_slider5.jpg', 1),
 (9, 13, 'buysell/1539428824.png', 1),
-(10, 14, 'buysell/1539428873.png', 1);
+(10, 14, 'buysell/1539428873.png', 1),
+(11, 15, 'buysell/o6sF08png', 1),
+(12, 15, 'buysell/qJCHzWpng', 1),
+(13, 15, 'buysell/LBiKMopng', 1),
+(14, 16, 'buysell/uVh5yipng', 1),
+(15, 16, 'buysell/RiKtikpng', 1),
+(16, 16, 'buysell/ozL9Bfpng', 1),
+(17, 16, 'buysell/27EjIL.png', 1),
+(18, 16, 'buysell/MfcUCL.png', 1),
+(19, 17, 'buysell/S1ZwRBpng', 1),
+(20, 17, 'buysell/q7QwmQpng', 1),
+(21, 18, 'buysell/VTbIo6.png', 1),
+(22, 18, 'buysell/viehnJ.png', 1);
 
 -- --------------------------------------------------------
 
@@ -1145,7 +1165,35 @@ INSERT INTO `comments` (`id`, `post_id`, `description`, `description2`, `user_id
 (167, 115, 'test', 'test', 1, 1, NULL, NULL, NULL, NULL),
 (168, 115, 'test', 'test', 1, 1, NULL, NULL, NULL, NULL),
 (169, 114, 'hi', 'hi', 2, 1, NULL, NULL, NULL, NULL),
-(170, 114, 'cvxvc', 'cvxvc', 2, 1, NULL, NULL, NULL, NULL);
+(170, 114, 'cvxvc', 'cvxvc', 2, 1, NULL, NULL, NULL, NULL),
+(173, NULL, '', NULL, 4, 1, NULL, NULL, NULL, NULL),
+(175, 126, 'dsfsffs:smiley::innocent::sweat_smile::sweat_smile::sweat_smile:dsfsfs', 'dsfsffs😃😇😅😅😅dsfsfs', 4, 1, NULL, NULL, NULL, NULL),
+(176, 126, 'fdsa', 'fdsa', 4, 1, NULL, NULL, NULL, NULL),
+(179, 126, 'dsfa', 'dsfa', 4, 1, NULL, NULL, NULL, NULL),
+(180, 125, 'dsfa', 'dsfa', 4, 1, NULL, NULL, NULL, NULL),
+(182, 126, 'dsafds', 'dsafds', 4, 1, NULL, NULL, NULL, NULL),
+(183, 126, 'dsa:stuck_out_tongue_winking_eye::stuck_out_tongue_winking_eye::stuck_out_tongue_winking_eye::relaxed::relaxed::relaxed::relaxed::relaxed:', 'dsa😜😜😜☺☺☺☺☺', 4, 1, NULL, NULL, NULL, NULL),
+(184, 127, 'mnvjhgjhv', 'mnvjhgjhv', 4, 1, NULL, NULL, NULL, NULL),
+(186, 127, 'sdad', 'sdad', 4, 1, NULL, NULL, NULL, NULL),
+(187, 127, 'fddsfsdfdsfdsfdf', 'fddsfsdfdsfdsfdf', 4, 1, NULL, NULL, NULL, NULL),
+(188, 127, 'asdasdasd:heart_eyes:asdad:money_mouth:..', 'asdasdasd😍asdad🤑..', 4, 1, NULL, NULL, NULL, NULL),
+(189, 127, 'tytrytyry:stuck_out_tongue_closed_eyes:hjghjhgjhgj', 'tytrytyry😝hjghjhgjhgj', 4, 1, NULL, NULL, NULL, NULL),
+(190, 127, 'sdfdsfsdf', 'sdfdsfsdf', 4, 1, NULL, NULL, NULL, NULL),
+(191, 125, 'sdfdshfhjdsjhfdhsf', 'sdfdshfhjdsjhfdhsf', 4, 1, NULL, NULL, NULL, NULL),
+(192, 124, 'gfhddgdfgdfg', 'gfhddgdfgdfg', 4, 1, NULL, NULL, NULL, NULL),
+(193, 124, 'dfdsfs', 'dfdsfs', 4, 1, NULL, NULL, NULL, NULL),
+(195, 127, 'dsadsa', 'dsadsa', 2, 1, NULL, NULL, NULL, NULL),
+(196, 127, 'sdf', 'sdf', 2, 1, NULL, NULL, NULL, NULL),
+(197, 116, 'fbxcbfx:stuck_out_tongue:', 'fbxcbfx😛', 4, 1, NULL, NULL, NULL, NULL),
+(198, 170, ':upside_down:szsc', '🙃szsc', 4, 1, NULL, NULL, NULL, NULL),
+(199, 170, 'dsa', 'dsa', 4, 1, NULL, NULL, NULL, NULL),
+(200, 170, 'dsa', 'dsa', 4, 1, NULL, NULL, NULL, NULL),
+(201, 170, 'yuufyu', 'yuufyu', 4, 1, NULL, NULL, NULL, NULL),
+(203, 171, 'gfcas:smile:', 'gfcas😄', 4, 1, NULL, NULL, NULL, NULL),
+(204, 171, 'b:yum:asdasdasd:joy::kissing_heart:asdasd:yum:asd:smile:asdasd:relaxed:asdsaddasd:upside_down:asd:heart_eyes:asd:joy:as:kissing_heart:d:yum:asd:smile:asdasdasdasd asdasdasdasdd:laughing:sda:heart_eyes:das:yum:d:yum:asd:yum:asd', 'b😋asdasdasd😂😘asdasd😋asd😄asdasd☺asdsaddasd🙃asd😍asd😂as😘d😋asd😄asdasdasdasd asdasdasdasdd😆sda😍das😋d😋asd😋asd', 4, 1, NULL, NULL, NULL, NULL),
+(205, 171, 'sdfsdfsfsf', 'sdfsdfsfsf', 4, 1, NULL, NULL, NULL, NULL),
+(206, 128, 'hgghgj', 'hgghgj', 2, 1, NULL, NULL, NULL, NULL),
+(207, 128, 'lkjkj', 'lkjkj', 2, 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1197,7 +1245,32 @@ INSERT INTO `coms` (`id`, `ChildID`, `ParentID`, `Com`, `SourceID`, `CreatedOn`)
 (13, NULL, '3', '0.125', '6', '2018-06-02 13:57:02'),
 (14, NULL, '2', '0.0625', '6', '2018-06-02 13:57:02'),
 (15, NULL, '1', '0.03125', '6', '2018-06-02 13:57:02'),
-(16, NULL, '5', '0.5', '7', '2018-10-13 06:18:23');
+(16, NULL, '5', '0.5', '7', '2018-10-13 06:18:23'),
+(17, NULL, '4', '0.1', 'Ads', '2018-11-09 13:58:12'),
+(18, NULL, '4', '0.2', 'Ads', '2018-11-09 13:58:15');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contact_us`
+--
+
+CREATE TABLE `contact_us` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `contact` varchar(15) DEFAULT NULL,
+  `message` varchar(500) DEFAULT NULL,
+  `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `contact_us`
+--
+
+INSERT INTO `contact_us` (`id`, `name`, `email`, `contact`, `message`, `created_time`) VALUES
+(1, 'nsd', 'fg@gmail.com', '8989892898', NULL, '2018-11-14 09:11:30'),
+(2, 'Bijendra Sahu', 'bijendrasahu888@gmail.com', '8989892897', 'sdadas', '2018-11-16 06:21:23');
 
 -- --------------------------------------------------------
 
@@ -1481,7 +1554,6 @@ INSERT INTO `friends` (`id`, `user_id`, `friend_id`, `status`) VALUES
 (13, 1, 2, 'friends'),
 (15, 39, 4, 'friends'),
 (16, 39, 26, 'friends'),
-(17, 4, 2, 'friends'),
 (19, 3, 2, 'friends'),
 (20, 4, 3, 'friends');
 
@@ -1583,7 +1655,7 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `post_id`, `timeline_id`, `user_id`, `notified_by`, `seen`, `description`, `type`, `link`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 2, 2, 4, 0, 'Bijendra is following you', 'follow', NULL, '2017-11-28 10:46:30', '2017-11-28 10:46:30', NULL),
+(1, 1, 2, 2, 4, 1, 'Bijendra is following you', 'follow', NULL, '2017-11-28 10:46:30', '2017-11-28 10:46:30', NULL),
 (3, 3, 2, 2, 2, 0, 'Bijendra is following you', 'follow', NULL, '2017-11-28 10:46:37', '2017-11-28 10:46:37', NULL),
 (4, 4, 2, 2, 4, 0, 'ashish is following you', 'follow', NULL, '2017-11-28 10:47:23', '2017-11-28 12:15:40', NULL),
 (5, NULL, 10, 4, 5, 0, 'Himani is following you', 'follow', NULL, '2017-11-28 11:05:19', '2017-11-28 12:15:40', NULL),
@@ -1609,8 +1681,8 @@ CREATE TABLE `notification_clicked` (
 --
 
 INSERT INTO `notification_clicked` (`id`, `user_id`, `click_count`, `clicked_date`) VALUES
-(1, 4, 44, '2018-10-30'),
-(2, 2, 10, '2018-10-17'),
+(1, 4, 60, '2018-11-28'),
+(2, 2, 23, '2018-11-20'),
 (3, 3, 1, '2018-08-17');
 
 -- --------------------------------------------------------
@@ -1789,6 +1861,8 @@ CREATE TABLE `posts` (
   `user_id` int(10) UNSIGNED DEFAULT NULL,
   `posted_by` int(11) DEFAULT NULL,
   `post_created_by` int(11) DEFAULT NULL COMMENT 'This id is known to be a previous user id who created this post',
+  `checkin` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `post_privacy` enum('public','friends') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'public',
   `active` tinyint(1) NOT NULL DEFAULT '1',
   `soundcloud_title` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   `soundcloud_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -1805,115 +1879,150 @@ CREATE TABLE `posts` (
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`id`, `description`, `description2`, `timeline_id`, `user_id`, `posted_by`, `post_created_by`, `active`, `soundcloud_title`, `soundcloud_id`, `youtube_title`, `youtube_video_id`, `location`, `type`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '😃sada', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-21 08:31:51', NULL, NULL),
-(3, 'csa', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-21 09:28:24', NULL, NULL),
-(5, 'fas😆', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 09:47:02', NULL, NULL),
-(6, 'csaccsa😂', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 10:35:50', NULL, NULL),
-(7, '😆das', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 10:42:43', NULL, NULL),
-(8, 'dsa😃', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 10:56:30', NULL, NULL),
-(9, 'h😄', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 11:00:14', NULL, NULL),
-(10, 's', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 11:01:26', NULL, NULL),
-(11, 'kl😆', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 11:05:32', NULL, NULL),
-(12, 'zvcx', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 11:06:03', NULL, NULL),
-(13, '😃', NULL, 3, 3, 3, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 12:46:48', NULL, NULL),
-(14, 'dsasa😄😍', NULL, 3, 3, 3, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 13:09:31', NULL, NULL),
-(15, 'bvcb😆', NULL, 3, 3, 3, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 13:19:56', NULL, NULL),
-(16, 'fagfda😍', NULL, 3, 3, 3, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 13:20:58', NULL, NULL),
-(17, 'sadf', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:28:12', NULL, NULL),
-(18, 'hgdt', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:28:43', NULL, NULL),
-(19, 'ujh', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:29:15', NULL, NULL),
-(20, 'dsg', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:30:38', NULL, NULL),
-(21, 'fes', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:31:30', NULL, NULL),
-(22, 'grs', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:31:57', NULL, NULL),
-(23, 'csa😂', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:44:36', NULL, NULL),
-(24, 'bcxvds😃', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:45:05', NULL, NULL),
-(25, 'dfa😆', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:46:45', NULL, NULL),
-(26, 'fvda', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:47:35', NULL, NULL),
-(27, 'vdasgsa😆😃😂', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:48:25', NULL, NULL),
-(28, 'fads😆', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:49:20', NULL, NULL),
-(29, ':smile:dcsa:fire:', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:52:31', NULL, NULL),
-(30, 'fgrrd😆', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 11:54:08', NULL, NULL),
-(31, 'bfsdbhds:grimacing::relieved::smiley:', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:03:45', NULL, NULL),
-(32, 'dfsafsa:laughing::relieved::laughing:greg', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:04:50', NULL, NULL),
-(33, ':grin::joy::smiley::smile::sweat_smile::laughing::innocent::kissing_heart::heart_eyes::relieved::yum::relaxed::upside_down::slight_smile::blush::wink::kissing::kissing_smiling_eyes::stuck_out_tongue_closed_eyes::yum::relieved::relieved::relieved::relaxed::relaxed::yum:uiiuiu:relieved::heart_eyes::kissing_heart::kissing_heart::kissing_heart::kissing_heart:uiui:kissing_heart:ui:kissing_heart::kissing_heart::kissing_heart::kissing_heart::kissing_heart::kissing_heart::kissing_heart:ui:kissing_heart::kissing_heart::kissing_heart::kissing_heart::kissing_heart::kissing_heart::kissing_heart:', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:06:54', NULL, NULL),
-(34, 'dfgdfgdfg dfjkgbdf gdf gd f g df  g df g   df g df g   df g dfgdfgdfgdfg dfg dfg dfg fdgdfgfdg gdfgdfg df gd fgdfgfdg fg df g dfg df gd fg df g dfg d g df gdf g dgg df gfd gfdgfdggfdgfdg dfgdfgfdg df gfd gfdgfff:relaxed::kissing_smiling_eyes::sweat_smile:dfgdf:relieved:gfd:relieved:gfdg:relaxed:fdg:upside_down:gf:laughing:gfgfdgfdg:upside_down:fdgfd:stuck_out_tongue_winking_eye:g', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:24:16', NULL, NULL),
-(35, 'hgjhgjghj:kissing_heart::upside_down:hgjghjghjhgjhgj:grin:ghjghjhgj:smiley:hgjhgj:stuck_out_tongue_closed_eyes:hgj:yum:jh:relieved:jghjhgj:kissing_heart:hj:kissing_heart:hgjhjhgjhg:blush:jhgj:slight_smile:hgjhg:upside_down:j:upside_down:ghjhgjhgjhgj', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:25:35', NULL, NULL),
-(36, 'sdwfda:kissing_heart:', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:42:39', NULL, NULL),
-(37, 'fewefw:slight_smile:', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:44:05', NULL, NULL),
-(38, 'fdas', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:45:03', NULL, NULL),
-(39, ':upside_down::blush:fdsa', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 13:06:01', NULL, NULL),
-(40, 'fhfdas:slight_smile::slight_smile:', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 13:06:47', NULL, NULL),
-(41, 'sca:upside_down:', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 13:57:46', NULL, NULL),
-(44, 'dsfs:slight_smile:', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 14:11:33', NULL, NULL),
-(45, ':kissing_heart:', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-24 05:57:51', NULL, NULL),
-(46, 'vf🙃😘🙃', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-28 06:57:05', NULL, NULL),
-(47, 'csafcad<img alt=\"🙃\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f643.png\"/><img alt=\"😌\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f60c.png\"/><img alt=\"🙂\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f642.png\"/>', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-28 08:39:09', NULL, NULL),
-(48, 'csaca<img alt=\"🙂\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f642.png\"/><img alt=\"😌\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f60c.png\"/><img alt=\"🙃\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f643.png\"/>', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-28 08:39:21', NULL, NULL),
-(49, 'csac<img alt=\"🙃\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f643.png\"/><img alt=\"😌\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f60c.png\"/><img alt=\"🙂\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f642.png\"/><img alt=\"😘\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f618.png\"/><img alt=\"😊\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f60a.png\"/><img alt=\"😋\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f60b.png\"/><img alt=\"😝\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f61d.png\"/><img alt=\"😃\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f603.png\"/><img alt=\"😁\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f601.png\"/><img alt=\"😅\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f605.png\"/><img alt=\"😂\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f602.png\"/>', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-28 08:39:43', NULL, NULL),
-(50, 'nbv:sweat_smile:', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-28 12:13:45', NULL, NULL),
-(51, ':grin:', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-31 11:34:56', NULL, NULL),
-(52, 'bfd:joy:', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-13 06:55:21', NULL, NULL),
-(53, 'fdsa', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-25 12:08:32', NULL, NULL),
-(54, 'fdsaf', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-25 12:08:39', NULL, NULL),
-(55, 'das', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-25 12:12:51', NULL, NULL),
-(56, 'dsadadsad', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-25 12:13:20', NULL, NULL),
-(57, 'asca', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-25 12:14:49', NULL, NULL),
-(58, NULL, NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-25 12:15:04', NULL, NULL),
-(59, 'gre', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-25 12:26:57', NULL, NULL),
-(60, 'retwtw🤓😟🤑😆😂😃😄😔😕😉😊😙😝🤑🤓😝😧😤😡😩😩😮😮😷😴😹😺👻👻🤖😺😹👹👹💀💀👁🖕☝☝👆👇👈👉👂👅', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-14 06:22:04', NULL, NULL),
-(61, 'retwtw🤓😟🤑😆😂😃😄😔😕😉😊😙😝🤑🤓😝😧😤😡😩😩😮😮😷😴😹😺👻😊😊☺☺😌😌', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-17 10:00:02', NULL, NULL),
-(63, '😃😅😙🙂🤓😆😆😌😆😂', NULL, 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-17 12:06:04', NULL, NULL),
-(64, '😬saca', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-18 08:17:55', NULL, NULL),
-(65, '😀sda', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-18 08:18:53', NULL, NULL),
-(66, 'dsdfs😀🙃😃😃☺', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 07:17:10', NULL, NULL),
-(67, 'sca:relaxed::upside_down::smiley::grinning::relaxed::upside_down:', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 07:20:41', NULL, NULL),
-(68, 'sadas<img class=\"emojione\" alt=\"&#x1f601;\" title=\":grin:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f601.png\"/><img class=\"emojione\" alt=\"&#x1f601;\" title=\":grin:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f601.png\"/><img class=\"emojione\" alt=\"&#x1f602;\" title=\":joy:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f602.png\"/><img class=\"emojione\" alt=\"&#x1f602;\" title=\":joy:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f602.png\"/>', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:19:34', NULL, NULL),
-(69, 'dsada<img class=\"emojione\" alt=\"&#x1f603;\" title=\":smiley:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f603.png\"/><img class=\"emojione\" alt=\"&#x1f601;\" title=\":grin:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f601.png\"/><img class=\"emojione\" alt=\"&#x1f602;\" title=\":joy:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f602.png\"/><img class=\"emojione\" alt=\"&#x1f603;\" title=\":smiley:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f603.png\"/><img class=\"emojione\" alt=\"&#x1f601;\" title=\":grin:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f601.png\"/><img class=\"emojione\" alt=\"&#x1f602;\" title=\":joy:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f602.png\"/><img class=\"emojione\" alt=\"&#x1f603;\" title=\":smiley:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f603.png\"/><img class=\"emojione\" alt=\"&#x1f60b;\" title=\":yum:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f60b.png\"/><img class=\"emojione\" alt=\"&#x1f60b;\" title=\":yum:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f60b.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/>', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:19:48', NULL, NULL),
-(70, 'dsada:smiley::grin::joy::smiley::grin::joy::smiley::yum::yum::upside_down::upside_down::upside_down::upside_down::upside_down::upside_down::money_mouth::money_mouth::money_mouth::money_mouth:', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:20:36', NULL, NULL),
-(71, 'dsada<img class=\"emojione\" alt=\"&#x1f603;\" title=\":smiley:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f603.png\"/><img class=\"emojione\" alt=\"&#x1f60b;\" title=\":yum:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f60b.png\"/><img class=\"emojione\" alt=\"&#x1f60b;\" title=\":yum:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f60b.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/>', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:23:15', NULL, NULL),
-(72, 'rew<img class=\"emojione\" alt=\"&#x1f60b;\" title=\":yum:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f60b.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/>', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:25:01', NULL, NULL),
-(73, '<img class=\"emojione\" alt=\"&#x1f60b;\" title=\":yum:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f60b.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/>', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:25:10', NULL, NULL),
-(74, 'dsa:grimacing::grin::grin::grin::grin::grin::grin::grin::grin::grin::grin::grin::grin::grin::grin::yum::yum::yum::yum::yum:', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:30:29', NULL, NULL),
-(75, 'dsada🤑😬😁😋😬', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:45:09', NULL, NULL),
-(76, 'dsada:money_mouth::grin::upside_down::yum::grimacing::money_mouth::grin::upside_down::yum::grimacing::money_mouth:', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:45:46', NULL, NULL),
-(77, 'dsada:grin::upside_down::yum:', 'dsada😁🙃😋', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:51:10', NULL, NULL),
-(78, 'edafs:upside_down::grimacing::money_mouth::grin::yum::upside_down::grimacing:', 'edafs🙃😬🤑😁😋🙃😬', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-23 07:11:03', NULL, NULL),
-(79, 'dh:yum::upside_down::grimacing::yum:', 'dh😋🙃😬😋', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-23 07:45:34', NULL, NULL),
-(80, 'acdas:smiley::smile::grin::sweat_smile::smiley::kissing_heart::kissing_heart::sunglasses::sunglasses:ssscdscsac', 'acdas😃😄😁😅😃😘😘😎😎ssscdscsac', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-24 11:29:29', NULL, NULL),
-(81, 'hgf', 'hgf', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-24 12:53:50', NULL, NULL),
-(82, 'vcx', 'vcx', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-26 10:01:28', NULL, NULL),
-(83, 'test', 'test', 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-08 11:08:34', NULL, NULL),
-(85, 'sa', 'sa', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-08 11:29:47', NULL, NULL),
-(86, 'asd', 'asd', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-11 11:20:51', NULL, NULL),
-(87, 'sxa', 'sxa', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-11 11:21:13', NULL, NULL),
-(88, 'hf', 'hf', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-11 14:07:41', NULL, NULL),
-(89, 'fewtrw', 'fewtrw', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-11 14:08:35', NULL, NULL),
-(90, '', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-14 08:10:37', NULL, NULL),
-(91, 'Video Post Testing', 'Video Post Testing', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-14 08:17:38', NULL, NULL),
-(92, 'Video Post Testing', 'Video Post Testing', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-14 08:17:55', NULL, NULL),
-(93, 'Testklhcdas', 'Testklhcdas', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-14 12:14:11', NULL, NULL),
-(94, '1 mb', '1 mb', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-14 13:36:58', NULL, NULL),
-(95, 'xcaz', 'xcaz', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 08:04:34', NULL, NULL),
-(96, 'dsa', 'dsa', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 08:05:31', NULL, NULL),
-(97, 'dsa', 'dsa', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 08:05:35', NULL, NULL),
-(98, 'dsafds', 'dsafds', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 08:05:53', NULL, NULL),
-(99, 'dsafds', 'dsafds', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 08:08:13', NULL, NULL),
-(100, 'cdasf', 'cdasf', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 08:08:25', NULL, NULL),
-(101, 'dsadfa', 'dsadfa', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 08:12:36', NULL, NULL),
-(103, '', NULL, 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 11:08:51', NULL, NULL),
-(104, 'uiogugf', 'uiogugf', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-17 06:16:43', NULL, NULL),
-(105, 'xsa', 'xsa', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-22 13:48:16', NULL, NULL),
-(106, 'fds', 'fds', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-25 05:50:53', NULL, NULL),
-(107, 'fsda', 'fsda', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-25 05:51:33', NULL, NULL),
-(108, 'fdsfds', 'fdsfds', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-25 07:57:42', NULL, NULL),
-(109, 'dsafdas', 'dsafdas', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-13 06:15:26', NULL, NULL),
-(110, 'cxdzvcdz', 'cxdzvcdz', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-13 06:20:58', NULL, NULL),
-(111, 'dsadsfa', 'dsadsfa', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-13 06:21:23', NULL, NULL),
-(112, 'jbkjlb', 'jbkjlb', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-13 06:24:14', NULL, NULL),
-(113, 'kjh', 'kjh', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-13 06:24:36', NULL, NULL),
-(114, 'yur', 'yur', 4, 4, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-13 06:29:06', NULL, NULL),
-(115, 'dfcsfas', 'dfcsfas', 2, 2, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-13 06:30:10', NULL, NULL);
+INSERT INTO `posts` (`id`, `description`, `description2`, `timeline_id`, `user_id`, `posted_by`, `post_created_by`, `checkin`, `post_privacy`, `active`, `soundcloud_title`, `soundcloud_id`, `youtube_title`, `youtube_video_id`, `location`, `type`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, '😃sada', NULL, 2, 2, 2, NULL, NULL, 'friends', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-21 08:31:51', NULL, NULL),
+(3, 'csa', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-21 09:28:24', NULL, NULL),
+(5, 'fas😆', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 09:47:02', NULL, NULL),
+(6, 'csaccsa😂', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 10:35:50', NULL, NULL),
+(7, '😆das', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 10:42:43', NULL, NULL),
+(8, 'dsa😃', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 10:56:30', NULL, NULL),
+(9, 'h😄', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 11:00:14', NULL, NULL),
+(10, 's', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 11:01:26', NULL, NULL),
+(11, 'kl😆', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 11:05:32', NULL, NULL),
+(12, 'zvcx', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 11:06:03', NULL, NULL),
+(13, '😃', NULL, 3, 3, 3, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 12:46:48', NULL, NULL),
+(14, 'dsasa😄😍', NULL, 3, 3, 3, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 13:09:31', NULL, NULL),
+(15, 'bvcb😆', NULL, 3, 3, 3, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 13:19:56', NULL, NULL),
+(16, 'fagfda😍', NULL, 3, 3, 3, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-22 13:20:58', NULL, NULL),
+(17, 'sadf', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:28:12', NULL, NULL),
+(18, 'hgdt', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:28:43', NULL, NULL),
+(19, 'ujh', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:29:15', NULL, NULL),
+(20, 'dsg', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:30:38', NULL, NULL),
+(21, 'fes', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:31:30', NULL, NULL),
+(22, 'grs', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:31:57', NULL, NULL),
+(23, 'csa😂', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:44:36', NULL, NULL),
+(24, 'bcxvds😃', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:45:05', NULL, NULL),
+(25, 'dfa😆', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:46:45', NULL, NULL),
+(26, 'fvda', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:47:35', NULL, NULL),
+(27, 'vdasgsa😆😃😂', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:48:25', NULL, NULL),
+(28, 'fads😆', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:49:20', NULL, NULL),
+(29, ':smile:dcsa:fire:', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 09:52:31', NULL, NULL),
+(30, 'fgrrd😆', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 11:54:08', NULL, NULL),
+(31, 'bfsdbhds:grimacing::relieved::smiley:', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:03:45', NULL, NULL),
+(32, 'dfsafsa:laughing::relieved::laughing:greg', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:04:50', NULL, NULL),
+(33, ':grin::joy::smiley::smile::sweat_smile::laughing::innocent::kissing_heart::heart_eyes::relieved::yum::relaxed::upside_down::slight_smile::blush::wink::kissing::kissing_smiling_eyes::stuck_out_tongue_closed_eyes::yum::relieved::relieved::relieved::relaxed::relaxed::yum:uiiuiu:relieved::heart_eyes::kissing_heart::kissing_heart::kissing_heart::kissing_heart:uiui:kissing_heart:ui:kissing_heart::kissing_heart::kissing_heart::kissing_heart::kissing_heart::kissing_heart::kissing_heart:ui:kissing_heart::kissing_heart::kissing_heart::kissing_heart::kissing_heart::kissing_heart::kissing_heart:', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:06:54', NULL, NULL),
+(34, 'dfgdfgdfg dfjkgbdf gdf gd f g df  g df g   df g df g   df g dfgdfgdfgdfg dfg dfg dfg fdgdfgfdg gdfgdfg df gd fgdfgfdg fg df g dfg df gd fg df g dfg d g df gdf g dgg df gfd gfdgfdggfdgfdg dfgdfgfdg df gfd gfdgfff:relaxed::kissing_smiling_eyes::sweat_smile:dfgdf:relieved:gfd:relieved:gfdg:relaxed:fdg:upside_down:gf:laughing:gfgfdgfdg:upside_down:fdgfd:stuck_out_tongue_winking_eye:g', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:24:16', NULL, NULL),
+(35, 'hgjhgjghj:kissing_heart::upside_down:hgjghjghjhgjhgj:grin:ghjghjhgj:smiley:hgjhgj:stuck_out_tongue_closed_eyes:hgj:yum:jh:relieved:jghjhgj:kissing_heart:hj:kissing_heart:hgjhjhgjhg:blush:jhgj:slight_smile:hgjhg:upside_down:j:upside_down:ghjhgjhgjhgj', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:25:35', NULL, NULL),
+(36, 'sdwfda:kissing_heart:', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:42:39', NULL, NULL),
+(37, 'fewefw:slight_smile:', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:44:05', NULL, NULL),
+(38, 'fdas', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 12:45:03', NULL, NULL),
+(39, ':upside_down::blush:fdsa', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 13:06:01', NULL, NULL),
+(40, 'fhfdas:slight_smile::slight_smile:', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 13:06:47', NULL, NULL),
+(41, 'sca:upside_down:', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 13:57:46', NULL, NULL),
+(44, 'dsfs:slight_smile:', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-23 14:11:33', NULL, NULL),
+(45, ':kissing_heart:', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-24 05:57:51', NULL, NULL),
+(46, 'vf🙃😘🙃', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-28 06:57:05', NULL, NULL),
+(47, 'csafcad<img alt=\"🙃\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f643.png\"/><img alt=\"😌\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f60c.png\"/><img alt=\"🙂\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f642.png\"/>', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-28 08:39:09', NULL, NULL),
+(48, 'csaca<img alt=\"🙂\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f642.png\"/><img alt=\"😌\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f60c.png\"/><img alt=\"🙃\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f643.png\"/>', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-28 08:39:21', NULL, NULL),
+(49, 'csac<img alt=\"🙃\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f643.png\"/><img alt=\"😌\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f60c.png\"/><img alt=\"🙂\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f642.png\"/><img alt=\"😘\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f618.png\"/><img alt=\"😊\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f60a.png\"/><img alt=\"😋\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f60b.png\"/><img alt=\"😝\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f61d.png\"/><img alt=\"😃\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f603.png\"/><img alt=\"😁\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f601.png\"/><img alt=\"😅\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f605.png\"/><img alt=\"😂\" class=\"emojioneemoji\" src=\"https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/1f602.png\"/>', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-28 08:39:43', NULL, NULL),
+(50, 'nbv:sweat_smile:', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-28 12:13:45', NULL, NULL),
+(51, ':grin:', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-05-31 11:34:56', NULL, NULL),
+(52, 'bfd:joy:', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-13 06:55:21', NULL, NULL),
+(53, 'fdsa', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-25 12:08:32', NULL, NULL),
+(54, 'fdsaf', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-25 12:08:39', NULL, NULL),
+(55, 'das', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-25 12:12:51', NULL, NULL),
+(56, 'dsadadsad', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-25 12:13:20', NULL, NULL),
+(57, 'asca', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-25 12:14:49', NULL, NULL),
+(58, NULL, NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-25 12:15:04', NULL, NULL),
+(59, 'gre', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-06-25 12:26:57', NULL, NULL),
+(60, 'retwtw🤓😟🤑😆😂😃😄😔😕😉😊😙😝🤑🤓😝😧😤😡😩😩😮😮😷😴😹😺👻👻🤖😺😹👹👹💀💀👁🖕☝☝👆👇👈👉👂👅', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-14 06:22:04', NULL, NULL),
+(61, 'retwtw🤓😟🤑😆😂😃😄😔😕😉😊😙😝🤑🤓😝😧😤😡😩😩😮😮😷😴😹😺👻😊😊☺☺😌😌', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-17 10:00:02', NULL, NULL),
+(63, '😃😅😙🙂🤓😆😆😌😆😂', NULL, 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-17 12:06:04', NULL, NULL),
+(64, '😬saca', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-18 08:17:55', NULL, NULL),
+(65, '😀sda', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-18 08:18:53', NULL, NULL),
+(66, 'dsdfs😀🙃😃😃☺', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 07:17:10', NULL, NULL),
+(67, 'sca:relaxed::upside_down::smiley::grinning::relaxed::upside_down:', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 07:20:41', NULL, NULL),
+(68, 'sadas<img class=\"emojione\" alt=\"&#x1f601;\" title=\":grin:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f601.png\"/><img class=\"emojione\" alt=\"&#x1f601;\" title=\":grin:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f601.png\"/><img class=\"emojione\" alt=\"&#x1f602;\" title=\":joy:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f602.png\"/><img class=\"emojione\" alt=\"&#x1f602;\" title=\":joy:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f602.png\"/>', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:19:34', NULL, NULL),
+(69, 'dsada<img class=\"emojione\" alt=\"&#x1f603;\" title=\":smiley:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f603.png\"/><img class=\"emojione\" alt=\"&#x1f601;\" title=\":grin:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f601.png\"/><img class=\"emojione\" alt=\"&#x1f602;\" title=\":joy:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f602.png\"/><img class=\"emojione\" alt=\"&#x1f603;\" title=\":smiley:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f603.png\"/><img class=\"emojione\" alt=\"&#x1f601;\" title=\":grin:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f601.png\"/><img class=\"emojione\" alt=\"&#x1f602;\" title=\":joy:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f602.png\"/><img class=\"emojione\" alt=\"&#x1f603;\" title=\":smiley:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f603.png\"/><img class=\"emojione\" alt=\"&#x1f60b;\" title=\":yum:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f60b.png\"/><img class=\"emojione\" alt=\"&#x1f60b;\" title=\":yum:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f60b.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/>', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:19:48', NULL, NULL),
+(70, 'dsada:smiley::grin::joy::smiley::grin::joy::smiley::yum::yum::upside_down::upside_down::upside_down::upside_down::upside_down::upside_down::money_mouth::money_mouth::money_mouth::money_mouth:', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:20:36', NULL, NULL),
+(71, 'dsada<img class=\"emojione\" alt=\"&#x1f603;\" title=\":smiley:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f603.png\"/><img class=\"emojione\" alt=\"&#x1f60b;\" title=\":yum:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f60b.png\"/><img class=\"emojione\" alt=\"&#x1f60b;\" title=\":yum:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f60b.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/>', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:23:15', NULL, NULL),
+(72, 'rew<img class=\"emojione\" alt=\"&#x1f60b;\" title=\":yum:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f60b.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/>', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:25:01', NULL, NULL),
+(73, '<img class=\"emojione\" alt=\"&#x1f60b;\" title=\":yum:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f60b.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f643;\" title=\":upside_down:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f643.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/><img class=\"emojione\" alt=\"&#x1f911;\" title=\":money_mouth:\" src=\"https://cdn.jsdelivr.net/emojione/assets/3.1/png/64/1f911.png\"/>', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:25:10', NULL, NULL),
+(74, 'dsa:grimacing::grin::grin::grin::grin::grin::grin::grin::grin::grin::grin::grin::grin::grin::grin::yum::yum::yum::yum::yum:', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:30:29', NULL, NULL),
+(75, 'dsada🤑😬😁😋😬', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:45:09', NULL, NULL),
+(76, 'dsada:money_mouth::grin::upside_down::yum::grimacing::money_mouth::grin::upside_down::yum::grimacing::money_mouth:', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:45:46', NULL, NULL),
+(77, 'dsada:grin::upside_down::yum:', 'dsada😁🙃😋', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-19 08:51:10', NULL, NULL),
+(78, 'edafs:upside_down::grimacing::money_mouth::grin::yum::upside_down::grimacing:', 'edafs🙃😬🤑😁😋🙃😬', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-23 07:11:03', NULL, NULL),
+(79, 'dh:yum::upside_down::grimacing::yum:', 'dh😋🙃😬😋', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-23 07:45:34', NULL, NULL),
+(80, 'acdas:smiley::smile::grin::sweat_smile::smiley::kissing_heart::kissing_heart::sunglasses::sunglasses:ssscdscsac', 'acdas😃😄😁😅😃😘😘😎😎ssscdscsac', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-24 11:29:29', NULL, NULL),
+(81, 'hgf', 'hgf', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-24 12:53:50', NULL, NULL),
+(82, 'vcx', 'vcx', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-07-26 10:01:28', NULL, NULL),
+(83, 'test', 'test', 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-08 11:08:34', NULL, NULL),
+(85, 'sa', 'sa', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-08 11:29:47', NULL, NULL),
+(86, 'asd', 'asd', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-11 11:20:51', NULL, NULL),
+(87, 'sxa', 'sxa', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-11 11:21:13', NULL, NULL),
+(88, 'hf', 'hf', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-11 14:07:41', NULL, NULL),
+(89, 'fewtrw', 'fewtrw', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-11 14:08:35', NULL, NULL),
+(90, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-14 08:10:37', NULL, NULL),
+(91, 'Video Post Testing', 'Video Post Testing', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-14 08:17:38', NULL, NULL),
+(92, 'Video Post Testing', 'Video Post Testing', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-14 08:17:55', NULL, NULL),
+(93, 'Testklhcdas', 'Testklhcdas', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-14 12:14:11', NULL, NULL),
+(94, '1 mb', '1 mb', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-14 13:36:58', NULL, NULL),
+(95, 'xcaz', 'xcaz', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 08:04:34', NULL, NULL),
+(96, 'dsa', 'dsa', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 08:05:31', NULL, NULL),
+(97, 'dsa', 'dsa', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 08:05:35', NULL, NULL),
+(98, 'dsafds', 'dsafds', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 08:05:53', NULL, NULL),
+(99, 'dsafds', 'dsafds', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 08:08:13', NULL, NULL),
+(100, 'cdasf', 'cdasf', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 08:08:25', NULL, NULL),
+(101, 'dsadfa', 'dsadfa', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 08:12:36', NULL, NULL),
+(103, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-16 11:08:51', NULL, NULL),
+(104, 'uiogugf', 'uiogugf', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-17 06:16:43', NULL, NULL),
+(105, 'xsa', 'xsa', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-22 13:48:16', NULL, NULL),
+(106, 'fds', 'fds', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-25 05:50:53', NULL, NULL),
+(107, 'fsda', 'fsda', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-25 05:51:33', NULL, NULL),
+(108, 'fdsfds', 'fdsfds', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-08-25 07:57:42', NULL, NULL),
+(109, 'dsafdas', 'dsafdas', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-13 06:15:26', NULL, NULL),
+(110, 'cxdzvcdz', 'cxdzvcdz', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-13 06:20:58', NULL, NULL),
+(111, 'dsadsfa', 'dsadsfa', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-13 06:21:23', NULL, NULL),
+(112, 'jbkjlb', 'jbkjlb', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-13 06:24:14', NULL, NULL),
+(113, 'kjh', 'kjh', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-13 06:24:36', NULL, NULL),
+(114, 'yur', 'yur', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-13 06:29:06', NULL, NULL),
+(115, 'dfcsfas', 'dfcsfas', 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-13 06:30:10', NULL, NULL),
+(116, 'fds', 'fds', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-01 09:56:40', NULL, NULL),
+(117, 'dsa', 'dsa', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-01 09:58:54', NULL, NULL),
+(121, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-01 10:35:05', NULL, NULL),
+(122, 'tre', 'tre', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-01 10:36:19', NULL, NULL),
+(123, 'cas', 'cas', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-01 11:04:49', NULL, NULL),
+(124, 'dsa', 'dsa', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-01 11:05:45', NULL, NULL),
+(125, 'dasdsada', 'dasdsada', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-01 11:06:31', NULL, NULL),
+(126, 'csa', 'csa', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-01 11:07:26', NULL, NULL),
+(127, 'fds', 'fds', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-01 11:09:15', NULL, NULL),
+(128, 'dasasdas', 'dasasdas', 2, 2, 2, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-09 10:36:20', NULL, NULL),
+(168, 'dfs', 'dfs', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-16 06:41:43', NULL, NULL),
+(169, '', NULL, 4, 4, 4, NULL, NULL, 'friends', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-16 06:42:02', NULL, NULL),
+(170, 's', 's', 4, 4, 4, NULL, NULL, 'friends', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-16 06:45:07', NULL, NULL),
+(171, 'dsa', 'dsa', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-17 13:03:33', NULL, NULL),
+(174, 'Hi', 'Hi', 4, 4, 4, NULL, 'DS/2/146A, Station Road, Railway Colony, Bokaro Steel City, Jharkhand, India', 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-19 12:31:52', NULL, NULL),
+(188, 'dsa', 'dsa', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 06:52:30', NULL, NULL),
+(196, 'c', 'c', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 08:21:35', NULL, NULL),
+(197, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 08:34:11', NULL, NULL),
+(198, '', NULL, 4, 4, 4, NULL, NULL, 'friends', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 08:39:37', NULL, NULL),
+(202, '', NULL, 4, 4, 4, NULL, NULL, 'friends', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 09:37:05', NULL, NULL),
+(203, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 09:37:35', NULL, NULL),
+(204, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 10:33:28', NULL, NULL),
+(205, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 10:33:39', NULL, NULL),
+(206, '', NULL, 4, 4, 4, NULL, NULL, 'friends', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 11:18:52', NULL, NULL),
+(207, '', NULL, 4, 4, 4, NULL, NULL, 'friends', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 11:19:22', NULL, NULL),
+(208, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 11:31:30', NULL, NULL),
+(210, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 11:37:44', NULL, NULL),
+(213, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 11:45:29', NULL, NULL),
+(216, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 11:47:21', NULL, NULL),
+(217, 'dsa', 'dsa', 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 12:07:08', NULL, NULL),
+(223, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 12:52:40', NULL, NULL),
+(224, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 12:52:54', NULL, NULL),
+(228, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 14:03:52', NULL, NULL),
+(229, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 14:05:07', NULL, NULL),
+(230, '', NULL, 4, 4, 4, NULL, NULL, 'public', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-26 14:06:26', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2033,7 +2142,246 @@ INSERT INTO `post_media` (`id`, `post_id`, `is_deleted`, `media_url`, `media_typ
 (44, 117, 0, 'userposts/4/OhJlWj_post_user_id_4_image-3.jpg', 'img', NULL, NULL, NULL),
 (45, 118, 0, 'userposts/4/DXIAQu_post_user_id_4_image-1.jpg', 'img', NULL, NULL, NULL),
 (46, 119, 0, 'userposts/4/dJ5djZ_post_user_id_4_image-1.jpg', 'img', NULL, NULL, NULL),
-(47, 120, 0, 'userposts/4/eI23GT_post_user_id_4_image-1.jpg', 'img', NULL, NULL, NULL);
+(47, 120, 0, 'userposts/4/eI23GT_post_user_id_4_image-1.jpg', 'img', NULL, NULL, NULL),
+(48, 120, 0, 'userposts/4/G3vlOQ_post_user_id_4_mfJ2B5_post_user_id_4_banner_slider1.jpg', 'img', NULL, NULL, NULL),
+(49, 121, 0, 'userposts/4/Nfmtl5_post_user_id_4_4nOWlI_post_user_id_4_5b4330ea7a924_img.Adver_mainimg3.jpg', 'img', NULL, NULL, NULL),
+(50, 129, 0, 'userposts/4/g3Qzl7png', 'img', NULL, NULL, NULL),
+(51, 129, 0, 'userposts/4/qncI0gpng', 'img', NULL, NULL, NULL),
+(52, 130, 0, 'userposts/4/97pzZB.png', 'img', NULL, NULL, NULL),
+(53, 130, 0, 'userposts/4/m7sVQn.png', 'img', NULL, NULL, NULL),
+(54, 131, 0, 'userposts/4/24cG28.png', 'img', NULL, NULL, NULL),
+(55, 131, 0, 'userposts/4/bSsbIl.png', 'img', NULL, NULL, NULL),
+(56, 132, 0, 'userposts/4/KqaCPb.png', 'img', NULL, NULL, NULL),
+(57, 132, 0, 'userposts/4/vxicQc.png', 'img', NULL, NULL, NULL),
+(58, 135, 0, 'userposts/4/oQMl9U.png', 'img', NULL, NULL, NULL),
+(59, 136, 0, 'userposts/4/qDTCyf.png', 'img', NULL, NULL, NULL),
+(60, 136, 0, 'userposts/4/UIntIv.png', 'img', NULL, NULL, NULL),
+(61, 136, 0, 'userposts/4/XZQMz6.png', 'img', NULL, NULL, NULL),
+(62, 137, 0, 'userposts/4/IuxPU2.png', 'img', NULL, NULL, NULL),
+(63, 137, 0, 'userposts/4/5R8d3s.png', 'img', NULL, NULL, NULL),
+(64, 138, 0, 'userposts/4/rHNCUr.png', 'img', NULL, NULL, NULL),
+(65, 138, 0, 'userposts/4/ehksKv.png', 'img', NULL, NULL, NULL),
+(66, 138, 0, 'userposts/4/4xyL8n.png', 'img', NULL, NULL, NULL),
+(67, 138, 0, 'userposts/4/KcyRhp.png', 'img', NULL, NULL, NULL),
+(68, 139, 0, 'userposts/4/it3OJC.png', 'img', NULL, NULL, NULL),
+(69, 139, 0, 'userposts/4/yMxPA7.png', 'img', NULL, NULL, NULL),
+(70, 140, 0, 'userposts/4/qPKKoW.png', 'img', NULL, NULL, NULL),
+(71, 140, 0, 'userposts/4/LRuShk.png', 'img', NULL, NULL, NULL),
+(72, 141, 0, 'userposts/4/xggWy2.jpeg', 'img', NULL, NULL, NULL),
+(73, 141, 0, 'userposts/4/gVUEeb.jpeg', 'img', NULL, NULL, NULL),
+(74, 142, 0, 'userposts/4/DkQnYA.jpeg', 'img', NULL, NULL, NULL),
+(75, 143, 0, 'userposts/4/0W9Dzj.png', 'img', NULL, NULL, NULL),
+(76, 144, 0, 'userposts/4/T8JdPh.jpeg', 'img', NULL, NULL, NULL),
+(77, 145, 0, 'userposts/4/Sbwkul.png', 'img', NULL, NULL, NULL),
+(78, 146, 0, 'userposts/4/tXlV2F.png', 'img', NULL, NULL, NULL),
+(79, 147, 0, 'userposts/4/35eQ37.png', 'img', NULL, NULL, NULL),
+(80, 148, 0, 'userposts/4/VkXTVY.png', 'img', NULL, NULL, NULL),
+(81, 149, 0, 'userposts/4/imAC8b.png', 'img', NULL, NULL, NULL),
+(82, 150, 0, 'userposts/4/xIciUg.png', 'img', NULL, NULL, NULL),
+(83, 151, 0, 'userposts/4/jGOv0Y.jpeg', 'img', NULL, NULL, NULL),
+(84, 153, 0, 'userposts/4/i8VzKc.jpeg', 'img', NULL, NULL, NULL),
+(85, 155, 0, 'userposts/4/E6jI9H.jpeg', 'img', NULL, NULL, NULL),
+(86, 156, 0, 'userposts/4/M9X0TK.png', 'img', NULL, NULL, NULL),
+(87, 157, 0, 'userposts/4/HIcjgA.png', 'img', NULL, NULL, NULL),
+(88, 157, 0, 'userposts/4/FBCHcO.png', 'img', NULL, NULL, NULL),
+(89, 158, 0, 'userposts/4/nzPUF5.png', 'img', NULL, NULL, NULL),
+(90, 158, 0, 'userposts/4/nj4cR0.png', 'img', NULL, NULL, NULL),
+(91, 161, 0, 'userposts/4/ca54J4.png', 'img', NULL, NULL, NULL),
+(92, 162, 0, 'userposts/4/SrVuxT.png', 'img', NULL, NULL, NULL),
+(93, 162, 0, 'userposts/4/uGWJmX.png', 'img', NULL, NULL, NULL),
+(94, 162, 0, 'userposts/4/romENC.png', 'img', NULL, NULL, NULL),
+(95, 162, 0, 'userposts/4/Qg2Shp.png', 'img', NULL, NULL, NULL),
+(96, 162, 0, 'userposts/4/bFvuGc.png', 'img', NULL, NULL, NULL),
+(97, 163, 0, 'userposts/4/Br8uyI.png', 'img', NULL, NULL, NULL),
+(98, 163, 0, 'userposts/4/ekffyq.png', 'img', NULL, NULL, NULL),
+(99, 164, 0, 'userposts/4/kl3Etz.png', 'img', NULL, NULL, NULL),
+(100, 164, 0, 'userposts/4/Ngdc1W.png', 'img', NULL, NULL, NULL),
+(101, 165, 0, 'userposts/4/JYmeXi.png', 'img', NULL, NULL, NULL),
+(102, 165, 0, 'userposts/4/p8qUnw.png', 'img', NULL, NULL, NULL),
+(103, 166, 0, 'userposts/4/u7tTMO.png', 'img', NULL, NULL, NULL),
+(104, 166, 0, 'userposts/4/95hYF0.png', 'img', NULL, NULL, NULL),
+(105, 169, 0, 'userposts/4/M3X8Sg.png', 'img', NULL, NULL, NULL),
+(106, 172, 0, 'userposts/4/jIQrbR.png', 'img', NULL, NULL, NULL),
+(107, 173, 0, 'userposts/4/nA2uuT.png', 'img', NULL, NULL, NULL),
+(108, 173, 0, 'userposts/4/9RjrHe.png', 'img', NULL, NULL, NULL),
+(109, 173, 0, 'userposts/4/QXgJG4.png', 'img', NULL, NULL, NULL),
+(110, 175, 0, 'userposts/4/vPioLN_post_user_id_4_05GzWu_post_user_id_4_SampleVideo_1280x720_5mb.mp4', 'vd', NULL, NULL, NULL),
+(111, 176, 0, 'userposts/4/nwhgyE_post_user_id_4_jdt2lp_post_user_id_4_SampleVideo_1280x720_1mb.mp4', 'vd', NULL, NULL, NULL),
+(112, 177, 0, 'userposts/4/Hr4IsQ_post_user_id_4_jdt2lp_post_user_id_4_SampleVideo_1280x720_1mb.mp4', 'vd', NULL, NULL, NULL),
+(113, 178, 0, 'userposts/4/a7oxqy_post_user_id_4_05GzWu_post_user_id_4_SampleVideo_1280x720_5mb.mp4', 'vd', NULL, NULL, NULL),
+(114, 180, 0, 'userposts/4/kz7Kw6_post_user_id_4_Hr4IsQ_post_user_id_4_jdt2lp_post_user_id_4_SampleVideo_1280x720_1mb.mp4', 'vd', NULL, NULL, NULL),
+(115, 181, 0, 'userposts/4/H7zkAO_post_user_id_4_a7oxqy_post_user_id_4_05GzWu_post_user_id_4_SampleVideo_1280x720_5mb.mp4', 'vd', NULL, NULL, NULL),
+(116, 182, 0, 'userposts/4/ozZjnN_post_user_id_4_05GzWu_post_user_id_4_SampleVideo_1280x720_5mb.mp4', 'vd', NULL, NULL, NULL),
+(117, 183, 0, 'userposts/4/mN06qt_post_user_id_4_05GzWu_post_user_id_4_SampleVideo_1280x720_5mb.mp4', 'vd', NULL, NULL, NULL),
+(118, 184, 0, 'userposts/4/9i7b7W_post_user_id_4_a7oxqy_post_user_id_4_05GzWu_post_user_id_4_SampleVideo_1280x720_5mb.mp4', 'vd', NULL, NULL, NULL),
+(119, 186, 0, 'userposts/4/azdkz4.png', 'img', NULL, NULL, NULL),
+(120, 186, 0, 'userposts/4/MgcWJN.png', 'img', NULL, NULL, NULL),
+(121, 186, 0, 'userposts/4/9lPrYT.png', 'img', NULL, NULL, NULL),
+(122, 187, 0, 'userposts/4/Ipip8M_post_user_id_4_05GzWu_post_user_id_4_SampleVideo_1280x720_5mb.mp4', 'vd', NULL, NULL, NULL),
+(123, 190, 0, 'userposts/4/HYVY7u_post_user_id_4_05GzWu_post_user_id_4_SampleVideo_1280x720_5mb.mp4', 'vd', NULL, NULL, NULL),
+(124, 191, 0, 'userposts/4/MXWNXF_post_user_id_4_05GzWu_post_user_id_4_SampleVideo_1280x720_5mb.mp4', 'vd', NULL, NULL, NULL),
+(125, 192, 0, 'userposts/4/PdGrfC.png', 'img', NULL, NULL, NULL),
+(126, 192, 0, 'userposts/4/Fj9gt3.png', 'img', NULL, NULL, NULL),
+(127, 192, 0, 'userposts/4/As9jrP.png', 'img', NULL, NULL, NULL),
+(128, 192, 0, 'userposts/4/rGnUk1.png', 'img', NULL, NULL, NULL),
+(129, 192, 0, 'userposts/4/r5TzZc.png', 'img', NULL, NULL, NULL),
+(130, 192, 0, 'userposts/4/TRq4Hd.png', 'img', NULL, NULL, NULL),
+(131, 192, 0, 'userposts/4/xrBJz3.png', 'img', NULL, NULL, NULL),
+(132, 192, 0, 'userposts/4/uVdILX.png', 'img', NULL, NULL, NULL),
+(133, 192, 0, 'userposts/4/l6tWAd.png', 'img', NULL, NULL, NULL),
+(134, 192, 0, 'userposts/4/XuLAWq.png', 'img', NULL, NULL, NULL),
+(135, 193, 0, 'userposts/4/t7B6lU.png', 'img', NULL, NULL, NULL),
+(136, 193, 0, 'userposts/4/ljEQ1M.png', 'img', NULL, NULL, NULL),
+(137, 193, 0, 'userposts/4/4VKWvo.png', 'img', NULL, NULL, NULL),
+(138, 193, 0, 'userposts/4/5W5Dym.png', 'img', NULL, NULL, NULL),
+(139, 193, 0, 'userposts/4/hOWzPQ.png', 'img', NULL, NULL, NULL),
+(140, 193, 0, 'userposts/4/cBEBF2.png', 'img', NULL, NULL, NULL),
+(141, 193, 0, 'userposts/4/xeapd5.png', 'img', NULL, NULL, NULL),
+(142, 193, 0, 'userposts/4/GUIPUJ.png', 'img', NULL, NULL, NULL),
+(143, 193, 0, 'userposts/4/XQfJiX.png', 'img', NULL, NULL, NULL),
+(144, 193, 0, 'userposts/4/rNpWws.png', 'img', NULL, NULL, NULL),
+(145, 194, 0, 'userposts/4/7WKRpe.png', 'img', NULL, NULL, NULL),
+(146, 194, 0, 'userposts/4/oMZzbU.png', 'img', NULL, NULL, NULL),
+(147, 194, 0, 'userposts/4/64V8JL.png', 'img', NULL, NULL, NULL),
+(148, 194, 0, 'userposts/4/0Xs7u0.png', 'img', NULL, NULL, NULL),
+(149, 194, 0, 'userposts/4/qTZk83.png', 'img', NULL, NULL, NULL),
+(150, 195, 0, 'userposts/4/LaTngV_post_user_id_4_SfwXQs_post_user_id_4_SampleVideo_1280x720_1mb.mp4', 'vd', NULL, NULL, NULL),
+(151, 197, 0, 'userposts/4/dPDGL8.png', 'img', NULL, NULL, NULL),
+(152, 197, 0, 'userposts/4/QjJ5RG.png', 'img', NULL, NULL, NULL),
+(153, 197, 0, 'userposts/4/eAb1Av.png', 'img', NULL, NULL, NULL),
+(154, 197, 0, 'userposts/4/L3Wgqs.png', 'img', NULL, NULL, NULL),
+(155, 203, 0, 'userposts/4/4eFt3L.png', 'img', NULL, NULL, NULL),
+(156, 203, 0, 'userposts/4/8QvU58.png', 'img', NULL, NULL, NULL),
+(157, 203, 0, 'userposts/4/Ijj6qM.png', 'img', NULL, NULL, NULL),
+(158, 203, 0, 'userposts/4/dzr4fI.png', 'img', NULL, NULL, NULL),
+(159, 203, 0, 'userposts/4/LmNdrz.png', 'img', NULL, NULL, NULL),
+(160, 203, 0, 'userposts/4/I9Q908.png', 'img', NULL, NULL, NULL),
+(161, 204, 0, 'userposts/4/HmoGWR_post_user_id_4_jdt2lp_post_user_id_4_SampleVideo_1280x720_1mb.mp4', 'vd', NULL, NULL, NULL),
+(162, 205, 0, 'userposts/4/vNquxW.png', 'img', NULL, NULL, NULL),
+(163, 205, 0, 'userposts/4/7i0O6J.png', 'img', NULL, NULL, NULL),
+(164, 205, 0, 'userposts/4/mO7RAT.png', 'img', NULL, NULL, NULL),
+(165, 205, 0, 'userposts/4/Uzamsp.png', 'img', NULL, NULL, NULL),
+(166, 207, 0, 'userposts/4/P7B6HZ.png', 'img', NULL, NULL, NULL),
+(167, 207, 0, 'userposts/4/r6M6ug.png', 'img', NULL, NULL, NULL),
+(168, 207, 0, 'userposts/4/8OI51E.png', 'img', NULL, NULL, NULL),
+(169, 207, 0, 'userposts/4/gryuae.png', 'img', NULL, NULL, NULL),
+(170, 208, 0, 'userposts/4/dP4WeV.png', 'img', NULL, NULL, NULL),
+(171, 208, 0, 'userposts/4/yxhNjN.png', 'img', NULL, NULL, NULL),
+(172, 208, 0, 'userposts/4/fJ3zb0.png', 'img', NULL, NULL, NULL),
+(173, 208, 0, 'userposts/4/fVFOjl.png', 'img', NULL, NULL, NULL),
+(174, 208, 0, 'userposts/4/NrLPic.png', 'img', NULL, NULL, NULL),
+(175, 208, 0, 'userposts/4/cJxIPh.png', 'img', NULL, NULL, NULL),
+(176, 208, 0, 'userposts/4/2OjTnS.png', 'img', NULL, NULL, NULL),
+(177, 209, 0, 'userposts/4/hwOQyk.png', 'img', NULL, NULL, NULL),
+(178, 209, 0, 'userposts/4/oBvfoW.png', 'img', NULL, NULL, NULL),
+(179, 209, 0, 'userposts/4/YCEDeO.png', 'img', NULL, NULL, NULL),
+(180, 209, 0, 'userposts/4/EVxVgg.png', 'img', NULL, NULL, NULL),
+(181, 210, 0, 'userposts/4/rUk9Qs.png', 'img', NULL, NULL, NULL),
+(182, 210, 0, 'userposts/4/uHSMHx.png', 'img', NULL, NULL, NULL),
+(183, 210, 0, 'userposts/4/qtQ6v2.png', 'img', NULL, NULL, NULL),
+(184, 210, 0, 'userposts/4/dKEOep.png', 'img', NULL, NULL, NULL),
+(185, 211, 0, 'userposts/4/4j9rUp.png', 'img', NULL, NULL, NULL),
+(186, 211, 0, 'userposts/4/gakBVf.png', 'img', NULL, NULL, NULL),
+(187, 211, 0, 'userposts/4/v3wHwz.png', 'img', NULL, NULL, NULL),
+(188, 211, 0, 'userposts/4/jFZa1M.png', 'img', NULL, NULL, NULL),
+(189, 211, 0, 'userposts/4/qCdLlM.png', 'img', NULL, NULL, NULL),
+(190, 211, 0, 'userposts/4/sG9Tfi.png', 'img', NULL, NULL, NULL),
+(191, 211, 0, 'userposts/4/baMeUv.png', 'img', NULL, NULL, NULL),
+(192, 211, 0, 'userposts/4/flDh44.png', 'img', NULL, NULL, NULL),
+(193, 212, 0, 'userposts/4/YfYNX1_post_user_id_4_SfwXQs_post_user_id_4_SampleVideo_1280x720_1mb.mp4', 'vd', NULL, NULL, NULL),
+(194, 213, 0, 'userposts/4/vqQoGL.png', 'img', NULL, NULL, NULL),
+(195, 213, 0, 'userposts/4/3D5j2X.png', 'img', NULL, NULL, NULL),
+(196, 213, 0, 'userposts/4/xOyT5z.png', 'img', NULL, NULL, NULL),
+(197, 213, 0, 'userposts/4/v7a8pW.png', 'img', NULL, NULL, NULL),
+(198, 213, 0, 'userposts/4/A0Ei1e.png', 'img', NULL, NULL, NULL),
+(199, 213, 0, 'userposts/4/f5BKVJ.png', 'img', NULL, NULL, NULL),
+(200, 213, 0, 'userposts/4/VlC9lF.png', 'img', NULL, NULL, NULL),
+(201, 213, 0, 'userposts/4/M8jNYH.png', 'img', NULL, NULL, NULL),
+(202, 213, 0, 'userposts/4/2Q1fRP.png', 'img', NULL, NULL, NULL),
+(203, 216, 0, 'userposts/4/crDF8G_post_user_id_4_RBneFO_post_user_id_4_SampleVideo_1280x720_10mb.mp4', 'vd', NULL, NULL, NULL),
+(204, 217, 0, 'userposts/4/C1UBSr.png', 'img', NULL, NULL, NULL),
+(205, 217, 0, 'userposts/4/ppcBd4.png', 'img', NULL, NULL, NULL),
+(206, 217, 0, 'userposts/4/y5Y9yA.png', 'img', NULL, NULL, NULL),
+(207, 217, 0, 'userposts/4/9D7tTE.png', 'img', NULL, NULL, NULL),
+(208, 217, 0, 'userposts/4/3Tmd8I.png', 'img', NULL, NULL, NULL),
+(209, 217, 0, 'userposts/4/hFyGLZ.png', 'img', NULL, NULL, NULL),
+(210, 217, 0, 'userposts/4/21qQTg.png', 'img', NULL, NULL, NULL),
+(211, 217, 0, 'userposts/4/zg7boj.png', 'img', NULL, NULL, NULL),
+(212, 217, 0, 'userposts/4/EsDhCu.png', 'img', NULL, NULL, NULL),
+(213, 217, 0, 'userposts/4/tva5tC.png', 'img', NULL, NULL, NULL),
+(214, 218, 0, 'userposts/4/3Cjun5_post_user_id_4_RBneFO_post_user_id_4_SampleVideo_1280x720_10mb.mp4', 'vd', NULL, NULL, NULL),
+(215, 220, 0, 'userposts/4/Gp3x7d_post_user_id_4_jdt2lp_post_user_id_4_SampleVideo_1280x720_1mb.mp4', 'vd', NULL, NULL, NULL),
+(216, 221, 0, 'userposts/4/jAY4u8_post_user_id_4_RBneFO_post_user_id_4_SampleVideo_1280x720_10mb.mp4', 'vd', NULL, NULL, NULL),
+(217, 222, 0, 'userposts/4/L4Qb8B_post_user_id_4_RBneFO_post_user_id_4_SampleVideo_1280x720_10mb.mp4', 'vd', NULL, NULL, NULL),
+(218, 223, 0, 'userposts/4/X6QSww.png', 'img', NULL, NULL, NULL),
+(219, 223, 0, 'userposts/4/oaQH5O.png', 'img', NULL, NULL, NULL),
+(220, 223, 0, 'userposts/4/IhffWq.png', 'img', NULL, NULL, NULL),
+(221, 223, 0, 'userposts/4/EUmTza.png', 'img', NULL, NULL, NULL),
+(222, 224, 0, 'userposts/4/1ma7JS.png', 'img', NULL, NULL, NULL),
+(223, 224, 0, 'userposts/4/mEtwOH.png', 'img', NULL, NULL, NULL),
+(224, 224, 0, 'userposts/4/C4ZlIQ.png', 'img', NULL, NULL, NULL),
+(225, 224, 0, 'userposts/4/hOUULO.png', 'img', NULL, NULL, NULL),
+(226, 226, 0, 'userposts/4/TtEvvh.png', 'img', NULL, NULL, NULL),
+(227, 226, 0, 'userposts/4/WgSz00.png', 'img', NULL, NULL, NULL),
+(228, 226, 0, 'userposts/4/wihZOD.png', 'img', NULL, NULL, NULL),
+(229, 226, 0, 'userposts/4/0QF88h.png', 'img', NULL, NULL, NULL),
+(230, 226, 0, 'userposts/4/1it1q5.png', 'img', NULL, NULL, NULL),
+(231, 226, 0, 'userposts/4/zMztp2.png', 'img', NULL, NULL, NULL),
+(232, 226, 0, 'userposts/4/5yrQTM.png', 'img', NULL, NULL, NULL),
+(233, 226, 0, 'userposts/4/MSX0hl.png', 'img', NULL, NULL, NULL),
+(234, 226, 0, 'userposts/4/mRbwPv.png', 'img', NULL, NULL, NULL),
+(235, 226, 0, 'userposts/4/odpcxC.png', 'img', NULL, NULL, NULL),
+(236, 227, 0, 'userposts/4/WEGWFm.png', 'img', NULL, NULL, NULL),
+(237, 227, 0, 'userposts/4/hZaoN7.png', 'img', NULL, NULL, NULL),
+(238, 227, 0, 'userposts/4/qAwSzo.png', 'img', NULL, NULL, NULL),
+(239, 227, 0, 'userposts/4/dy8JFl.png', 'img', NULL, NULL, NULL),
+(240, 227, 0, 'userposts/4/YdUhXO.png', 'img', NULL, NULL, NULL),
+(241, 227, 0, 'userposts/4/gtqUyF.png', 'img', NULL, NULL, NULL),
+(242, 227, 0, 'userposts/4/uOibjX.png', 'img', NULL, NULL, NULL),
+(243, 227, 0, 'userposts/4/YFh1IM.png', 'img', NULL, NULL, NULL),
+(244, 227, 0, 'userposts/4/Qhd9Ei.png', 'img', NULL, NULL, NULL),
+(245, 227, 0, 'userposts/4/ikdY0W.png', 'img', NULL, NULL, NULL),
+(246, 228, 0, 'userposts/4/yYyiaO.png', 'img', NULL, NULL, NULL),
+(247, 228, 0, 'userposts/4/oD2w7H.png', 'img', NULL, NULL, NULL),
+(248, 228, 0, 'userposts/4/GvcJog.png', 'img', NULL, NULL, NULL),
+(249, 228, 0, 'userposts/4/5YFGqw.png', 'img', NULL, NULL, NULL),
+(250, 228, 0, 'userposts/4/H7tnlX.png', 'img', NULL, NULL, NULL),
+(251, 228, 0, 'userposts/4/xh5tBr.png', 'img', NULL, NULL, NULL),
+(252, 228, 0, 'userposts/4/nqBj0s.png', 'img', NULL, NULL, NULL),
+(253, 228, 0, 'userposts/4/5xJsfH.png', 'img', NULL, NULL, NULL),
+(254, 229, 0, 'userposts/4/O0FCR4.png', 'img', NULL, NULL, NULL),
+(255, 229, 0, 'userposts/4/joLhRo.png', 'img', NULL, NULL, NULL),
+(256, 229, 0, 'userposts/4/CFhBm7.png', 'img', NULL, NULL, NULL),
+(257, 229, 0, 'userposts/4/T4L9mM.png', 'img', NULL, NULL, NULL),
+(258, 229, 0, 'userposts/4/SMR0yL.png', 'img', NULL, NULL, NULL),
+(259, 229, 0, 'userposts/4/rxJlJP.png', 'img', NULL, NULL, NULL),
+(260, 229, 0, 'userposts/4/veylrQ.png', 'img', NULL, NULL, NULL),
+(261, 230, 0, 'userposts/4/ULt2A8.png', 'img', NULL, NULL, NULL),
+(262, 230, 0, 'userposts/4/RVQ7Qr.png', 'img', NULL, NULL, NULL),
+(263, 230, 0, 'userposts/4/39KP8E.png', 'img', NULL, NULL, NULL),
+(264, 230, 0, 'userposts/4/7zVbKV.png', 'img', NULL, NULL, NULL),
+(265, 230, 0, 'userposts/4/QMDJ8A.png', 'img', NULL, NULL, NULL),
+(266, 230, 0, 'userposts/4/hUEUpL.png', 'img', NULL, NULL, NULL),
+(267, 230, 0, 'userposts/4/218jqP.png', 'img', NULL, NULL, NULL),
+(268, 230, 0, 'userposts/4/Vo1BnK.png', 'img', NULL, NULL, NULL),
+(269, 231, 0, 'userposts/4/iN7uDK.png', 'img', NULL, NULL, NULL),
+(270, 231, 0, 'userposts/4/GM0iZ4.png', 'img', NULL, NULL, NULL),
+(271, 231, 0, 'userposts/4/GlUKF7.png', 'img', NULL, NULL, NULL),
+(272, 231, 0, 'userposts/4/yHL7jG.png', 'img', NULL, NULL, NULL),
+(273, 231, 0, 'userposts/4/JFoNiR.png', 'img', NULL, NULL, NULL),
+(274, 231, 0, 'userposts/4/R6Ddlg.png', 'img', NULL, NULL, NULL),
+(275, 231, 0, 'userposts/4/44AWFC.png', 'img', NULL, NULL, NULL),
+(276, 231, 0, 'userposts/4/J1PpTi.png', 'img', NULL, NULL, NULL),
+(277, 232, 0, 'userposts/4/nBWpjH.png', 'img', NULL, NULL, NULL),
+(278, 232, 0, 'userposts/4/qbnwyD.png', 'img', NULL, NULL, NULL),
+(279, 232, 0, 'userposts/4/Nwon0O.png', 'img', NULL, NULL, NULL),
+(280, 232, 0, 'userposts/4/B7AudK.png', 'img', NULL, NULL, NULL),
+(281, 232, 0, 'userposts/4/bGXknh.png', 'img', NULL, NULL, NULL),
+(282, 232, 0, 'userposts/4/Ltp7GK.png', 'img', NULL, NULL, NULL),
+(283, 232, 0, 'userposts/4/VZ9UgZ.png', 'img', NULL, NULL, NULL),
+(284, 232, 0, 'userposts/4/5jq9jU.png', 'img', NULL, NULL, NULL),
+(285, 232, 0, 'userposts/4/dCKjN6.png', 'img', NULL, NULL, NULL),
+(286, 232, 0, 'userposts/4/m1xFmL.png', 'img', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2202,6 +2550,57 @@ INSERT INTO `relations` (`id`, `parent_id`, `child_id`, `PaymentStatus`, `Create
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `survey`
+--
+
+CREATE TABLE `survey` (
+  `id` int(11) NOT NULL,
+  `survey_amount` float DEFAULT '1',
+  `no_of_user` int(11) DEFAULT '1',
+  `total_distributed` float NOT NULL DEFAULT '0',
+  `question` longtext CHARACTER SET utf8mb4,
+  `question_type` enum('2','3','4') NOT NULL DEFAULT '2' COMMENT '2-yes/no,3-options(a,b,c),4-options(a,b,c,d)',
+  `option1` varchar(100) DEFAULT NULL,
+  `option2` varchar(100) DEFAULT NULL,
+  `option3` varchar(100) DEFAULT NULL,
+  `option4` varchar(100) DEFAULT NULL,
+  `is_active` tinyint(4) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `survey`
+--
+
+INSERT INTO `survey` (`id`, `survey_amount`, `no_of_user`, `total_distributed`, `question`, `question_type`, `option1`, `option2`, `option3`, `option4`, `is_active`) VALUES
+(1, 2, 20, 0.1, 'क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज साधु-संत?', '2', 'Yes', 'No', NULL, NULL, 1),
+(2, 4, 20, 0.2, 'क्या अयोध्या में राम की मूर्ति से मान जाएंगे नाराज साधु-संत?', '3', 'Yes', 'No', 'Complecated', NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `survey_count`
+--
+
+CREATE TABLE `survey_count` (
+  `id` int(11) NOT NULL,
+  `survey_id` int(11) DEFAULT NULL,
+  `option1_count` int(11) DEFAULT '0',
+  `option2_count` int(11) DEFAULT '0',
+  `option3_count` int(11) DEFAULT '0',
+  `option4_count` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `survey_count`
+--
+
+INSERT INTO `survey_count` (`id`, `survey_id`, `option1_count`, `option2_count`, `option3_count`, `option4_count`) VALUES
+(1, 1, 0, 1, 0, 0),
+(2, 2, 1, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `timelines`
 --
 
@@ -2311,6 +2710,7 @@ CREATE TABLE `users` (
   `password` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   `balance` double(8,2) NOT NULL DEFAULT '0.00',
   `birthday` date DEFAULT NULL,
+  `state` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `city` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `country_id` int(11) DEFAULT NULL,
   `gender` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -2328,12 +2728,6 @@ CREATE TABLE `users` (
   `token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `affiliate_id` int(10) UNSIGNED DEFAULT NULL,
   `language` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `facebook_link` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `twitter_link` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `dribbble_link` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `instagram_link` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `youtube_link` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `linkedin_link` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -2343,60 +2737,60 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `profile_pic`, `otp`, `rc`, `timeline_id`, `email`, `verification_code`, `verified`, `email_verified`, `remember_token`, `password`, `balance`, `birthday`, `city`, `country_id`, `gender`, `contact`, `contact_privacy`, `profession`, `profession_other`, `member_type`, `active`, `last_logged`, `theme_img`, `header_colour`, `address`, `created_time`, `token`, `affiliate_id`, `language`, `facebook_link`, `twitter_link`, `dribbble_link`, `instagram_link`, `youtube_link`, `linkedin_link`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'images/Male_default.png', '946205', 'rc1234', 1, 'bijendra@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-07', 'jbp', 99, 'male', '8989892827', 'public', 'Doctor', NULL, 'paid', 1, '2018-10-30 08:29:14', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 'profile/1534513255.png', '974209', 'rc4321', 2, 'amit@gmail.com', NULL, 1, NULL, NULL, '81dc9bdb52d04dc20036dbd8313ed055', 0.00, '1992-02-03', 'Jabalpur', 99, 'male', '8989892897', 'public', 'Doctor', NULL, 'paid', 1, '2018-10-17 07:53:46', 'http://localhost:1000/images/theme_img_up2.jpg', '#000000', NULL, '2018-07-17 11:21:53', 'dctvAW9VK_Q:APA91bGBtNy2WbEUoM8eA0nyrjSAD2OHKCf63taxfLv71ByzO748xIJQsJU0r0GNYPEx6mVFsTY2jzPijnM4Lr-5njHAInTITdayYYd5_7k4mGaURVxFisrdHOMp6sCPGIbSLLplhwgc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(3, 'images/Male_default.png', '763859', 'refer1235', 3, 'anshu@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-05', 'Jabalpur', 99, 'female', '8989892828', 'private', 'Engineer', NULL, 'paid', 1, '2018-07-23 10:24:24', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 'images/Male_default.png', '463145', 'refer1236', 4, 'devansh@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-07', 'Jabalpur', NULL, 'female', '8989892866', 'private', 'Other', NULL, 'paid', 1, '2018-10-17 11:30:03', 'http://localhost:1000/images/theme_img_up2.jpg', '#000000', NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, 'images/Male_default.png', '842492', 'refer1234', 5, 'manish@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-05', 'Jbp', 99, 'male', '9876543210', 'public', 'Engineer', NULL, 'paid', 1, '2018-06-04 07:16:31', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(6, 'images/Male_default.png', '442297', 'dasf', 6, 'kaml@gmail.com', NULL, 0, NULL, NULL, '7f58341b9dceb1f1edca80dae10b92bc', 0.00, '2018-02-14', 'Jabalpur', 99, 'male', '9876543210', 'public', 'Engineer', NULL, 'paid', 1, '2018-06-02 13:57:02', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(7, 'images/Male_default.png', '907695', 'cdsaf', 7, 'ni@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-07', 'Jabalpur', 99, 'male', '9876543210', 'public', 'Engineer', NULL, 'paid', 1, '2018-10-13 06:17:34', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(8, 'images/Male_default.png', '271668', 'refer1237', 8, 'amit1@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-14', 'Jabalpur', 99, 'male', '8989892827', 'public', 'Engineer', NULL, 'free', 1, '2018-06-02 13:27:50', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(9, 'images/Male_default.png', '280419', 'rc1239', 9, 'b@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-19', 'Jabalpur', 99, 'male', '9876543210', 'public', 'Engineer', NULL, 'free', 1, '2018-06-04 06:59:45', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(10, 'images/Male_default.png', '431780', NULL, 10, 'a@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-23', 'Jabalpur', 99, 'male', '8989892827', 'public', 'Doctor', NULL, 'free', 1, '2018-02-23 06:33:02', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(11, 'images/Male_default.png', '212299', NULL, 11, 'testname@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-26', 'jabalpur', 99, 'female', '9876543210', 'public', 'Doctor', NULL, 'free', 1, '2018-03-05 12:12:39', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(12, 'images/Male_default.png', '541952', NULL, 12, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:36', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(13, 'images/Male_default.png', '543263', NULL, 13, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:38', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(14, 'images/Male_default.png', '421160', NULL, 14, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:40', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(15, 'images/Male_default.png', '311927', NULL, 15, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:51', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(16, 'images/Male_default.png', '735318', NULL, 16, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:43', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(17, 'images/Male_default.png', '804194', NULL, 17, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:45', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(18, 'images/Male_default.png', '440492', NULL, 18, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:47', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(19, 'images/Male_default.png', '569332', NULL, 19, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:49', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(20, 'images/Male_default.png', '398925', NULL, 20, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', 'Jabalpur', 99, 'male', '54464564', 'public', 'Others', NULL, 'free', 1, '2018-05-22 06:12:25', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(21, 'images/Male_default.png', '804740', NULL, 21, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', 'Jabalpur', 99, 'male', '54464564', 'public', NULL, NULL, 'free', 1, '2018-03-07 12:36:23', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(22, 'images/Male_default.png', '583189', NULL, 22, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', 'Jabalpur', 99, 'male', '54464564', 'public', NULL, NULL, 'free', 1, '2018-03-07 12:36:24', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(23, 'images/Male_default.png', '478326', NULL, 23, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', 'Jabalpur', 99, 'male', '54464564', 'public', NULL, NULL, 'free', 1, '2018-03-07 12:36:24', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(24, 'images/Male_default.png', '424165', 'rc28331397', 24, 'virendra@gmail.com', NULL, 1, NULL, NULL, 'c85a8f28c9d29d0a26d3f581b505e347', 0.00, '2018-04-10', 'Jabalpur', 99, 'male', '8989892897', 'public', NULL, NULL, 'free', 1, '2018-05-16 12:36:35', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(25, 'images/Male_default.png', '544047', 'rc47194058', 25, 'dshhfa@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-04-14', 'Jabalpur', 99, 'female', '8989892897', 'public', NULL, NULL, 'free', 1, '2018-04-14 06:12:03', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(26, 'images/Male_default.png', '259896', 'rc64874026', 26, 'abbb@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-04-14', 'Jabalpur', 99, 'male', '8989892897', 'public', NULL, NULL, 'free', 1, '2018-05-29 05:45:13', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(39, 'images/Male_default.png', '548512', 'rc53104028', 39, 'bijendrasahu888@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-04-17', 'Jabalpur', 99, 'male', '8989892897', 'public', 'Engineer', NULL, 'paid', 1, '2018-05-28 11:30:10', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(47, 'images/Male_default.png', '478462', 'rc92683665', 47, 'retinodes.bijendra1@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-05-23', 'Jabalpur', 99, 'male', '9765483210', 'public', NULL, NULL, 'free', 1, '2018-05-31 12:13:00', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(48, 'images/Male_default.png', '794597', 'rc92172888', 48, 'retinodes.bijendra2@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-05-31', 'Jabalpur', 99, 'male', '9876543210', 'public', NULL, NULL, 'free', 1, '2018-08-01 06:32:40', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(49, 'images/Male_default.png', '684170', 'rc45874049', 49, 'retinodes.bijendra@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '1993-10-06', 'Jabalpur', 99, 'male', '8989892897', 'public', NULL, NULL, 'free', 1, '2018-08-01 06:32:51', NULL, NULL, NULL, '2018-08-01 06:32:51', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(50, 'images/Male_default.png', '188917', 'rc41830203', 50, NULL, NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2018-08-07', 'https://hostingfacts.com/domai', 99, 'male', NULL, 'public', NULL, NULL, 'free', 1, '2018-08-07 12:59:01', NULL, NULL, NULL, '2018-08-07 12:59:01', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(51, 'images/Male_default.png', '610292', 'rc42815914', 51, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:33', NULL, NULL, NULL, '2018-08-07 13:03:33', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(52, 'images/Male_default.png', '256168', 'rc64624710', 52, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:37', NULL, NULL, NULL, '2018-08-07 13:03:37', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(53, 'images/Male_default.png', '479636', 'rc12108316', 53, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:40', NULL, NULL, NULL, '2018-08-07 13:03:40', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(54, 'images/Male_default.png', '878546', 'rc96338455', 54, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:43', NULL, NULL, NULL, '2018-08-07 13:03:43', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(55, 'images/Male_default.png', '486340', 'rc42278727', 55, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:48', NULL, NULL, NULL, '2018-08-07 13:03:48', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(56, 'images/Male_default.png', '898715', 'rc46972036', 56, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:51', NULL, NULL, NULL, '2018-08-07 13:03:51', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(57, 'images/Male_default.png', '382084', 'rc56225960', 57, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:54', NULL, NULL, NULL, '2018-08-07 13:03:54', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(58, 'images/Male_default.png', '481736', 'rc95159124', 58, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:57', NULL, NULL, NULL, '2018-08-07 13:03:57', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(59, 'images/Male_default.png', '366857', 'rc24761432', 59, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:04:00', NULL, NULL, NULL, '2018-08-07 13:04:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(60, 'images/Male_default.png', '359194', 'rc68973204', 60, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:04:03', NULL, NULL, NULL, '2018-08-07 13:04:03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(61, 'images/Male_default.png', '342300', 'rc39191075', 61, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:04:06', NULL, NULL, NULL, '2018-08-07 13:04:06', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(62, 'images/Male_default.png', '584022', 'rc98459144', 62, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:04:09', NULL, NULL, NULL, '2018-08-07 13:04:09', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(63, 'images/Male_default.png', '433539', 'rc77896051', 63, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:04:30', NULL, NULL, NULL, '2018-08-07 13:04:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(64, 'images/Male_default.png', '170713', 'rc98970959', 64, 'fdff', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-07', 'Jabalpur', 99, 'male', '1111111111', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:42:31', NULL, NULL, NULL, '2018-08-07 13:42:31', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(65, 'images/Male_default.png', '867458', 'rc85525631', 65, 'fdff', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-07', 'Jabalpur', 99, 'male', '1111111111', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:42:34', NULL, NULL, NULL, '2018-08-07 13:42:34', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(66, 'images/Male_default.png', '871662', 'rc74304917', 66, 'fdff', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-07', 'Jabalpur', 99, 'male', '1111111111', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:42:36', NULL, NULL, NULL, '2018-08-07 13:42:36', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(67, 'images/Male_default.png', '994948', 'rc62154653', 67, 'naveen@gmail.com', NULL, 0, NULL, NULL, 'c1619d2ad66f7629c12c87fe21d32a58', 0.00, '2000-08-07', 'Jabalpur', 99, 'male', '6666666666', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:52:10', NULL, NULL, NULL, '2018-08-07 13:52:05', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(68, 'images/Male_default.png', '555550', 'rc99235273', 68, 'naveen@gmail.com', NULL, 0, NULL, NULL, '8a4488c177d9dc8c3da7c745c89ca214', 0.00, '2018-08-07', 'Jabalpur', 99, 'male', '5656565656', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:54:43', NULL, NULL, NULL, '2018-08-07 13:54:43', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(69, 'images/Male_default.png', '221536', 'rc53678288', 69, 'naveen@gmail.com', NULL, 0, NULL, NULL, '8a4488c177d9dc8c3da7c745c89ca214', 0.00, '2018-08-07', 'Jabalpur', 99, 'male', '5656565656', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:54:51', NULL, NULL, NULL, '2018-08-07 13:54:51', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(70, 'images/Male_default.png', '865342', 'rc59486574', 70, 'naveen@gmail.com', NULL, 0, NULL, NULL, '8a4488c177d9dc8c3da7c745c89ca214', 0.00, '2000-08-02', 'Jabalpur', 99, 'male', '5656565656', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:54:54', NULL, NULL, NULL, '2018-08-07 13:54:54', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(71, 'images/Male_default.png', '486353', 'rc35681677', 71, 'naveen126@gmail.com', NULL, 0, NULL, NULL, '9015885d30edf76768e1421f06cd494d', 0.00, '2000-08-13', 'Jabalpur', 99, 'male', '8564567487', 'public', NULL, NULL, 'free', 1, '2018-08-13 12:04:27', NULL, NULL, NULL, '2018-08-13 12:04:27', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(72, 'images/Male_default.png', '884901', 'rc30886813', 72, 'naveen41@gmail.com', NULL, 0, NULL, NULL, '91aa6e0112084db1fa4febf08366c708', 0.00, '2000-08-13', 'Jabalpur', 99, 'male', '5345345454', 'public', NULL, NULL, 'free', 1, '2018-08-13 12:08:05', NULL, NULL, NULL, '2018-08-13 12:08:05', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `profile_pic`, `otp`, `rc`, `timeline_id`, `email`, `verification_code`, `verified`, `email_verified`, `remember_token`, `password`, `balance`, `birthday`, `state`, `city`, `country_id`, `gender`, `contact`, `contact_privacy`, `profession`, `profession_other`, `member_type`, `active`, `last_logged`, `theme_img`, `header_colour`, `address`, `created_time`, `token`, `affiliate_id`, `language`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'images/Male_default.png', '946205', 'rc1234', 1, 'bijendra@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-07', NULL, 'jbp', 99, 'male', '8989892827', 'public', 'Doctor', NULL, 'paid', 1, '2018-10-30 08:29:14', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'images/Male_default.png', '974209', 'rc4321', 2, 'amit@gmail.com', NULL, 1, NULL, NULL, '81dc9bdb52d04dc20036dbd8313ed055', 0.00, '1992-02-03', NULL, 'Jabalpur', 99, 'male', '8989892897', 'public', 'Doctor', NULL, 'paid', 1, '2018-11-20 13:17:24', NULL, '#000000', NULL, '2018-07-17 11:21:53', 'dctvAW9VK_Q:APA91bGBtNy2WbEUoM8eA0nyrjSAD2OHKCf63taxfLv71ByzO748xIJQsJU0r0GNYPEx6mVFsTY2jzPijnM4Lr-5njHAInTITdayYYd5_7k4mGaURVxFisrdHOMp6sCPGIbSLLplhwgc', NULL, NULL, NULL, NULL, NULL),
+(3, 'images/Male_default.png', '763859', 'refer1235', 3, 'anshu@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-05', NULL, 'Jabalpur', 99, 'female', '8989892828', 'private', 'Engineer', NULL, 'paid', 1, '2018-07-23 10:24:24', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(4, 'images/Male_default.png', '463145', 'refer1236', 4, 'devansh@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-07', 'Madhya Pradesh', 'Jabalpur', NULL, 'female', '8989892866', 'private', 'Other', NULL, 'paid', 1, '2018-11-27 07:25:41', 'http://localhost:1000/images/theme_img_up2.jpg', '#000000', NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(5, 'images/Male_default.png', '842492', 'refer1234', 5, 'manish@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-05', NULL, 'Jbp', 99, 'male', '9876543210', 'public', 'Engineer', NULL, 'paid', 1, '2018-06-04 07:16:31', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(6, 'images/Male_default.png', '442297', 'dasf', 6, 'kaml@gmail.com', NULL, 0, NULL, NULL, '7f58341b9dceb1f1edca80dae10b92bc', 0.00, '2018-02-14', NULL, 'Jabalpur', 99, 'male', '9876543210', 'public', 'Engineer', NULL, 'paid', 1, '2018-06-02 13:57:02', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(7, 'images/Male_default.png', '907695', 'cdsaf', 7, 'ni@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-07', NULL, 'Jabalpur', 99, 'male', '9876543210', 'public', 'Engineer', NULL, 'paid', 1, '2018-10-13 06:17:34', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(8, 'images/Male_default.png', '271668', 'refer1237', 8, 'amit1@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-14', NULL, 'Jabalpur', 99, 'male', '8989892827', 'public', 'Engineer', NULL, 'free', 1, '2018-06-02 13:27:50', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(9, 'images/Male_default.png', '280419', 'rc1239', 9, 'b@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-19', NULL, 'Jabalpur', 99, 'male', '9876543210', 'public', 'Engineer', NULL, 'free', 1, '2018-06-04 06:59:45', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(10, 'images/Male_default.png', '431780', NULL, 10, 'a@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-23', NULL, 'Jabalpur', 99, 'male', '8989892827', 'public', 'Doctor', NULL, 'free', 1, '2018-02-23 06:33:02', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(11, 'images/Male_default.png', '212299', NULL, 11, 'testname@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-02-26', NULL, 'jabalpur', 99, 'female', '9876543210', 'public', 'Doctor', NULL, 'free', 1, '2018-03-05 12:12:39', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(12, 'images/Male_default.png', '541952', NULL, 12, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', NULL, 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:36', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(13, 'images/Male_default.png', '543263', NULL, 13, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', NULL, 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:38', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(14, 'images/Male_default.png', '421160', NULL, 14, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', NULL, 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:40', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(15, 'images/Male_default.png', '311927', NULL, 15, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', NULL, 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:51', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(16, 'images/Male_default.png', '735318', NULL, 16, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', NULL, 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:43', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(17, 'images/Male_default.png', '804194', NULL, 17, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', NULL, 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:45', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(18, 'images/Male_default.png', '440492', NULL, 18, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', NULL, 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:47', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(19, 'images/Male_default.png', '569332', NULL, 19, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', NULL, 'Jabalpur', 99, 'male', '54464564', 'public', 'Engineer', NULL, 'free', 1, '2018-03-22 10:21:49', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(20, 'images/Male_default.png', '398925', NULL, 20, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', NULL, 'Jabalpur', 99, 'male', '54464564', 'public', 'Others', NULL, 'free', 1, '2018-05-22 06:12:25', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(21, 'images/Male_default.png', '804740', NULL, 21, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', NULL, 'Jabalpur', 99, 'male', '54464564', 'public', NULL, NULL, 'free', 1, '2018-03-07 12:36:23', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(22, 'images/Male_default.png', '583189', NULL, 22, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', NULL, 'Jabalpur', 99, 'male', '54464564', 'public', NULL, NULL, 'free', 1, '2018-03-07 12:36:24', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(23, 'images/Male_default.png', '478326', NULL, 23, 'amit123@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-03-07', NULL, 'Jabalpur', 99, 'male', '54464564', 'public', NULL, NULL, 'free', 1, '2018-03-07 12:36:24', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(24, 'images/Male_default.png', '424165', 'rc28331397', 24, 'virendra@gmail.com', NULL, 1, NULL, NULL, 'c85a8f28c9d29d0a26d3f581b505e347', 0.00, '2018-04-10', NULL, 'Jabalpur', 99, 'male', '8989892897', 'public', NULL, NULL, 'free', 1, '2018-05-16 12:36:35', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(25, 'images/Male_default.png', '544047', 'rc47194058', 25, 'dshhfa@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-04-14', NULL, 'Jabalpur', 99, 'female', '8989892897', 'public', NULL, NULL, 'free', 1, '2018-04-14 06:12:03', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(26, 'images/Male_default.png', '259896', 'rc64874026', 26, 'abbb@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-04-14', NULL, 'Jabalpur', 99, 'male', '8989892897', 'public', NULL, NULL, 'free', 1, '2018-05-29 05:45:13', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(39, 'images/Male_default.png', '548512', 'rc53104028', 39, 'bijendrasahu888@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-04-17', NULL, 'Jabalpur', 99, 'male', '8989892897', 'public', 'Engineer', NULL, 'paid', 1, '2018-05-28 11:30:10', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(47, 'images/Male_default.png', '478462', 'rc92683665', 47, 'retinodes.bijendra1@gmail.com', NULL, 1, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-05-23', NULL, 'Jabalpur', 99, 'male', '9765483210', 'public', NULL, NULL, 'free', 1, '2018-05-31 12:13:00', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(48, 'images/Male_default.png', '794597', 'rc92172888', 48, 'retinodes.bijendra2@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '2018-05-31', NULL, 'Jabalpur', 99, 'male', '9876543210', 'public', NULL, NULL, 'free', 1, '2018-08-01 06:32:40', NULL, NULL, NULL, '2018-07-17 11:21:53', NULL, NULL, NULL, NULL, NULL, NULL),
+(49, 'images/Male_default.png', '684170', 'rc45874049', 49, 'retinodes.bijendra@gmail.com', NULL, 0, NULL, NULL, '202cb962ac59075b964b07152d234b70', 0.00, '1993-10-06', NULL, 'Jabalpur', 99, 'male', '8989892897', 'public', NULL, NULL, 'free', 1, '2018-08-01 06:32:51', NULL, NULL, NULL, '2018-08-01 06:32:51', NULL, NULL, NULL, NULL, NULL, NULL),
+(50, 'images/Male_default.png', '188917', 'rc41830203', 50, NULL, NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2018-08-07', NULL, 'https://hostingfacts.com/domai', 99, 'male', NULL, 'public', NULL, NULL, 'free', 1, '2018-08-07 12:59:01', NULL, NULL, NULL, '2018-08-07 12:59:01', NULL, NULL, NULL, NULL, NULL, NULL),
+(51, 'images/Male_default.png', '610292', 'rc42815914', 51, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', NULL, 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:33', NULL, NULL, NULL, '2018-08-07 13:03:33', NULL, NULL, NULL, NULL, NULL, NULL),
+(52, 'images/Male_default.png', '256168', 'rc64624710', 52, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', NULL, 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:37', NULL, NULL, NULL, '2018-08-07 13:03:37', NULL, NULL, NULL, NULL, NULL, NULL),
+(53, 'images/Male_default.png', '479636', 'rc12108316', 53, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', NULL, 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:40', NULL, NULL, NULL, '2018-08-07 13:03:40', NULL, NULL, NULL, NULL, NULL, NULL),
+(54, 'images/Male_default.png', '878546', 'rc96338455', 54, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', NULL, 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:43', NULL, NULL, NULL, '2018-08-07 13:03:43', NULL, NULL, NULL, NULL, NULL, NULL),
+(55, 'images/Male_default.png', '486340', 'rc42278727', 55, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', NULL, 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:48', NULL, NULL, NULL, '2018-08-07 13:03:48', NULL, NULL, NULL, NULL, NULL, NULL),
+(56, 'images/Male_default.png', '898715', 'rc46972036', 56, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', NULL, 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:51', NULL, NULL, NULL, '2018-08-07 13:03:51', NULL, NULL, NULL, NULL, NULL, NULL),
+(57, 'images/Male_default.png', '382084', 'rc56225960', 57, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', NULL, 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:54', NULL, NULL, NULL, '2018-08-07 13:03:54', NULL, NULL, NULL, NULL, NULL, NULL),
+(58, 'images/Male_default.png', '481736', 'rc95159124', 58, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', NULL, 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:03:57', NULL, NULL, NULL, '2018-08-07 13:03:57', NULL, NULL, NULL, NULL, NULL, NULL),
+(59, 'images/Male_default.png', '366857', 'rc24761432', 59, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', NULL, 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:04:00', NULL, NULL, NULL, '2018-08-07 13:04:00', NULL, NULL, NULL, NULL, NULL, NULL),
+(60, 'images/Male_default.png', '359194', 'rc68973204', 60, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', NULL, 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:04:03', NULL, NULL, NULL, '2018-08-07 13:04:03', NULL, NULL, NULL, NULL, NULL, NULL),
+(61, 'images/Male_default.png', '342300', 'rc39191075', 61, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', NULL, 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:04:06', NULL, NULL, NULL, '2018-08-07 13:04:06', NULL, NULL, NULL, NULL, NULL, NULL),
+(62, 'images/Male_default.png', '584022', 'rc98459144', 62, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', NULL, 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:04:09', NULL, NULL, NULL, '2018-08-07 13:04:09', NULL, NULL, NULL, NULL, NULL, NULL),
+(63, 'images/Male_default.png', '433539', 'rc77896051', 63, 'naveen@gmail.com', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-04', NULL, 'Jabalpur', 99, 'male', '8989898989', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:04:30', NULL, NULL, NULL, '2018-08-07 13:04:30', NULL, NULL, NULL, NULL, NULL, NULL),
+(64, 'images/Male_default.png', '170713', 'rc98970959', 64, 'fdff', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-07', NULL, 'Jabalpur', 99, 'male', '1111111111', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:42:31', NULL, NULL, NULL, '2018-08-07 13:42:31', NULL, NULL, NULL, NULL, NULL, NULL),
+(65, 'images/Male_default.png', '867458', 'rc85525631', 65, 'fdff', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-07', NULL, 'Jabalpur', 99, 'male', '1111111111', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:42:34', NULL, NULL, NULL, '2018-08-07 13:42:34', NULL, NULL, NULL, NULL, NULL, NULL),
+(66, 'images/Male_default.png', '871662', 'rc74304917', 66, 'fdff', NULL, 0, NULL, NULL, '5e543256c480ac577d30f76f9120eb74', 0.00, '2000-08-07', NULL, 'Jabalpur', 99, 'male', '1111111111', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:42:36', NULL, NULL, NULL, '2018-08-07 13:42:36', NULL, NULL, NULL, NULL, NULL, NULL),
+(67, 'images/Male_default.png', '994948', 'rc62154653', 67, 'naveen@gmail.com', NULL, 0, NULL, NULL, 'c1619d2ad66f7629c12c87fe21d32a58', 0.00, '2000-08-07', NULL, 'Jabalpur', 99, 'male', '6666666666', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:52:10', NULL, NULL, NULL, '2018-08-07 13:52:05', NULL, NULL, NULL, NULL, NULL, NULL),
+(68, 'images/Male_default.png', '555550', 'rc99235273', 68, 'naveen@gmail.com', NULL, 0, NULL, NULL, '8a4488c177d9dc8c3da7c745c89ca214', 0.00, '2018-08-07', NULL, 'Jabalpur', 99, 'male', '5656565656', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:54:43', NULL, NULL, NULL, '2018-08-07 13:54:43', NULL, NULL, NULL, NULL, NULL, NULL),
+(69, 'images/Male_default.png', '221536', 'rc53678288', 69, 'naveen@gmail.com', NULL, 0, NULL, NULL, '8a4488c177d9dc8c3da7c745c89ca214', 0.00, '2018-08-07', NULL, 'Jabalpur', 99, 'male', '5656565656', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:54:51', NULL, NULL, NULL, '2018-08-07 13:54:51', NULL, NULL, NULL, NULL, NULL, NULL),
+(70, 'images/Male_default.png', '865342', 'rc59486574', 70, 'naveen@gmail.com', NULL, 0, NULL, NULL, '8a4488c177d9dc8c3da7c745c89ca214', 0.00, '2000-08-02', NULL, 'Jabalpur', 99, 'male', '5656565656', 'public', NULL, NULL, 'free', 1, '2018-08-07 13:54:54', NULL, NULL, NULL, '2018-08-07 13:54:54', NULL, NULL, NULL, NULL, NULL, NULL),
+(71, 'images/Male_default.png', '486353', 'rc35681677', 71, 'naveen126@gmail.com', NULL, 0, NULL, NULL, '9015885d30edf76768e1421f06cd494d', 0.00, '2000-08-13', NULL, 'Jabalpur', 99, 'male', '8564567487', 'public', NULL, NULL, 'free', 1, '2018-08-13 12:04:27', NULL, NULL, NULL, '2018-08-13 12:04:27', NULL, NULL, NULL, NULL, NULL, NULL),
+(72, 'images/Male_default.png', '884901', 'rc30886813', 72, 'naveen41@gmail.com', NULL, 0, NULL, NULL, '91aa6e0112084db1fa4febf08366c708', 0.00, '2000-08-13', NULL, 'Jabalpur', 99, 'male', '5345345454', 'public', NULL, NULL, 'free', 1, '2018-08-13 12:08:05', NULL, NULL, NULL, '2018-08-13 12:08:05', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2522,6 +2916,28 @@ CREATE TABLE `user_setting` (
   `is_active` tinyint(4) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_survey_amount`
+--
+
+CREATE TABLE `user_survey_amount` (
+  `id` int(11) NOT NULL,
+  `survey_id` int(11) DEFAULT NULL,
+  `survey_ans` int(11) DEFAULT '1',
+  `user_id` int(11) DEFAULT NULL,
+  `amt` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_survey_amount`
+--
+
+INSERT INTO `user_survey_amount` (`id`, `survey_id`, `survey_ans`, `user_id`, `amt`) VALUES
+(1, 1, 1, 4, 0.1),
+(2, 2, 1, 4, 0.2);
+
 --
 -- Indexes for dumped tables
 --
@@ -2595,6 +3011,12 @@ ALTER TABLE `comment_likes`
 -- Indexes for table `coms`
 --
 ALTER TABLE `coms`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `contact_us`
+--
+ALTER TABLE `contact_us`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -2744,6 +3166,18 @@ ALTER TABLE `relations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `survey`
+--
+ALTER TABLE `survey`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `survey_count`
+--
+ALTER TABLE `survey_count`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `timelines`
 --
 ALTER TABLE `timelines`
@@ -2785,6 +3219,12 @@ ALTER TABLE `user_setting`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `user_survey_amount`
+--
+ALTER TABLE `user_survey_amount`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -2804,7 +3244,7 @@ ALTER TABLE `admin_master`
 -- AUTO_INCREMENT for table `ads`
 --
 ALTER TABLE `ads`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `ads_clicked`
@@ -2822,7 +3262,7 @@ ALTER TABLE `ad_category`
 -- AUTO_INCREMENT for table `ad_images`
 --
 ALTER TABLE `ad_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `affiliates`
@@ -2840,7 +3280,7 @@ ALTER TABLE `cities`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=208;
 
 --
 -- AUTO_INCREMENT for table `comment_likes`
@@ -2852,7 +3292,13 @@ ALTER TABLE `comment_likes`
 -- AUTO_INCREMENT for table `coms`
 --
 ALTER TABLE `coms`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `contact_us`
+--
+ALTER TABLE `contact_us`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `countries`
@@ -2936,7 +3382,7 @@ ALTER TABLE `payu_payments`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=231;
 
 --
 -- AUTO_INCREMENT for table `post_follows`
@@ -2954,7 +3400,7 @@ ALTER TABLE `post_likes`
 -- AUTO_INCREMENT for table `post_media`
 --
 ALTER TABLE `post_media`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=287;
 
 --
 -- AUTO_INCREMENT for table `post_spam`
@@ -2985,6 +3431,18 @@ ALTER TABLE `redeem_masters`
 --
 ALTER TABLE `relations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `survey`
+--
+ALTER TABLE `survey`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `survey_count`
+--
+ALTER TABLE `survey_count`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `timelines`
@@ -3021,6 +3479,12 @@ ALTER TABLE `user_comm`
 --
 ALTER TABLE `user_setting`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `user_survey_amount`
+--
+ALTER TABLE `user_survey_amount`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

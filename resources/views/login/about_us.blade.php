@@ -133,8 +133,7 @@
                 <div class="_tittle"></div>
                 <p class="about_us_first_p">Connecting-One.com is an INDIAN online social media and social networking service company based in
                     Jabalpur, Madhya Pradesh. Our website development started in November 5, 2017, by AjaykumarGautam,
-                    along with fellow I.G.E.C Sagar students and roommates Himanshu Thakur, Swapnil Sharma, VeereshSoni,
-                    Jayant Prajapati & Seema Suraiya.Anyone who claims to be at least 18 years old has been allowed to
+                    along with fellow I.G.E.C Sagar students and roommates Himanshu Thakur, Dhamraj Sharma, Veeresh Soni.Anyone who claims to be at least 18 years old has been allowed to
                     become a registered user of Connecting One. </p>
 
                 <p>After registering, users can create a customized profile indicating their name&occupation.</p>
@@ -158,7 +157,7 @@
             <h3>Unique Features of Connecting One</h3>
             <div class="uq_tittle" ></div>
             <p class="about_us_first_p">Connecting-One.com is an INDIAN online social media and social networking service company based in
-                Jabalpur, Madhya Pradesh. Our website development started in November 5, 20017, by AjaykumarGautam,
+                Jabalpur, Madhya Pradesh. Our website development started in November 5, 2017, by AjaykumarGautam,
                 along with fellow I.G.E.C Sagar students and roommates Himanshu Thakur, Swapnil Sharma, VeereshSoni,
                 Jayant Prajapati & Seema Suraiya.Anyone who claims to be at least 18 years old has been allowed to
                 become a registered user of Connecting One. </p>

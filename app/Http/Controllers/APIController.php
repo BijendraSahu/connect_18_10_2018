@@ -155,14 +155,14 @@ class APIController extends Controller
         if (isset($user_f->token)) {
             $request_by = ucwords($user_s->timeline->name);
             $title = "Friend Request";
-            $message = "$request_by is send you an friend request";
+            $message = "$request_by is send you a friend request";
             $token = $user_f->token;
             $data = $user_f;
             $user_notification = new UserNotifications();
 //            $user_notification->post_id = $post->id;
             $user_notification->user_id = $user_f->id;
             $user_notification->notified_by = $user_s->id;
-            $user_notification->description = "<b>$request_by</b> is send you an friend request";
+            $user_notification->description = "<b>$request_by</b> is send you a friend request";
             $user_notification->created_at = Carbon::now('Asia/Kolkata');
             $user_notification->save();
             //event(new StatusLiked($post->posted_by));
@@ -622,53 +622,51 @@ class APIController extends Controller
     /*******Post******/
     public function addpost(Request $request)
     {
-//        echo count($_FILES['post_file']['name']);
-        if (request('description') != null)
-            $des = json_decode(request('description'));
+        try {
+            if (request('description') != null)
+                $des = json_decode(request('description'));
 
-        $posts = new Posts();
-        $user = UserModel::find(request('post_id')); //changed user_id to post_id 11-sep-2018
-        $posts->user_id = $user->id;
-        $posts->description = LaravelEmojiOneFacade::toShort(isset($des->post) ? $des->post : null); //isset($des->post) ? $des->post : null;
+            $posts = new Posts();
+            $user = UserModel::find(request('user_id'));
+            $posts->user_id = $user->id;
+            $posts->description = LaravelEmojiOneFacade::toShort(isset($des->post) ? $des->post : null); //isset($des->post) ? $des->post : null;
 
-        $posts->description2 = isset($des->post) ? $des->post : null;
-
-        $posts->timeline_id = $user->timeline_id;
-        $posts->posted_by = request('user_id');
-        $posts->created_at = Carbon::now('Asia/Kolkata');
-        $posts->save();
-//        $upload_file = count($_FILES['post_file']['name']);
-//        if (request('post_file') != null) {
-//            for ($i = 0; $i < $upload_file; $i++) {
-//                $arr = [];
-//                $i = 1;
-        $destinationPath = 'userposts/' . $user->id . '/';
-        $file = $request->file('post_file');
-        if (request('post_file') != null) {
-            $post_media = new Post_media();
-            $post_media->post_id = $posts->id;
-            $temp = str_random(6) . '_post_user_id_' . $user->id . '_' . $file->getClientOriginalName();
-            $file->move($destinationPath, $temp);
-//            $i++;
-            $valid_ext_v = ["mp4", "ogg", "webm", "3gp"];
-            $counter = 0;
-            foreach ($valid_ext_v as $ext) {
-                if ($file->getClientOriginalExtension() == $ext) {
-                    $counter++;
+            $posts->description2 = isset($des->post) ? $des->post : null;
+            $posts->created_at = Carbon::now('Asia/Kolkata');
+            $posts->timeline_id = $user->timeline_id;
+            $posts->posted_by = request('user_id');
+            $posts->checkin = request('checkin');
+            $posts->post_privacy = request('post_privacy');
+            $posts->save();
+            if (request('post_file') != null) {
+                $array = $request->input('post_file');
+                foreach (json_decode($array) as $obj) {
+                    $post_media = new Post_media();
+                    $post_media->post_id = $posts->id;
+                    $data = $obj->image;
+                    $data = base64_decode($data);
+                    $image_name = str_random(6) . "$obj->type";
+                    $destinationPath = './userposts/' . $user->id . '/' . $image_name;
+                    $directory = "userposts/" . $user->id;
+                    if (!file_exists($directory)) {
+                        File::makeDirectory($directory);
+                    }
+                    file_put_contents($destinationPath, $data);
+                    $post_media->media_url = 'userposts/' . $user->id . '/' . $image_name;
+                    $post_media->media_type = $obj->type != '.png' ? 'vd' : 'img';
+                    $post_media->save();
                 }
             }
-            $post_media->media_type = ($counter > 0) ? 'vd' : 'img';
-            $post_media->media_url = $destinationPath . $temp;
-            $post_media->save();
+            return $this->sendResponse($posts, 'Successfully posted, keep going');
+        } catch (\Exception $ex) {
+//            return $ex->getMessage();
+            return $this->sendError('Something went wrong', []);
         }
-//            }
-//        }
-        $ret['response'] = 'Successfully posted, keep going' . $posts->id;
-        echo json_encode($ret);
     }
 
     /*********This Function is using***********/
-    public function addpost2(Request $request)
+    public
+    function addpost2(Request $request)
     {
 //        echo count($_FILES['post_file']['name']);
         if (request('description') != null)
@@ -709,7 +707,8 @@ class APIController extends Controller
         echo json_encode($ret);
     }
 
-    public function post_text()
+    public
+    function post_text()
     {
         $des = json_decode(request('description'));
         $posts = Posts::find(request('post_id'));
@@ -721,7 +720,8 @@ class APIController extends Controller
 
     }
 
-    public function post_video(Request $request)
+    public
+    function post_video(Request $request)
     {
         $posts = Posts::find(request('post_id'));
         $destinationPath = 'userposts/' . $posts->user_id . '/';
@@ -748,7 +748,8 @@ class APIController extends Controller
 
     }
 
-    public function like_post()
+    public
+    function like_post()
     {
         $user = UserModel::find(request('user_id'));
         $post_like = Post_likes::where(['post_id' => request('post_id'), 'user_id' => $user->id])->first();
@@ -789,7 +790,8 @@ class APIController extends Controller
         }
     }
 
-    public function unlike_post()
+    public
+    function unlike_post()
     {
         $user = UserModel::find(request('user_id'));
         $post = Posts::find(request('post_id'));
@@ -833,7 +835,8 @@ class APIController extends Controller
         }
     }
 
-    public function spam_post()
+    public
+    function spam_post()
     {
         $user = UserModel::find(request('user_id'));
         $post_spam = Post_spam::where(['post_id' => request('post_id'), 'user_id' => $user->id])->first();
@@ -875,7 +878,8 @@ class APIController extends Controller
         }
     }
 
-    public function savecomment()
+    public
+    function savecomment()
     {
         $des = json_decode($_GET['description']);
         $client_address = new Comments();
@@ -911,7 +915,8 @@ class APIController extends Controller
         //ALTER TABLE `users` CHANGE `timezone` `token` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
     }
 
-    public function savecomment_new(Request $request)
+    public
+    function savecomment_new(Request $request)
     {
         $input = $request->all();
 
@@ -958,7 +963,8 @@ class APIController extends Controller
         //ALTER TABLE `users` CHANGE `timezone` `token` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
     }
 
-    public function editcomment()
+    public
+    function editcomment()
     {
         $comment_id = request('comment_id');
         $des = json_decode($_GET['description']);
@@ -970,7 +976,8 @@ class APIController extends Controller
         echo json_encode($ret);
     }
 
-    public function deletecomment()
+    public
+    function deletecomment()
     {
         $comment_id = request('comment_id');
         $comment = Comments::find($comment_id)->delete();
@@ -978,7 +985,8 @@ class APIController extends Controller
         echo json_encode($ret);
     }
 
-    public function deactivate_account()
+    public
+    function deactivate_account()
     {
         $user_id = request('user_id');
         $user = UserModel::find($user_id);
@@ -991,7 +999,8 @@ class APIController extends Controller
         echo json_encode($ret);
     }
 
-    public function postshare()
+    public
+    function postshare()
     {
         $post_id = request('post_id');
         $user_id = request('user_id');
@@ -1040,7 +1049,8 @@ class APIController extends Controller
 
     }
 
-    public function getPost()
+    public
+    function getPost()
     {
 //        $user_id = request('user_id');
         $user = UserModel::find(request('user_id'));
@@ -1086,7 +1096,8 @@ class APIController extends Controller
         }
     }
 
-    public function getPost_new()
+    public
+    function getPost_new()
     {
         $user = UserModel::find(request('user_id'));
         $f_user = UserModel::find(request('friend_id'));
@@ -1146,7 +1157,8 @@ class APIController extends Controller
         }
     }
 
-    public function getDashboardPost()
+    public
+    function getDashboardPost()
     {
         $user_id = request('user_id');
         $posts = DB::select("select p.id as id, p.description, p.description2, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active from posts p where  p.active = 1 and p.user_id=$user_id or  p.user_id in  (select fr.user_id from friends fr, users unn where fr.status='friends' and fr.friend_id=$user_id and unn.id=fr.user_id and unn.active = 1) or p.user_id in (select f.friend_id from friends f, users un where f.status='friends' and f.user_id=$user_id and un.id= f.friend_id and un.active = 1) ORDER BY p.id DESC");
@@ -1199,7 +1211,8 @@ class APIController extends Controller
         }
     }
 
-    public function getDashboardPost_new()
+    public
+    function getDashboardPost_new()
     {
         $user_id = request('user_id');
         $posts = DB::select("select p.id as id, p.description, p.description2, (select t.name from timelines t, users u where u.id = p.user_id and t.id=u.timeline_id) as name, p.user_id, p.created_at, (select u.profile_pic from users u where u.id=p.user_id) as profile_pic, p.active, (select t.name from timelines t, users u where u.id = p.post_created_by and t.id=u.timeline_id) as post_created_by_name, post_created_by from posts p where  p.active = 1 and p.user_id=$user_id or  p.user_id in  (select fr.user_id from friends fr, users unn where fr.status='friends' and fr.friend_id=$user_id and unn.id=fr.user_id and unn.active = 1) or p.user_id in (select f.friend_id from friends f, users un where f.status='friends' and f.user_id=$user_id and un.id= f.friend_id and un.active = 1) ORDER BY p.id DESC");
@@ -1259,7 +1272,8 @@ class APIController extends Controller
         }
     }
 
-    public function getPostbyid()
+    public
+    function getPostbyid()
     {
         $post_id = request('post_id');
         $post = Posts::find($post_id);
@@ -1287,7 +1301,8 @@ class APIController extends Controller
         }
     }
 
-    public function post_delete()
+    public
+    function post_delete()
     {
         $post_id = request('post_id');
         $post = Posts::find($post_id);
@@ -1312,7 +1327,8 @@ class APIController extends Controller
         }
     }
 
-    public function postlikelist()
+    public
+    function postlikelist()
     {
         $post_id = request('post_id');
         $puser = DB::select("select u.id as id, (select t.name from timelines t where t.id=u.timeline_id) as name,u.profile_pic from users u, post_likes pl where u.id = pl.user_id and pl.post_id = $post_id");
@@ -1324,10 +1340,12 @@ class APIController extends Controller
             echo json_encode($ret);
         }
     }
+
     /*******Post******/
 
     /*******Notification******/
-    public function notice()
+    public
+    function notice()
     {
         $notification = Notification::where(['is_active' => 1])->first();
         if (isset($notification)) {
@@ -1338,10 +1356,27 @@ class APIController extends Controller
             echo json_encode($ret);
         }
     }
+
+    public
+    function notice_count()
+    {
+        $user_id = request('user_id');
+        $notification = UserNotifications::where(['seen' => 0, 'user_id' => $user_id])->count();
+        $friendlist = DB::select("select u.id as fid, (select t.name from timelines t where t.id=u.timeline_id) as name,u.profile_pic from users u where u.id in (select f.user_id from friends f where f.status='pending' and f.friend_id=$user_id)");
+
+        $result = ['notification_count' => $notification, 'friend_request_count' => count($friendlist)];
+        if (count($result) > 0) {
+            return $this->sendResponse($result, 'User Record');
+        } else {
+            return $this->sendError('No record available', '');
+        }
+    }
+
     /*******Notification******/
 
     /*******panic******/
-    public function addpanic()
+    public
+    function addpanic()
     {
         $panic_e = PanicContact::where(['user_id' => request('user_id')])->get();
         if (count($panic_e) > 0) {
@@ -1365,7 +1400,8 @@ class APIController extends Controller
         echo json_encode($ret);
     }
 
-    public function editpanic()
+    public
+    function editpanic()
     {
         $panic = PanicContact::find(request('panic_id'));
         if (isset($panic)) {
@@ -1384,7 +1420,8 @@ class APIController extends Controller
         }
     }
 
-    public function showpanic()
+    public
+    function showpanic()
     {
         $panics = PanicContact::where(['user_id' => request('user_id')])->get();
         if (count($panics) > 0) {
@@ -1396,7 +1433,8 @@ class APIController extends Controller
         }
     }
 
-    public function sendpanic()
+    public
+    function sendpanic()
     {
         $location = request('location');
         $panics = PanicContact::where(['user_id' => request('user_id')])->first();
@@ -1420,7 +1458,8 @@ class APIController extends Controller
     }
 
     /*******panic******/
-    public function testupload(Request $request)
+    public
+    function testupload(Request $request)
     {
         $user_id = request('user_id');
         $timeline = Timeline::find($user_id);
@@ -1438,7 +1477,8 @@ class APIController extends Controller
     }
 
     /******Redeem*******/
-    public function addBankDetailsToRedeem()
+    public
+    function addBankDetailsToRedeem()
     {
         $ahName = request('ac_holder');
         $ah_no = request('ac_no');
@@ -1463,7 +1503,8 @@ class APIController extends Controller
 //        return response()->json(array('s'=>'1', 't'=>'Details added Successfully'));
     }
 
-    public function redeem_hstr(Request $request)
+    public
+    function redeem_hstr(Request $request)
     {
         $user_id = request('user_id');
         $redeems = DB::select("SELECT rm.id, rm.ac_number, rm.amount, rm.status, ub.account_holder, ub.bank, ub.aadhar_pan,ub.ifsc_code, rm.created_time FROM redeem_masters rm, user_bank_details ub WHERE rm.ac_number = ub.ac_number and rm.user_id = $user_id");
@@ -1477,7 +1518,8 @@ class APIController extends Controller
     }
 
     /******Redeem*******/
-    public function forgetp()
+    public
+    function forgetp()
     {
         $otp = rand(100000, 999999);
         $contact = request('contact');
@@ -1496,7 +1538,8 @@ class APIController extends Controller
     }
 
 
-    public function user_list() // All User List
+    public
+    function user_list() // All User List
     {
         $user = UserModel::find(request('user_id'));
         $user_id = $user->id;
@@ -1528,7 +1571,8 @@ class APIController extends Controller
     }
 
     /************Payment Success***************/
-    public function success_payment()
+    public
+    function success_payment()
     {
         $timeline = new Timeline();
         $user = new UserModel();
@@ -1563,12 +1607,14 @@ class APIController extends Controller
 
     }
 
-    public function resetRcode()
+    public
+    function resetRcode()
     {
         $_SESSION['rcode'] = '0';
     }
 
-    public function setUserReferralCode($user_id)
+    public
+    function setUserReferralCode($user_id)
     {
         $rltn = new relation();
         if ($_SESSION['rcode'] == "0") {
@@ -1581,7 +1627,8 @@ class APIController extends Controller
         }
     }
 
-    public function checkRelationExists($user_id)
+    public
+    function checkRelationExists($user_id)
     {
         $rltn = new relation();
         $PrntRfrID = $rltn::select('id')->where('child_id', $user_id)->get()->first();
@@ -1590,7 +1637,8 @@ class APIController extends Controller
         return false;
     }
 
-    public function makeRelation($user_id)
+    public
+    function makeRelation($user_id)
     {
         if ($this->checkRelationExists($user_id) == null) {
             if ($_SESSION['rcode'] != "0")
@@ -1605,7 +1653,8 @@ class APIController extends Controller
         }
     }
 
-    public function createRelation($rfrcd, $user_id)
+    public
+    function createRelation($rfrcd, $user_id)
     {
         $user = new UserModel();
         // parent_id is referal_id here, Usinf Id as referal_id
@@ -1613,7 +1662,8 @@ class APIController extends Controller
         DB::table('relations')->insert($add_rltns);
     }
 
-    public function generateReferralCode($user_id)
+    public
+    function generateReferralCode($user_id)
     {
         // Check RC already there
         $user = new UserModel();
@@ -1626,7 +1676,8 @@ class APIController extends Controller
     }
 
     /*****Add Commission******/
-    public function addComission($user_id)
+    public
+    function addComission($user_id)
     {
         $rltn = new relation();
         $user = new UserModel();
@@ -1672,13 +1723,15 @@ class APIController extends Controller
         }
 
     }
+
     /*****Add Commission******/
 
     /************Payment Success***************/
 
 
     /**Chat*******************/
-    public function checkincomingCall()
+    public
+    function checkincomingCall()
     {
         session_start();
         $userid = $_SESSION['user_master']->id;
@@ -1698,7 +1751,8 @@ class APIController extends Controller
         }
     }
 
-    public function updatecall()
+    public
+    function updatecall()
     {
         session_start();
         $userid = $_SESSION['user_master']->id;
@@ -1706,7 +1760,8 @@ class APIController extends Controller
         $one = DB::select("update user_comm set com_call=1 ,com_call_inis=$userid where com_id=$comid");
     }
 
-    public function checkdata()
+    public
+    function checkdata()
     {
         session_start();
         $userid = $_SESSION['user_master']->id;
@@ -1735,7 +1790,8 @@ class APIController extends Controller
         }
     }
 
-    public function getallusers()
+    public
+    function getallusers()
     {
         session_start();
         $id = $_SESSION['user_master']->id;
@@ -1753,7 +1809,8 @@ class APIController extends Controller
         }
     }
 
-    public function saverc()
+    public
+    function saverc()
     {
         $rc = request('rc');
         $user_id = request('user_id');
@@ -1766,7 +1823,8 @@ class APIController extends Controller
         echo json_encode($ret);
     }
 
-    public function getrcdetails()
+    public
+    function getrcdetails()
     {
         $rc = request('rc');
         $user = DB::select("select u.profile_pic, (SELECT t.name from timelines t WHERE u.timeline_id = t.id) as name, u.contact, u.city FROM users u where u.rc = '$rc'");
@@ -1779,7 +1837,8 @@ class APIController extends Controller
         }
     }
 
-    public function getFriendPost()
+    public
+    function getFriendPost()
     {
 //        $ses_user = $_SESSION['user_master'];
         $user = UserModel::find(request('search_user_id'));
@@ -1825,7 +1884,8 @@ class APIController extends Controller
         }
     }
 
-    public function getmember()
+    public
+    function getmember()
     {
         $slug = request('profession');
         $user_id = request('user_id');
@@ -1842,7 +1902,8 @@ class APIController extends Controller
         }
     }
 
-    public function getuserearning()
+    public
+    function getuserearning()
     {
         $user_id = request('user_id');
         $com = new com();
@@ -1862,7 +1923,8 @@ class APIController extends Controller
         }
     }
 
-    public function change_privacy()
+    public
+    function change_privacy()
     {
         $user_id = request('user_id');
         $user = UserModel::find($user_id);
@@ -1882,7 +1944,8 @@ class APIController extends Controller
 ///
 //item list
 //
-    public function get_items(Request $request)
+    public
+    function get_items(Request $request)
     {
         $items = ItemMaster::where(['is_active' => 1])->get();
         if (count($items) > 0) {
@@ -1894,7 +1957,8 @@ class APIController extends Controller
         }
     }
 
-    public function confirm_checkout(Request $request)
+    public
+    function confirm_checkout(Request $request)
     {
         $total = request('total');
         $user_id = request('user_id');
@@ -1943,7 +2007,8 @@ class APIController extends Controller
 //        }
 //    }
 
-    public function getOrders()
+    public
+    function getOrders()
     {
         $user_id = request('user_id');
         $orders = DB::select("SELECT o.*,od.id as ods_id, od.*, (select i.name from item_master i where od.item_master_id = i.id) as item_name, (select im.image from item_master im where od.item_master_id = im.id) as item_image  FROM order_description od, order_master o WHERE o.user_id = $user_id and od.order_master_id = o.id");
@@ -1959,7 +2024,8 @@ class APIController extends Controller
     }
 
     /**************Address API**********************/
-    public function getState()
+    public
+    function getState()
     {
         $states = DB::select("select CID, State from cities where city is null order by State asc");
         if (count($states) > 0) {
@@ -1972,7 +2038,8 @@ class APIController extends Controller
 
     }
 
-    public function getCity()
+    public
+    function getCity()
     {
         $state_name = request('state');
         $cities = DB::select("select * from cities where City IS NOT NULL and State = '$state_name' order by City ASC");
@@ -1986,7 +2053,8 @@ class APIController extends Controller
 
     }
 
-    public function insert_user_address()
+    public
+    function insert_user_address()
     {
         $client_address = new UserAddress();
         $client_address->user_id = request('user_id');
@@ -2003,7 +2071,8 @@ class APIController extends Controller
         print json_encode($ret);
     }
 
-    public function update_user_address()
+    public
+    function update_user_address()
     {
         $client_address = UserAddress::find(request('address_id'));
 //        $client_address->user_id = request('user_id');
@@ -2020,7 +2089,8 @@ class APIController extends Controller
         print json_encode($ret);
     }
 
-    public function get_address_by_uid()
+    public
+    function get_address_by_uid()
     {
         $user_id = request('user_id');
         $all_regs = DB::select("select u.*, (select c.state from cities c where u.state_id = c.CID) as state, (select c.state from cities c where u.city_id = c.CID) as city from user_address u where user_id = '$user_id'");
@@ -2035,7 +2105,8 @@ class APIController extends Controller
 
     /**************Address API**********************/
 
-    public function user_registration()
+    public
+    function user_registration()
     {
         $checkuser = UserModel::where(['email' => request('email')])->first();
         $checkcontact = UserModel::where(['contact' => request('contact')])->first();
@@ -2105,7 +2176,8 @@ class APIController extends Controller
         }
     }
 
-    public function CreateRegRelation($rfrcd)
+    public
+    function CreateRegRelation($rfrcd)
     {
         $user = new UserModel();
         if (empty($rfrcd))
@@ -2118,7 +2190,8 @@ class APIController extends Controller
         DB::table('relations')->insert($add_rltns);
     }
 
-    public function getusernotification()
+    public
+    function getusernotification()
     {
         $user_id = request('user_id');
 //        $user_notifications = DB::select("select t.name, (select c.state from cities c where u.state_id = c.CID) as state, (select c.state from cities c where u.city_id = c.CID) as city from users u, timeline t, notifications n where  u.timeline_id = t.id and n.notified_by = u.id and n.user_id = '$user_id'");
@@ -2137,10 +2210,11 @@ class APIController extends Controller
         }
     }
 
-    public function make_as_read_noti()
+    public
+    function make_as_read_noti()
     {
         $noti = UserNotifications::find(request('notification_id'));
-        if (isset($noti)) {
+        if (isset($noti) && $noti->seen == 0) {
             $noti->seen = 1;
             $noti->save();
             $ret['response'] = "Notification marked as read";
@@ -2151,7 +2225,8 @@ class APIController extends Controller
         }
     }
 
-    public function remove_noti()
+    public
+    function remove_noti()
     {
 //        $directory = 'user_post/1';
 //        if (!file_exists($directory)) {
@@ -2169,7 +2244,8 @@ class APIController extends Controller
         }
     }
 
-    public function user_network(Request $request)
+    public
+    function user_network(Request $request)
     {
         $input = $request->all();
 

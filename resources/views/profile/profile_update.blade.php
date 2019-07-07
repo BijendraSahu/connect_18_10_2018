@@ -238,6 +238,7 @@ if (empty($posted['hash']) && sizeof($posted) > 0) {
                                 cropper = new Cropper(img);
                                 // cropbtn setting enabled
                                 $('#cropbtn_setting').find('.btn').removeAttr("disabled");
+                                $('#btncrop_download').hide();
                                 $('#btncrop_download').attr("disabled", "true");
                                 $('#save_toserver').attr("disabled", "true");
                                 save.removeAttr("disabled");
@@ -276,6 +277,7 @@ if (empty($posted['hash']) && sizeof($posted) > 0) {
                 //dwn.download = 'imagename.png';
                 dwn.attr('href', imgSrc);
                 // download button enabled
+                $('#btncrop_download').show();
                 $('#btncrop_download').removeAttr("disabled");
                 $('#save_toserver').removeAttr("disabled");
             });
@@ -575,7 +577,7 @@ if (empty($posted['hash']) && sizeof($posted) > 0) {
             </div>
             <div class="modal-footer">
                 <a href="" target="_blank" class="btn btn-default download" disabled="disabled"
-                   id="btncrop_download" download="imagename.png">
+                   id="btncrop_download" download="imagename.png" style="display: none;">
                     <i class="mdi mdi-folder-download basic_icon_margin"></i>Download</a>
                 <button class="btn btn-primary save" id="save" disabled="disabled"><i
                             class="mdi mdi-crop basic_icon_margin"></i>Cropped

@@ -9,9 +9,9 @@
         <div class="posted_name">
             @if($comment->user_id != $_SESSION['user_master']->id)
                 <a class="posted_name"
-                   href="{{url('friend?search=').$comment->user_id}}">{{$comment->name}}</a>
+                   href="{{url('friend?search=').$comment->user_id}}">{{$comment->user->timeline->name}}</a>
             @else
-                <a class="posted_name" href="{{url('my-profile')}}">{{$comment->name}}</a>
+                <a class="posted_name" href="{{url('my-profile')}}">{{$comment->user->timeline->name}}</a>
             @endif
         </div>
         {{--<div class="exis_msg" id="container1{{$comment->id}}">--}}

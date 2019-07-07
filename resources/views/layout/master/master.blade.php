@@ -22,11 +22,12 @@
 if (!isset($_SESSION)) {
     session_start();
 }
-if (is_null($_SESSION['user_master'])) {
-    //echo 'Please Login';
-    return redirect('/');
-}
 ?>
+@if(Session::has('user_master'))
+@php
+    return redirect('/');
+@endphp
+@endif
         <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,7 +66,8 @@ if (is_null($_SESSION['user_master'])) {
     {{--    <link rel="stylesheet" href="{{url('css/select2.min.css')}}">--}}
     {{--<script src="{{url('js/select2.min.js')}}"></script>--}}
     {{---------------Notification---------------}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{url('css/lobibox.min.css')}}">
     <script src="{{url('js/notifications.min.js')}}"></script>
     <script src="{{url('js/notification-custom-script.js')}}"></script>
@@ -94,12 +96,12 @@ if (is_null($_SESSION['user_master'])) {
 <!-- Page Content -->
 @yield('head')
 @yield('content')
-<div class="loader" id="loader">
-    <div class="internal_bg">
-        {{--            <img src="{{url('assets/images/logo_loader.png')}}" class="top_loader" />--}}
-    </div>
-    <img class="loader_main" src="{{url('images/1L.gif')}}"/>
-</div>
+{{--<div class="loader" id="loader">--}}
+{{--<div class="internal_bg">--}}
+{{--            <img src="{{url('assets/images/logo_loader.png')}}" class="top_loader" />--}}
+{{--<img class="loader_main" src="{{url('images/1L.gif')}}"/>--}}
+{{--</div>--}}
+{{--</div>--}}
 <!-- Page Content -->
 <p id="errorall"></p>
 <div class="Globalloading" id="main_pageloader">
@@ -181,7 +183,7 @@ if (is_null($_SESSION['user_master'])) {
                             {{--class="theme_img"/>--}}
                             {{--@endif--}}
 
-                            <img src="{{isset($user->theme_img) ? $user->theme_img : url('images/NoPreview_Img.png.png')}}"
+                            <img src="{{isset($user->theme_img) ? $user->theme_img : url('images/NoPreview_Img.png')}}"
                                  id="theme_uploadimg" class="theme_img"/>
 
 
@@ -465,8 +467,20 @@ if (is_null($_SESSION['user_master'])) {
                             <td class="width_65" id="adver_status">-</td>
                         </tr>
                         <tr>
-                            <td class="width_35 title-more">Contact No. :</td>
+                            <td class="width_35 title-more">Contact/Email :</td>
                             <td class="width_65" id="adver_contact">
+                                {{-- <div class="status excepted">Excepted</div>--}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="width_35 title-more">Location :</td>
+                            <td class="width_65" id="adver_location">
+                                {{-- <div class="status excepted">Excepted</div>--}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="width_35 title-more">Total Images. :</td>
+                            <td class="width_65" id="adver_image_count">
                                 {{-- <div class="status excepted">Excepted</div>--}}
                             </td>
                         </tr>
@@ -531,14 +545,17 @@ if (is_null($_SESSION['user_master'])) {
                     <div class="advertise_details_box">
                         <div class="latest_update_title" id="adver_title_lb"></div>
                         <div class="latest_updatetxt" id="adver_details_lb"></div>
-                        <div class="latest_updatetxt" id="amt_lb_details" >
+                        <div class="latest_updatetxt" id="amt_lb_details">
                             <span><i class="mdi mdi-currency-inr"></i> <span id="adver_price_lb"></span></span>
                             <span><i class="mdi mdi-map-marker"></i> <span id="adver_city_lb"></span></span>
-                            <span><i class="mdi mdi-home-automation basic_icon_margin"></i><span id="adver_type_lb"></span></span>
+                            <span><i class="mdi mdi-home-automation basic_icon_margin"></i><span
+                                        id="adver_type_lb"></span></span>
                         </div>
                         <div class="latest_otr_details" id="otr_lb_details">
-                            <span><i class="mdi mdi-phone-incoming basic_icon_margin"></i><span id="adver_contact_lb"></span></span>
-                            <span><i class="mdi mdi-email basic_icon_margin"></i><span id="adver_email_lb"></span></span>
+                            <span><i class="mdi mdi-phone-incoming basic_icon_margin"></i><span
+                                        id="adver_contact_lb"></span></span>
+                            <span><i class="mdi mdi-email basic_icon_margin"></i><span
+                                        id="adver_email_lb"></span></span>
                         </div>
                     </div>
                     <div class="latest_updateimg">
@@ -564,12 +581,12 @@ if (is_null($_SESSION['user_master'])) {
                 <p>One fine body&hellip;</p>
             </div>
             {{--<div class="modal-footer">--}}
-                {{--<div class=" pull-right">--}}
-                    {{--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>--}}
-                    {{--&nbsp;--}}
-                {{--</div>--}}
-                {{--&nbsp;--}}
-                {{--<div id="modalBtn" class="pull-right">&nbsp;</div>             --}}
+            {{--<div class=" pull-right">--}}
+            {{--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>--}}
+            {{--&nbsp;--}}
+            {{--</div>--}}
+            {{--&nbsp;--}}
+            {{--<div id="modalBtn" class="pull-right">&nbsp;</div>             --}}
             {{--</div>--}}
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -755,25 +772,25 @@ $friendC = count($friendlist);
         $('body').css('overflow', 'auto');
     }
 
-//    function Show_Topearner() {
-//        var check_class = $('.top_earner_block').attr('class');
-//        $('.top_earner_block').removeClass('show_fixed_rightblk');
-//        if (check_class == "panel top_earner_block panel-default") {
-//            $('.top_earner_block').addClass('show_fixed_rightblk');
-//            $('.overlay_res').show();
-//            $('body').css('overflow', 'hidden');
-//        }
-//    }
+    //    function Show_Topearner() {
+    //        var check_class = $('.top_earner_block').attr('class');
+    //        $('.top_earner_block').removeClass('show_fixed_rightblk');
+    //        if (check_class == "panel top_earner_block panel-default") {
+    //            $('.top_earner_block').addClass('show_fixed_rightblk');
+    //            $('.overlay_res').show();
+    //            $('body').css('overflow', 'hidden');
+    //        }
+    //    }
 
-//    function Show_Followers() {
-//        var check_class = $('.followers_block').attr('class');
-//        $('.followers_block').removeClass('show_fixed_rightblk');
-//        if (check_class == "followers_block") {
-//            $('.followers_block').addClass('show_fixed_rightblk');
-//            $('.overlay_res').show();
-//            $('body').css('overflow', 'hidden');
-//        }
-//    }
+    //    function Show_Followers() {
+    //        var check_class = $('.followers_block').attr('class');
+    //        $('.followers_block').removeClass('show_fixed_rightblk');
+    //        if (check_class == "followers_block") {
+    //            $('.followers_block').addClass('show_fixed_rightblk');
+    //            $('.overlay_res').show();
+    //            $('body').css('overflow', 'hidden');
+    //        }
+    //    }
     function Show_LinkOptions() {
         var check_class = $('.menu_left').attr('class');
         if (check_class == "col-md-2 dashboard_fixed menu_left") {
@@ -826,20 +843,20 @@ $friendC = count($friendlist);
             $('body').css('overflow', 'auto');
         }
     }
-//    function Show_LinkOptions() {
-//        var check_class = $('.profile_basic_menu_block').attr('class');
-//        $('.profile_basic_menu_block').removeClass('bootom_menu_show');
-//        if (check_class == "profile_basic_menu_block") {
-//            $('.profile_basic_menu_block').addClass('profile_basic_menu_block_show');
-//            $('.overlay_res').show();
-//            $('body').css('overflow', 'hidden');
-//        }
-//        else if (check_class == "profile_basic_menu_block left_menu_fixed") {
-//            $('.profile_basic_menu_block').addClass('profile_basic_menu_block_show');
-//            $('.overlay_res').show();
-//            $('body').css('overflow', 'hidden');
-//        }
-//    }
+    //    function Show_LinkOptions() {
+    //        var check_class = $('.profile_basic_menu_block').attr('class');
+    //        $('.profile_basic_menu_block').removeClass('bootom_menu_show');
+    //        if (check_class == "profile_basic_menu_block") {
+    //            $('.profile_basic_menu_block').addClass('profile_basic_menu_block_show');
+    //            $('.overlay_res').show();
+    //            $('body').css('overflow', 'hidden');
+    //        }
+    //        else if (check_class == "profile_basic_menu_block left_menu_fixed") {
+    //            $('.profile_basic_menu_block').addClass('profile_basic_menu_block_show');
+    //            $('.overlay_res').show();
+    //            $('body').css('overflow', 'hidden');
+    //        }
+    //    }
 
 
     function RemoveTheameByUser(dis) {
@@ -896,6 +913,7 @@ $friendC = count($friendlist);
 
     /******************************************Bijendra**********************************************/
     $(document).ready(function () {
+        activatPlaceSearch();
         $('[data-toggle="tooltip"]').tooltip();
         /********Pinku***********/
 //        $("#earners_block").bootstrapNews({
@@ -1260,7 +1278,7 @@ $friendC = count($friendlist);
     function show_notification_post(post_id, dis) {
         $('#Mymodal_notification').modal('show');
         $('#notif_title').html('View Post');
-        $('#notif_body').html('<img height="50px" class="center-block" src="{{url('assets/img/loading.gif')}}"/>');
+        $('#notif_body').html('<img height="50px" class="center-block" src="{{url('images/loading.gif')}}"/>');
         var editurl = '{{ url('show_notification_post') }}';
         $.ajax({
             type: "GET",
@@ -1269,7 +1287,7 @@ $friendC = count($friendlist);
             data: {post_id: post_id},//'{"data":"' + id + '"}',
             success: function (data) {
                 $('#notif_body').html(data);
-                ViewMarkRead(post_id ,dis);
+                ViewMarkRead($(dis).attr('id'), dis);
             },
             error: function (xhr, status, error) {
                 $('#notif_body').html(xhr.responseText);
@@ -1277,7 +1295,7 @@ $friendC = count($friendlist);
             }
         });
     }
-    function ViewMarkRead(post_id ,dis) {
+    function ViewMarkRead(post_id, dis) {
         var editurl = '{{ url('make_as_read_noti') }}';
         $.ajax({
             type: "GET",
@@ -1321,5 +1339,29 @@ $friendC = count($friendlist);
     </script>
 @endif
 <script src="{{url('dist/js/lightbox.js')}}"></script>
+<script type="text/javascript">
+    function activatPlaceSearch() {
+        var input = document.getElementById('location-input');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+    }
+</script>
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&libraries=places&callback=activatPlaceSearch">
+</script>
+{{--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>--}}
+{{--<script type="text/javascript">--}}
+{{--google.maps.event.addDomListener(window, 'load', function () {--}}
+{{--var places = new google.maps.places.Autocomplete(document.getElementById('location-input'));--}}
+{{--google.maps.event.addListener(places, 'place_changed', function () {--}}
+
+{{--});--}}
+{{--});--}}
+{{--</script>--}}
+{{--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&callback=activatPlaceSearch"--}}
+{{--type="text/javascript"></script>--}}
+{{--<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y"></script>--}}
+{{--<script type="text/javascript"--}}
+{{--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&libraries=places&callback=activatPlaceSearch">--}}
+{{--</script>--}}
 </body>
 </html>

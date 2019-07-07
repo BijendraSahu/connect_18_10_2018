@@ -83,136 +83,7 @@
 
     </style>
     <script type="text/javascript" src="{{url('js/cropper.min.js')}}"></script>
-    <script type="text/javascript">
-        function setprofile() {
-            var image = $('#image_frout').attr('src');
-            $.ajax({
-                url: "image-crop",
-                type: "POST",
-                data: {"image": image},
-                success: function (data) {
-                    swal("Success!", 'Your profile has been uploaded...', "success");
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 2000);
-                }
-            });
-        }
-        function CheckFileValidation(dis) {
-            var sizefile = Number(dis.files[0].size);
-            if (sizefile > 1048576 * 2) {
-                var finalfilesize = parseFloat(dis.files[0].size / 1048576).toFixed(2);
-                ShowErrorPopupMsg('Your file size ' + finalfilesize + ' MB. File size should not exceed 2 MB');
-                $(dis).val("");
-                return false;
-            }
-            var validfile = ["png", "jpg", "jpeg"];
-            var source = $(dis).val();
-            var current_filename = $(dis).val().replace(/\\/g, '/').replace(/.*\//, '');
-            var ext = source.substring(source.lastIndexOf(".") + 1, source.length).toLowerCase();
-            for (var i = 0; i < validfile.length; i++) {
-                if (validfile[i] == ext) {
-                    break;
-                }
-            }
-            if (i >= validfile.length) {
-                ShowErrorPopupMsg('Only following file extension is allowed, png, jpg, jpeg ');
-                $(dis).val("");
-                return false;
-            }
-            else {
-                var input = dis;
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        // $(changepicid).attr('src', e.target.result);
-                    };
-                    reader.readAsDataURL(input.files[0]);
-                    $('#file_text_crop').val(current_filename);
-                    return true;
-                }
-            }
-        }
-        $(document).ready(function () {
-            var result = $('.result'),
-                img_result = $('.img-result'),
-                img_w = $('.img-w'),
-                img_h = $('.img-h'),
-                options = $('.options'),
-                save = $('.save'),
-                cropped = $('.cropped'),
-                dwn = $('.download'),
-                upload = $('#file-input'),
-                cropper = '';
-            var roundedCanvas;
 
-            $('#file-input').change(function (e) {
-                if (CheckFileValidation(this)) {
-                    if (e.target.files.length) {
-                        // start file reader
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            if (e.target.result) {
-                                // create new image
-                                var img = document.createElement('img');
-                                img.id = 'image';
-                                img.src = e.target.result;
-                                // clean result before
-                                //result.innerHTML = '';
-                                result.children().remove();
-                                // append new image
-                                result.append(img);
-                                // show save btn and options
-                                // save.removeClass('hide');
-                                options.removeClass('hide');
-                                // init cropper
-                                cropper = new Cropper(img);
-                                // cropbtn setting enabled
-                                $('#cropbtn_setting').find('.btn').removeAttr("disabled");
-                                $('#btncrop_download').attr("disabled", "true");
-                                $('#save_toserver').attr("disabled", "true");
-                                save.removeAttr("disabled");
-
-                                $('#btn_RotateLeft').click(function () {
-                                    cropper.rotate(90);
-                                });
-                                $('#btn_RotateRight').click(function () {
-                                    cropper.rotate(-90);
-                                });
-                                $('#btn_RotateReset').click(function () {
-                                    cropper.reset();
-                                });
-                                $('#btn_Compresed').click(function () {
-                                    debugger;
-                                    /*     cropper.(UMD, compressed);*/
-                                });
-                            }
-                        };
-                        reader.readAsDataURL(e.target.files[0]);
-                    }
-                }
-            });
-            $('#save').click(function (e) {
-                //e.preventDefault();
-                // get result to data uri
-                var imgSrc = cropper.getCroppedCanvas({
-                    width: img_w.value // input value
-                }).toDataURL();
-                // remove hide class of img
-                cropped.removeClass('hide');
-                img_result.removeClass('hide');
-                // show image cropped
-                cropped.attr('src', imgSrc);
-                dwn.removeClass('hide');
-                //dwn.download = 'imagename.png';
-                dwn.attr('href', imgSrc);
-                // download button enabled
-                $('#btncrop_download').removeAttr("disabled");
-                $('#save_toserver').removeAttr("disabled");
-            });
-        });
-
-    </script>
 @stop
 @section('content')
     <section class="notofication_containner">
@@ -392,7 +263,7 @@
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i
                                                             class="mdi mdi-clipboard-account mdi-16px"></i></span>
-                                                <select id="city_by_state_edit" class="form-control">
+                                                <select id="city_by_state_edit" name="city" class="form-control">
                                                     <option value="0" selected>Select City</option>
                                                 </select>
                                             </div>
@@ -446,7 +317,7 @@
                         {{--</form>--}}
                         {!! Form::close() !!}
                         <p id="err"></p>
-                        <button class="mdi" onclick="deactivate_account()">Deactivate Account</button>
+                        {{--<button class="mdi glo_button" onclick="deactivate_account()">Deactivate Account</button>--}}
                     </div>
                 </div>
             </div>
@@ -508,7 +379,7 @@
                 </div>
                 <div class="modal-footer">
                     <a href="" target="_blank" class="btn btn-default download" disabled="disabled"
-                       id="btncrop_download" download="imagename.png">
+                       id="btncrop_download" download="imagename.png" style="display: none;">
                         <i class="mdi mdi-folder-download basic_icon_margin"></i>Download</a>
                     <button class="btn btn-primary save" id="save" disabled="disabled"><i
                                 class="mdi mdi-crop basic_icon_margin"></i>Cropped
@@ -522,6 +393,139 @@
 
         </div>
     </div>
+    <script type="text/javascript">
+        function setprofile() {
+            var image = $('#image_frout').attr('src');
+            $.ajax({
+                url: "image-crop",
+                type: "POST",
+                data: {"image": image},
+                success: function (data) {
+                    success_noti("Your profile has been uploaded...");
+                    //swal("Success!", 'Your profile has been uploaded...', "success");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                }
+            });
+        }
+        function CheckFileValidation(dis) {
+            var sizefile = Number(dis.files[0].size);
+            if (sizefile > 1048576 * 2) {
+                var finalfilesize = parseFloat(dis.files[0].size / 1048576).toFixed(2);
+                ShowErrorPopupMsg('Your file size ' + finalfilesize + ' MB. File size should not exceed 2 MB');
+                $(dis).val("");
+                return false;
+            }
+            var validfile = ["png", "jpg", "jpeg"];
+            var source = $(dis).val();
+            var current_filename = $(dis).val().replace(/\\/g, '/').replace(/.*\//, '');
+            var ext = source.substring(source.lastIndexOf(".") + 1, source.length).toLowerCase();
+            for (var i = 0; i < validfile.length; i++) {
+                if (validfile[i] == ext) {
+                    break;
+                }
+            }
+            if (i >= validfile.length) {
+                ShowErrorPopupMsg('Only following file extension is allowed, png, jpg, jpeg ');
+                $(dis).val("");
+                return false;
+            }
+            else {
+                var input = dis;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        // $(changepicid).attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                    $('#file_text_crop').val(current_filename);
+                    return true;
+                }
+            }
+        }
+        $(document).ready(function () {
+            var result = $('.result'),
+                img_result = $('.img-result'),
+                img_w = $('.img-w'),
+                img_h = $('.img-h'),
+                options = $('.options'),
+                save = $('.save'),
+                cropped = $('.cropped'),
+                dwn = $('.download'),
+                upload = $('#file-input'),
+                cropper = '';
+            var roundedCanvas;
+
+            $('#file-input').change(function (e) {
+                if (CheckFileValidation(this)) {
+                    if (e.target.files.length) {
+                        // start file reader
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            if (e.target.result) {
+                                // create new image
+                                var img = document.createElement('img');
+                                img.id = 'image';
+                                img.src = e.target.result;
+                                // clean result before
+                                //result.innerHTML = '';
+                                result.children().remove();
+                                // append new image
+                                result.append(img);
+                                // show save btn and options
+                                // save.removeClass('hide');
+                                options.removeClass('hide');
+                                // init cropper
+                                cropper = new Cropper(img);
+                                // cropbtn setting enabled
+                                $('#cropbtn_setting').find('.btn').removeAttr("disabled");
+                                $('#btncrop_download').attr("disabled", "true");
+                                $('#btncrop_download').hide();
+                                $('#save_toserver').attr("disabled", "true");
+                                save.removeAttr("disabled");
+
+                                $('#btn_RotateLeft').click(function () {
+                                    cropper.rotate(90);
+                                });
+                                $('#btn_RotateRight').click(function () {
+                                    cropper.rotate(-90);
+                                });
+                                $('#btn_RotateReset').click(function () {
+                                    cropper.reset();
+                                });
+                                $('#btn_Compresed').click(function () {
+                                    debugger;
+                                    /*     cropper.(UMD, compressed);*/
+                                });
+                            }
+                        };
+                        reader.readAsDataURL(e.target.files[0]);
+                    }
+                }
+            });
+            $('#save').click(function (e) {
+                //e.preventDefault();
+                // get result to data uri
+                var imgSrc = cropper.getCroppedCanvas({
+                    width: img_w.value // input value
+                }).toDataURL();
+                // remove hide class of img
+                cropped.removeClass('hide');
+                img_result.removeClass('hide');
+                // show image cropped
+                cropped.attr('src', imgSrc);
+                dwn.removeClass('hide');
+                //dwn.download = 'imagename.png';
+                dwn.attr('href', imgSrc);
+                // download button enabled
+                $('#btncrop_download').show();
+                $('#btncrop_download').removeAttr("disabled");
+                $('#save_toserver').removeAttr("disabled");
+            });
+        });
+
+    </script>
     <script type="text/javascript">
         function getSelectCity(dis) {
             $.ajax({
@@ -542,7 +546,7 @@
             $.ajax({
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
-                url: "{{ url('getStateCity') }}",
+                url: "{{ url('selectedgetStateCity') }}",
                 data: {state: dis, 'city': city},
                 success: function (data) {
                     $('#city_by_state_edit').html(data);
@@ -552,6 +556,7 @@
                 }
             });
         }
+
         function removeProfile() {
             var user_id = $('#user_master_id').val();
             swal({
@@ -569,7 +574,8 @@
                             data: {user_id: user_id},
                             success: function (data) {
 //                            alert(jQuery.parseJSON(data).response);
-                                swal("Success!", jQuery.parseJSON(data).response, "success");
+//                                swal("Success!", jQuery.parseJSON(data).response, "success");
+                                success_noti(jQuery.parseJSON(data).response);
                                 setTimeout(function () {
                                     window.location.reload();
                                 }, 2000);
@@ -586,41 +592,42 @@
             );
         }
 
-        function deactivate_account() {
-            var user_id = $('#user_master_id').val();
-            swal({
-                title: "Confirmation",
-                text: "Are you sure you want to deactivate your account?",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            }).then((okk) => {
-                    if (okk) {
-                        $.ajax({
-                            type: "get",
-                            contentType: "application/json; charset=utf-8",
-                            url: "{{ url('deactivate_account') }}",
-                            data: {user_id: user_id},
-                            success: function (data) {
-                                if (jQuery.parseJSON(data).response == "Account has been deactivated") {
-                                    window.location.href = '{{url('/')}}';
-                                }
-//                            alert(jQuery.parseJSON(data).response);
-//                            swal("Success!", jQuery.parseJSON(data).response, "success");
-//                            setTimeout(function () {
-//                            }, 2000);
-                            },
-                            error: function (xhr, status, error) {
-                                alert(error);
-                                swal("Server Issue", "Something went wrong", "info");
+        {{--function deactivate_account() {--}}
+            {{--var user_id = $('#user_master_id').val();--}}
+            {{--swal({--}}
+                {{--title: "Confirmation",--}}
+                {{--text: "Are you sure you want to deactivate your account?",--}}
+                {{--icon: "warning",--}}
+                {{--buttons: true,--}}
+                {{--dangerMode: true,--}}
+            {{--}).then((okk) => {--}}
+                    {{--if (okk) {--}}
+                        {{--$.ajax({--}}
+                            {{--type: "get",--}}
+                            {{--contentType: "application/json; charset=utf-8",--}}
+                            {{--url: "{{ url('deactivate_account') }}",--}}
+                            {{--data: {user_id: user_id},--}}
+                            {{--success: function (data) {--}}
+                                {{--if (jQuery.parseJSON(data).response == "Account has been deactivated") {--}}
+                                    {{--window.location.href = '{{url('/')}}';--}}
+                                {{--}--}}
+{{--//                            alert(jQuery.parseJSON(data).response);--}}
+                                {{--success_noti(jQuery.parseJSON(data).response);--}}
+{{--//                            swal("Success!", jQuery.parseJSON(data).response, "success");--}}
+{{--//                            setTimeout(function () {--}}
+{{--//                            }, 2000);--}}
+                            {{--},--}}
+                            {{--error: function (xhr, status, error) {--}}
+                                {{--alert(error);--}}
+                                {{--swal("Server Issue", "Something went wrong", "info");--}}
 
-                            }
-                        });
-                    }
+                            {{--}--}}
+                        {{--});--}}
+                    {{--}--}}
 
-                }
-            );
-        }
+                {{--}--}}
+            {{--);--}}
+        {{--}--}}
         $(document).ready(function () {
             var state = '{{$user->state}}';
             if (state != '') {
@@ -658,12 +665,12 @@
             }
         });
     </script>
-    @if(session()->has('message'))
-        <script type="text/javascript">
-            setTimeout(function () {
-                swal("Success!", "{{ session()->get('message') }}", "success");
-            }, 500);
-        </script>
-    @endif
+    {{--@if(session()->has('message'))--}}
+        {{--<script type="text/javascript">--}}
+            {{--setTimeout(function () {--}}
+                {{--swal("Success!", "{{ session()->get('message') }}", "success");--}}
+            {{--}, 500);--}}
+        {{--</script>--}}
+    {{--@endif--}}
 
 @stop

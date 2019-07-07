@@ -27,7 +27,10 @@
             {{--<div class="exislike"><i class="basic_icons mdi mdi-thumb-down"></i>02</div>--}}
             {{--</div>--}}
         </div>
-        <div class="exis_txtblock">{!! \ChristofferOK\LaravelEmojiOne\LaravelEmojiOneFacade::shortnameToImage($post[$i]['description']) !!}</div>
+        <div class="exis_txtblock">
+            @if(isset($post[$i]['checkin'])) <i class="basic_icons mdi mdi-map-marker">at</i>{!! $post[$i]['checkin'] !!}
+            <br> @endif
+            {!! \ChristofferOK\LaravelEmojiOne\LaravelEmojiOneFacade::shortnameToImage($post[$i]['description']) !!}</div>
 
         <input type="hidden" id="emtext" value="{!! $post[$i]['description']  !!}">
         @if(count($post[$i]['media']) > 0)
@@ -250,13 +253,13 @@
                                             </button>
                                             <div class="dropdown-menu show notifi_options scalenoti">
                                                 <div class="noti_opti_row"
-                                                     onclick="EditPostComment(comment_row_id_{{$uni_id}}, count_comment{{$post[$i]['id']}}, '{{$comment->id}}');">
+                                                     onclick="EditPostComment(this ,comment_row_id_{{$uni_id}}, count_comment{{$post[$i]['id']}}, '{{$comment->id}}');">
                                                     <i
                                                             class="mdi mdi-pencil basic_icon_margin"
                                                             style="color: #07d;"></i>Edit
                                                 </div>
                                                 <div class="noti_opti_row"
-                                                     onclick="DeletePostComment(comment_row_id_{{$uni_id}}, count_comment{{$post[$i]['id']}}, '{{$comment->id}}');">
+                                                     onclick="DeletePostComment(this, comment_row_id_{{$uni_id}}, count_comment{{$post[$i]['id']}}, '{{$comment->id}}');">
                                                     <i class="mdi mdi-delete color_red basic_icon_margin"
                                                        style="color: #ff0000;"></i>Delete
                                                 </div>
@@ -298,7 +301,8 @@
 <input type="hidden" id="pcount" value="{{$count_post}}"/>
 {{--<input type="hidden" id="p_count" value="{{$p_count}}"/>--}}
 <script type="text/javascript">
-    function DeletePostComment(row_id, comment_counter_id, comment_id) {
+    function DeletePostComment(dis, row_id, comment_counter_id, comment_id) {
+        $(dis).parent().addClass('scalenoti');
         swal({
             title: "Are you sure?",
             text: "You want to delete this comment...!",
@@ -329,7 +333,8 @@
             }
         });
     }
-    function EditPostComment(row_id, comment_counter_id, comment_id) {
+    function EditPostComment(dis, row_id, comment_counter_id, comment_id) {
+        $(dis).parent().addClass('scalenoti');
         $('#myModal').modal('show');
         $('#modal_type').removeClass('modal-lg');
         $('#modal_type').addClass('modal-md');
@@ -364,34 +369,7 @@
 
     function Gatcommenttxt(dis) {
         var comment_txt = $(dis).text();
-//        if (comment_txt.length > 0) {
-//            $(dis).parent().parent().find('.comment_postbtn').removeAttr('disabled', 'disabled');
-//        } else {
-//            $(dis).parent().parent().find('.comment_postbtn').attr('disabled', 'disabled');
-//        }
     }
-
-    /*******comment append*/
-    {{--$('.exis_comments_msgbox').each(function () {--}}
-    {{--var post_id = $(this).attr('data-content');--}}
-    {{--$.ajax({--}}
-    {{--type: "Get",--}}
-    {{--contentType: "application/json; charset=utf-8",--}}
-    {{--url: "{{ url('getcommentlist') }}",--}}
-    {{--data: {post_id: post_id},--}}
-    {{--success: function (data) {--}}
-    {{--//                console.log(data);--}}
-    {{--$('#commentlist' + post_id).html(data);--}}
-    {{--//                dashboardpostload();--}}
-    {{--},--}}
-    {{--error: function (xhr, status, error) {--}}
-    {{--//                alert(xhr.responseText);--}}
-    {{--$('.modal-body').html(xhr.responseText);--}}
-    {{--}--}}
-    {{--});--}}
-    {{--//        alert(post_id);--}}
-    {{--//        postcomment(post_id)--}}
-    {{--});--}}
 
     $(document).ready(function () {
         InitializeEmoji();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cities;
+use App\ContactUs;
 use App\Country;
 use App\FirebaseModel;
 use App\PHPMailer;
@@ -26,6 +27,19 @@ class LoginController extends Controller
     {
         $country = Country::getCountry();
         return view('login.login')->with(['country' => $country]);
+    }
+
+    public function contact_us()
+    {
+        $contact = new ContactUs();
+        $contact->name = request('name');
+        $contact->email = request('email');
+        $contact->contact = request('contact');
+        $contact->message = request('message');
+        $contact->save();
+        return redirect('/')->with('message', 'Thanks for contacting us we will get back to you soon...');
+//        $country = Country::getCountry();
+//        return view('login.login')->with(['country' => $country]);
     }
 
     public function login(Request $request)

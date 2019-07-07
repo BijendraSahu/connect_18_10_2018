@@ -185,7 +185,7 @@ class EarningController extends Controller
                 $earning_user = UserModel::find($chlds->child_id);
                 $getUserDetailsByID = $tmln::select('fname', 'lname', 'avatar_id')->where('id', $earning_user->timeline_id)->get();
 
-                $t = $t . '<div class="col-sm-3">';
+                $t = $t . '<div class="col-sm-3 col-xs-6">';
                 $t = $t . '<div class="network_user_block" onmouseover="Dynamic_AddClass(this);" onmouseleave="MouseOut(this);">';
                 $t = $t . '<div class="connected_imgbox"><img src="' . $default_root . $earning_user->profile_pic . '"></div>';
                 $t = $t . '<div class="connected_name">' . $getUserDetailsByID[0]->fname . ' ' . $getUserDetailsByID[0]->lname . '</div>';

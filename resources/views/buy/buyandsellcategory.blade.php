@@ -3,17 +3,22 @@
 @section('title', 'Buy And Sell')
 
 @section('head')
+    <style>
+        .adver_brics .brics_icon {
+            top: 0px;
+        }
+    </style>
     <section class="notofication_containner">
         <div class="container">
             <div class="row">
                 <div class="advertiselist_block">
                     <div class="advertise_withhead">
-                        <div class="col-sm-4 col-xs-12 head_caption">Buy & Sell List
+                        <div class="col-sm-4 col-xs-12 head_caption mob_res_none">Buy & Sell List
                             => {{$selected_category->category}}</div>
                         <div class="col-sm-8 col-md-5 col-xs-12 pull-right search_withview">
 
-                            <div class="viewtype_block">
-                                <div class="viewtype_txt">View</div>
+                            <div class="viewtype_block buy_viewtype mob_res_none">
+                                <div class="viewtype_txt mob_res_none">View</div>
                                 <div class="type_brics brics_selected" onclick="show_listview(this);"><i
                                             class="mdi mdi-view-list"></i></div>
                                 <div class="type_brics" onclick="showthumbview(this);"><i class="mdi mdi-view-grid"></i>
@@ -97,9 +102,19 @@
                             @foreach($ads as $ad)
                                 <div class="adver_list_row target">
                                     <div class="list_imgbox">
-                                        <?php $cat_img = \App\AdsImages::where(['ad_id' => $ad->id])->first(); ?>
-                                        @if(isset($cat_img->image_url))
-                                            <img src="{{url('').'/'.$cat_img->image_url}}"/>
+                                        <?php $cat_img = \App\AdsImages::where(['ad_id' => $ad->id])->orderBy('id','desc')->get(); ?>
+                                        @if(count($cat_img)>0)
+                                            <img src="{{url('').'/'.$cat_img[0]->image_url}}"/>
+                                            <div class="pics_counter_box"><i class="mdi mdi-camera"></i>
+                                                <span class="addver_cunter">{{count($cat_img)}}</span>
+                                                @foreach($cat_img as $img)
+                                                    <a class="example-image-link"
+                                                       href="{{url('').'/'.$img->image_url}}"
+                                                       data-lightbox="feed_post{{$ad->id}}">
+                                                        <img class="example-image"
+                                                             src="{{url('').'/'.$img->image_url}}"></a>
+                                                @endforeach
+                                            </div>
                                         @else
                                             <img src="{{url('images/Adver_mainimg1.jpg')}}"/>
                                         @endif
@@ -113,6 +128,11 @@
                                                 -
                                             @endif
                                         </div>
+                                        <div class="list_price"><i class="mdi mdi-currency-inr"></i>@if(isset($ad->selling_cost))
+                                                {{$ad->selling_cost}}
+                                            @else
+                                                -
+                                            @endif</div>
                                         <div class="list_description">
                                             @if(isset($ad->ad_description))
                                                 {{$ad->ad_description}}
@@ -121,7 +141,27 @@
                                             @endif
                                         </div>
                                         <div class="list_address"><i
-                                                    class="mdi mdi-map-marker"></i>{{$ad->city}}</div>
+                                                    class="mdi mdi-map-marker"></i>
+                                            @if(isset($ad->city))
+                                                {{$ad->city}}
+                                            @else
+                                                -
+                                            @endif
+                                        </div>
+                                        <div class="list_contact"><i
+                                                    class="mdi mdi-phone-incoming basic_icon_margin"></i>@if(isset($ad->contact))
+                                                {{$ad->contact}}
+                                            @else
+                                                -
+                                            @endif
+                                        </div>
+                                        <div class="list_email"><i
+                                                    class="mdi mdi-email basic_icon_margin"></i>@if(isset($ad->email))
+                                                {{$ad->email}}
+                                            @else
+                                                -
+                                            @endif
+                                        </div>
                                         <input type="hidden" class="list_adver_type"
                                                value=" @if(isset($ad->ad_category_id))
                                                {{$ad->ad_cat->category}}

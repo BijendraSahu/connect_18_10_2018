@@ -305,6 +305,7 @@
     width: 100%;
     margin-top: 15px;
     display: inline-block;
+    position: relative;
 }
 
 .upload_result_img {

@@ -103,6 +103,7 @@ Route::get('view_report_post', 'AdminController@view_report_post');
 Route::get('buy', 'BuySellController@buy');
 Route::get('myads', 'BuySellController@myads');
 Route::get('myads/{id}/delete', 'BuySellController@delete');
+Route::get('myads/{id}/close', 'BuySellController@close_ad');
 /*******Ads***********/
 
 /**************Admin*************/
@@ -188,6 +189,8 @@ Route::get('wunfriend', 'ProfileController@unfriend');
 
 /*******Post Load*******/
 Route::POST('userpost', 'PostController@post_store');
+Route::POST('user_post', 'PostController@post_store');
+Route::POST('new_user_post', 'PostController@new_user_post');
 
 //Route::post('postload', 'PostController@postload');
 Route::post('postload', 'PostController@getPost');
@@ -291,6 +294,8 @@ Route::post('e_atom_payment', 'CartController@e_atom_payment');
 Route::post('failed', 'CartController@payment_failed');
 
 
+Route::post('contact_us', 'LoginController@contact_us');
+
 Route::get('getStateCity', 'LoginController@getStateCity');
 Route::get('selectedgetStateCity', 'LoginController@selectedgetStateCity');
 Route::get('get_post_comment', 'PostController@get_post_comment');
@@ -335,6 +340,7 @@ Route::get('deleteads', 'APIController@deleteads'); //user ad_list
 Route::get('uadsdelete', 'APIController@myadsdelete'); //user ad_list
 Route::get('pdelete', 'APIController@post_delete'); //user ad_list
 Route::get('notice', 'APIController@notice'); //show notification
+Route::get('notice_count', 'APIController@notice_count'); //show notification
 Route::get('panic', 'APIController@addpanic'); //add panic
 Route::get('editpanic', 'APIController@editpanic'); //edit panic
 Route::get('showpanic', 'APIController@showpanic'); //show panic

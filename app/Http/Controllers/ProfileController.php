@@ -73,6 +73,7 @@ class ProfileController extends Controller
 
 //            $user = UserModel::where(['timeline_id' => $timeline->id])->first();
             $user->birthday = Carbon::parse(request('dob'))->format('Y-m-d');
+            $user->state = request('state');
             $user->city = request('city');
             $user->country_id = request('country');
             $user->profession = request('profession');

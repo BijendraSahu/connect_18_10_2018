@@ -785,7 +785,7 @@
 }
 
 .logo_company {
-    max-width:95px;
+    max-width: 95px;
 }
 
 .com_logo {
@@ -865,7 +865,7 @@
     padding-left: 25px;
     padding-right: 10px;
     height: 40px;
-    line-height:33px;
+    line-height: 33px;
     float: right;
     cursor: pointer;
     position: relative;
@@ -937,7 +937,7 @@
 }
 
 .menu_basic_block {
-    width: 60px;
+    width: 50px;
     height: 40px;
     text-align: center;
     float: right;
@@ -1212,7 +1212,7 @@
     border-bottom: solid thin #e1e1e1;
     color: #666666;
     height: auto;
-    line-height: 35px;
+    line-height: 30px;
     float: left;
 }
 
@@ -1442,6 +1442,8 @@
     background-color: #ffffff;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02), 0 1px 5px rgba(0, 0, 0, 0.05);
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02), 0 1px 5px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 5;
 }
 
 .post_head {
@@ -3104,9 +3106,9 @@
 .net_internaldiv {
     width: 100%;
     background-color: #f5f5f5;
-    min-height: 200px;
     padding: 10px 10px 20px 10px;
     position: relative;
+    min-height: calc(100vh - 270px);
 }
 
 .user_image_containner {
@@ -3171,7 +3173,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     color: #f8c301;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 .connected_totalmember {
@@ -3635,7 +3637,7 @@
 
 .footer_fixicon {
     display: inline-block;
-    width: 25%;
+    width: 24.9%;
     float: left;
     text-align: center;
     font-size: 30px;
@@ -3845,6 +3847,10 @@
 }
 
 .up_img {
+    width: 100%;
+    height: 100%;
+}
+.up_video {
     width: 100%;
     height: 100%;
 }
@@ -4270,7 +4276,7 @@
     width: 100%;
     display: inline-block;
     padding: 8px 10px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     background: #ffffff;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02), 0 1px 5px rgba(0, 0, 0, 0.05);
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02), 0 1px 5px rgba(0, 0, 0, 0.05);
@@ -4340,10 +4346,15 @@
     display: inline-block;
     width: 100%;
     border-bottom: solid thin #e1e1e1;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
     background: #fff;
-    padding-top: 12px;
+    padding-top: 8px;
     margin-bottom: 5px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 45px;
+    bottom: 0;
+    z-index: 20;
 }
 
 .advertise_list_containner {
@@ -4473,13 +4484,14 @@
 }
 
 .adver_list_thumbview {
-    width: 25%;
-    border: solid 3px #e5e5e5;
+    width: 24.5%;
+    /*border: solid 3px #e5e5e5;*/
     background-color: #fff;
     height: 380px;
     overflow: hidden;
     float: left;
     margin-bottom: 5px;
+    margin-right: 0.5%;
 }
 
 .adver_list_thumbview .list_imgbox {
@@ -5511,14 +5523,14 @@
 
 .product_list_searchbox {
     position: relative;
-    padding-right: 80px;
+    padding-right: 70px;
     max-width: 420px;
     float: right;
 }
 
 .baskit_containner {
     display: inline-block;
-    margin-right: 30px;
+    margin-right: 20px;
     padding-right: 15px;
     position: absolute;
     right: 0px;
@@ -5727,22 +5739,22 @@
 .loader {
     width: 100%;
     height: 100%;
-    top: 53px;
-    left: 245px;
-    position: fixed;
+    top: 0px;
+    left: 0px;
+    position: absolute;
     display: none;
-    z-index: 150;
+    z-index: 55;
     background: #ffffffb5;
     text-align: center;
 }
 
-.loader_main {
-    width: 100px;
-    position: absolute;
-    top: 50%;
-    margin-left: -350px;
-    margin-top: -295px;
-}
+/*.loader_main {*/
+    /*width: 100px;*/
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*margin-left: -350px;*/
+    /*margin-top: -295px;*/
+/*}*/
 
 /**********Loading****************/
 .unseen {
@@ -6043,7 +6055,8 @@ div.scrollingtext {
 }
 
 .top_earner_block {
-    height: 100%;
+    height: 65%;
+    overflow: hidden;
 }
 
 .dashboard_fixed_first {
@@ -6072,7 +6085,8 @@ div.scrollingtext {
 }
 
 .earn_body {
-    max-height: calc(100vh - 105px);
+    /*max-height: calc(100vh - 105px);*/
+    max-height: calc(100vh - 307px);
     overflow: auto;
 }
 
@@ -6154,7 +6168,7 @@ div.scrollingtext {
 
 .pics_counter_box {
     position: absolute;
-    z-index: 10;
+    z-index: 2;
     min-width: 35px;
     min-height: 35px;
     max-width: 60px;
@@ -6412,14 +6426,14 @@ div.scrollingtext {
     text-align: center;
     font-size: 18px;
     font-weight: 400;
-    margin:10px 0px 0px;
+    margin: 10px 0px 0px;
 }
-.news_containner table
-{
+
+.news_containner table {
     font-size: 14px;
 }
-.advertise_multiimg
-{
+
+.advertise_multiimg {
     width: 150px;
     height: 150px;
     padding: 5px;
@@ -6427,12 +6441,233 @@ div.scrollingtext {
     box-shadow: 5px 8px 20px rgba(199, 199, 199, 0.19), 0 2px 5px rgba(107, 100, 100, 0.23);
     -webkit-box-shadow: 5px 8px 20px rgba(199, 199, 199, 0.19), 0 2px 5px rgba(107, 100, 100, 0.23);
 }
-.adver_mainblock
-{
+
+.adver_mainblock {
     display: inline-block;
     width: 100%;
 }
-.margin0
-{
+
+.margin0 {
     margin: 0px !important;
+}
+
+.paid_img {
+    width: 24px;
+    height: 24px;
+}
+.market_container{
+    width: 100%;
+    display: inline-block;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.tradingview-widget-container {
+    height: 60px !important;
+    margin-bottom: 10px;
+    min-width: 800px;
+}
+.tradingview-widget-container iframe .tv-widget-ticker__row a{
+    padding: 5px 15px 0px 15px !important;
+    height: 40px !important;
+}
+.tradingview-widget-container iframe {
+    height: 60px !important;
+}
+
+.tradingview-widget-container iframe .quote-ticker-inited {
+    padding: 5px 15px 0px 15px !important;
+    height: 40px !important;
+}
+.payutxt
+{
+    width: 100%;
+    display: inline-block;
+    float: right;
+}
+.icon {
+    position: relative;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    font-size: 1em;
+}
+.cloud {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    width: 3.6875em;
+    height: 3.6875em;
+    margin: -1.84375em;
+    background: currentColor;
+    border-radius: 50%;
+    box-shadow: -2.1875em 0.6875em 0 -0.6875em, 2.0625em 0.9375em 0 -0.9375em, 0 0 0 0.375em #fff, -2.1875em 0.6875em 0 -0.3125em #fff, 2.0625em 0.9375em 0 -0.5625em #fff;
+}
+.cloud:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -0.5em;
+    display: block;
+    width: 4.5625em;
+    height: 1em;
+    background: currentColor;
+    box-shadow: 0 0.4375em 0 -0.0625em #fff;
+}
+.rain, .lightning, .snow {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    width: 3.75em;
+    height: 3.75em;
+    margin: 0.375em 0 0 -2em;
+    background: currentColor;
+}
+.rain:after {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    width: 1.125em;
+    height: 1.125em;
+    margin: -1em 0 0 -0.25em;
+    background: #0cf;
+    border-radius: 100% 0 60% 50% / 60% 0 100% 50%;
+    box-shadow: 0.625em 0.875em 0 -0.125em rgba(255,255,255,0.2), -0.875em 1.125em 0 -0.125em rgba(255,255,255,0.2), -1.375em -0.125em 0 rgba(255,255,255,0.2);
+    -webkit-transform: rotate(-28deg);
+    transform: rotate(-28deg);
+    -webkit-animation: rain 3s linear infinite;
+    animation: rain 3s linear infinite;
+}
+.sun {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2.5em;
+    height: 2.5em;
+    margin: -1.25em;
+    background: currentColor;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0.375em #fff;
+    -webkit-animation: spin 12s infinite linear;
+    animation: spin 12s infinite linear;
+}
+.rays {
+    position: absolute;
+    top: -2em;
+    left: 50%;
+    display: block;
+    width: 0.375em;
+    height: 1.125em;
+    margin-left: -0.1875em;
+    background: #fff;
+    border-radius: 0.25em;
+    box-shadow: 0 5.375em #fff;
+}
+.rays:before, .rays:after {
+    content: '';
+    position: absolute;
+    top: 0em;
+    left: 0em;
+    display: block;
+    width: 0.375em;
+    height: 1.125em;
+    -webkit-transform: rotate(60deg);
+    transform: rotate(60deg);
+    -webkit-transform-origin: 50% 3.25em;
+    transform-origin: 50% 3.25em;
+    background: #fff;
+    border-radius: 0.25em;
+    box-shadow: 0 5.375em #fff;
+}
+.rays:before {
+    -webkit-transform: rotate(120deg);
+    transform: rotate(120deg);
+}
+.cloud + .sun {
+    margin: -2em 1em;
+}
+
+.weather_forecast {
+    background: -webkit-linear-gradient(50deg, #45cafc, #303f9f)!important;
+    height: 100%;
+    position: relative;
+    max-height: 200px;
+    color: #3e9ddef7;
+}
+.weat_temp {
+    color: #ffffff;
+    display: inline-block;
+    font-size: 28px;
+    position: absolute;
+    right: 12px;
+    top: 45px;
+}
+
+.weat_location {
+    width: 100%;
+    color: #ffffff;
+    display: inline-block;
+    font-size: 20px;
+    margin-top: 15px;
+    text-align: center;
+}
+.bolt {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -0.25em 0 0 -0.125em;
+    color: #fff;
+    opacity: 0.3;
+    -webkit-animation: lightning 2s linear infinite;
+    animation: lightning 2s linear infinite;
+}
+.bolt:before, .bolt:after {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    margin: -1.625em 0 0 -1.0125em;
+    border-top: 1.25em solid transparent;
+    border-right: 0.75em solid;
+    border-bottom: 0.75em solid;
+    border-left: 0.5em solid transparent;
+    -webkit-transform: skewX(-10deg);
+    transform: skewX(-10deg);
+}
+.bolt:after {
+    margin: -0.25em 0 0 -0.25em;
+    border-top: 0.75em solid;
+    border-right: 0.5em solid transparent;
+    border-bottom: 1.25em solid transparent;
+    border-left: 0.75em solid;
+    -webkit-transform: skewX(-10deg);
+    transform: skewX(-10deg);
+}
+.bolt:nth-child(2) {
+    width: 0.5em;
+    height: 0.25em;
+    margin: -1.75em 0 0 -1.875em;
+    -webkit-transform: translate(2.5em, 2.25em);
+    transform: translate(2.5em, 2.25em);
+    opacity: 0.2;
+    -webkit-animation: lightning 1.5s linear infinite;
+    animation: lightning 1.5s linear infinite;
+}
+.bolt:nth-child(2):before {
+    margin: -0.75em 0 0 -0.5em;
+    border-top: 0.625em solid transparent;
+    border-right: 0.375em solid;
+    border-bottom: 0.375em solid;
+    border-left: 0.25em solid transparent;
+}
+.bolt:nth-child(2):after {
+    margin: -0.125em 0 0 -0.125em;
+    border-top: 0.375em solid;
+    border-right: 0.25em solid transparent;
+    border-bottom: 0.625em solid transparent;
+    border-left: 0.375em solid;
 }
