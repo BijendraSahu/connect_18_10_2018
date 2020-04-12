@@ -318,7 +318,7 @@
     <source src="" type="audio/mpeg">
 </audio>
 {{--/*************Bijendra 02_10***************/--}}
-<script src="https://js.pusher.com/4.3/pusher.min.js"></script>
+{{--<script src="https://js.pusher.com/4.3/pusher.min.js"></script>--}}
 {{--<script src="//js.pusher.com/3.1/pusher.min.js"></script>--}}
 <script type="text/javascript">
 
@@ -373,21 +373,21 @@
             x.className = x.className.replace("show", "");
         }, 5000);
     }
-    var pusher = new Pusher('a6ab632500510572d965', {
-        encrypted: true
-    });
+    {{--var pusher = new Pusher('a6ab632500510572d965', {--}}
+        {{--encrypted: true--}}
+    {{--});--}}
 
-    // Subscribe to the channel we specified in our Laravel Event
-    var channel = pusher.subscribe('status-liked');
+    {{--// Subscribe to the channel we specified in our Laravel Event--}}
+    {{--var channel = pusher.subscribe('status-liked');--}}
 
-    // Bind a function to a Event (the full Laravel class)
-    channel.bind('App\\Events\\StatusLiked', function (data) {
-        var session_user_id = '{{$user->id}}';
-        if (data.username == session_user_id) {
-            getNotificationMsg();
-            notificationlist();
-        }
-    });
+    {{--// Bind a function to a Event (the full Laravel class)--}}
+    {{--channel.bind('App\\Events\\StatusLiked', function (data) {--}}
+        {{--var session_user_id = '{{$user->id}}';--}}
+        {{--if (data.username == session_user_id) {--}}
+            {{--getNotificationMsg();--}}
+            {{--notificationlist();--}}
+        {{--}--}}
+    {{--});--}}
 
 </script>
 <script type="text/javascript">

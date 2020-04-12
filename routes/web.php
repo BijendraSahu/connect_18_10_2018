@@ -212,6 +212,8 @@ Route::get('postlikelist', 'PostController@postlikelist');
 Route::get('getcommentlist', 'PostController@getcommentlist');
 Route::post('post_comment', 'PostController@post_comment');
 Route::post('edit_post_comment', 'PostController@edit_post_comment');
+Route::get('chatshow', 'FrontendController@chatshow');
+
 
 
 Route::get('post/{id}/delete', 'PostController@post_delete');
@@ -434,4 +436,12 @@ Route::get('test2', function () {
     //\App\AdminModel::getWebNotification();
 });
 
+
+Route::get('get_all_user', 'FrontendController@get_all_user');
+Route::get('update_last_activity', 'FrontendController@update_last_activity'); //get
+Route::get('fetch_user_chat_history', 'FrontendController@fetch_user_chat_history'); //post
+Route::get('update_is_type_status', 'FrontendController@update_is_type_status'); //get
+Route::post('group_chat', 'FrontendController@group_chat'); //post
+Route::post('insert_chat', 'FrontendController@insert_chat'); //post
+Route::get('test', 'FrontendController@test'); //post
 

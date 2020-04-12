@@ -65,6 +65,10 @@ if (!isset($_SESSION)) {
     {{--    <script src="{{url('js/login_validation.js') }}"></script>--}}
     {{--    <link rel="stylesheet" href="{{url('css/select2.min.css')}}">--}}
     {{--<script src="{{url('js/select2.min.js')}}"></script>--}}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
     {{---------------Notification---------------}}
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -81,6 +85,13 @@ if (!isset($_SESSION)) {
         })
 
     </script>
+    <style>
+        .ui-front {
+            /* left: 892.993px !important; */
+            left: 740.993px !important;
+            /*margin-left: 270px !important;*/
+        }
+    </style>
 </head>
 <body class="body_color">
 <div class="page_load_box" id="onpage_loader">
@@ -591,6 +602,13 @@ if (!isset($_SESSION)) {
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+{{--Chat--}}
+<div id="user_model_details"></div>
+{{--Chat--}}
+
+
 <div class="modal fade-scale" id="Mymodal_notification" data-easein="bounceIn" role="dialog" aria-hidden="false">
     <div class="modal-dialog LBAdd_newmember" role="document">
         <div class="modal-content">
@@ -607,7 +625,12 @@ if (!isset($_SESSION)) {
         </div>
     </div>
 </div>
-@include('chat.chat')
+@php
+    $friend = \App\AdminModel::find(1)
+@endphp
+@if($friend->date == 1)
+    @include('chat.chat')
+@endif
 <!------Popup Box -->
 <div class="modal popup_bgcolor" id="sucess_popup">
     <div class="popup_box">
@@ -672,7 +695,7 @@ $friendC = count($friendlist);
 {{--<link type="text/css" rel="stylesheet" media="all" href="//fast.cometondemand.net/50987x_xb89ab.css"/>--}}
 <script type="text/javascript">
     var append_norecord = '<div class="adver_list_row no_block" id="no_record_found_block"><span class="list_no_record">' +
-        '< No Record Available ></span></div>';
+            '< No Record Available ></span></div>';
 
     function getMemberItem() {
         var check_rowcount = $('.basicLb_containner').length;
@@ -1363,5 +1386,193 @@ $friendC = count($friendlist);
 {{--<script type="text/javascript"--}}
 {{--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwlSOqyHbv8BJ-0XcSZqiNgITcrqj-D2Y&libraries=places&callback=activatPlaceSearch">--}}
 {{--</script>--}}
+<script>
+    $(document).ready(function () {
+
+        fetch_user();
+
+        setInterval(function () {
+            update_last_activity();
+            fetch_user();
+            update_chat_history_data();
+            fetch_group_chat_history();
+        }, 5000);
+
+        function fetch_user() {
+            $.ajax({
+                url: "{{url('get_all_user')}}",
+                method: "get",
+                success: function (data) {
+                    $('#frnd_chat_list').html(data);
+                }
+            })
+        }
+
+        function update_last_activity() {
+            $.ajax({
+                url: "update_last_activity",
+                method: "get",
+                success: function () {
+
+                }
+            })
+        }
+
+        function make_chat_dialog_box(to_user_id, to_user_name) {
+            var modal_content = '<div id="user_dialog_' + to_user_id + '" class="user_dialog" title="You have chat with ' + to_user_name + '">';
+            modal_content += '<div style="height:400px; border:1px solid #ccc; overflow-y: scroll; margin-bottom:24px; padding:16px;" class="chat_history chat_scroll style-scroll" data-touserid="' + to_user_id + '" id="chat_history_' + to_user_id + '">';
+            modal_content += fetch_user_chat_history(to_user_id);
+            modal_content += '</div>';
+            modal_content += '<div class="comment_txtboxblock">';
+            modal_content += '<textarea name="chat_message_' + to_user_id + '" id="chat_message_' + to_user_id + '" class="chat_message new_comment_txt comment_emoji_div edit_emoji"  placeholder="Write a comment..."></textarea>';
+            modal_content += '<button type="button" name="send_chat" id="' + to_user_id + '" class="btn btn-primary btn-sm comment_postbtn send_chat"><i class="mdi mdi-send"></i></button></div></div>';
+            modal_content += '</div>';
+            $('#user_model_details').html(modal_content);
+        }
+
+        $(document).on('click', '.start_chat', function () {
+            var to_user_id = $(this).data('touserid');
+            var to_user_name = $(this).data('tousername');
+            make_chat_dialog_box(to_user_id, to_user_name);
+            $('#user_dialog_' + to_user_id).dialog({
+                autoOpen: false,
+                width: 400,
+//                position: {my: 'right bottom', at: 'right bottom', of: window}
+            });
+            $('#user_dialog_' + to_user_id).dialog('open');
+            $('#chat_message_' + to_user_id).emojioneArea({
+                pickerPosition: "top",
+                toneStyle: "bullet"
+            });
+        });
+
+
+        {{--$("#load_img_chat").remove();--}}
+        {{--append_loading_img = '<div class="feed_loadimg_block" id="load_img_chat">' +--}}
+                {{--'<img height="20px" class="center-block" src="{{ url('images/loading.gif') }}"/></div>';--}}
+        $(document).on('click', '.send_chat', function () {
+            var to_user_id = $(this).attr('id');
+            var chat_message = $('#chat_message_' + to_user_id).val();
+            $.ajax({
+                url: "insert_chat",
+                method: "POST",
+                data: {to_user_id: to_user_id, chat_message: chat_message},
+//                beforeSend: function () {
+//                    $('#chat_history_' + to_user_id).prepend(append_loading_img);
+//                },
+                success: function (data) {
+                    //$('#chat_message_'+to_user_id).val('');
+                    var element = $('#chat_message_' + to_user_id).emojioneArea();
+                    element[0].emojioneArea.setText('');
+//                    $("#load_img_chat").remove();
+//                    $('#chat_history_' + to_user_id).html(data);
+                    $('#chat_history_' + to_user_id).prepend(data);
+                }
+            })
+        });
+
+
+        function fetch_user_chat_history(to_user_id) {
+            $.ajax({
+                url: "fetch_user_chat_history",
+                method: "get",
+                data: {to_user_id: to_user_id},
+//                beforeSend: function () {
+//                    $('#chat_history_' + to_user_id).html(append_loading_img);
+//                },
+                success: function (data) {
+//                    $("#load_img_chat").remove();
+                    $('#chat_history_' + to_user_id).html(data);
+                }
+            })
+        }
+
+        function update_chat_history_data() {
+            $('.chat_history').each(function () {
+                var to_user_id = $(this).data('touserid');
+                fetch_user_chat_history(to_user_id);
+            });
+        }
+
+        $(document).on('click', '.ui-button-icon', function () {
+            $('.user_dialog').dialog('destroy').remove();
+            $('#is_active_group_chat_window').val('no');
+        });
+
+        $(document).on('focus', '.chat_message', function () {
+            var is_type = 'yes';
+            $.ajax({
+                url: "update_is_type_status",
+                method: "get",
+                data: {is_type: is_type},
+                success: function () {
+
+                }
+            })
+        });
+
+        $(document).on('blur', '.chat_message', function () {
+            var is_type = 'no';
+            $.ajax({
+                url: "update_is_type_status",
+                method: "get",
+                data: {is_type: is_type},
+                success: function () {
+
+                }
+            })
+        });
+
+        $('#group_chat_dialog').dialog({
+            autoOpen: false,
+            width: 400
+        });
+
+        $('#group_chat').click(function () {
+            $('#group_chat_dialog').dialog('open');
+            $('#is_active_group_chat_window').val('yes');
+            fetch_group_chat_history();
+        });
+
+        $('#send_group_chat').click(function () {
+            var chat_message = $('#group_chat_message').html();
+            var action = 'insert_data';
+            if (chat_message != '') {
+                $.ajax({
+                    url: "group_chat",
+                    method: "POST",
+                    data: {chat_message: chat_message, action: action},
+                    success: function (data) {
+                        $('#group_chat_message').html('');
+                        $('#group_chat_history').html(data);
+                    }
+                })
+            }
+        });
+
+        function fetch_group_chat_history() {
+            var group_chat_dialog_active = $('#is_active_group_chat_window').val();
+            var action = "fetch_data";
+            if (group_chat_dialog_active == 'yes') {
+                $.ajax({
+                    url: "group_chat",
+                    method: "POST",
+                    data: {action: action},
+                    success: function (data) {
+                        $('#group_chat_history').html(data);
+                    }
+                })
+            }
+        }
+
+        $('#uploadFile').on('change', function () {
+            $('#uploadImage').ajaxSubmit({
+                target: "#group_chat_message",
+                resetForm: true
+            });
+        });
+
+    });
+</script>
 </body>
 </html>

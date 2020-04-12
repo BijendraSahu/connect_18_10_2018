@@ -20,7 +20,6 @@
         transition: 1s all;
     }
 
-
     .sidebar-name {
         font-size: 12px;
         position: relative;
@@ -55,6 +54,10 @@
 
     .online {
         background: #43a747;
+    }
+
+    .offline {
+        background: #ccc;
     }
 
     .sidebar-name img {
@@ -220,8 +223,8 @@
         -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
         background-color: #F5F5F5;
     }
-    .friend_chat_arrow
-    {
+
+    .friend_chat_arrow {
         position: absolute;
         width: 40px;
         height: 40px;
@@ -239,12 +242,13 @@
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0), 0 1px 5px rgba(0, 0, 0, 0.05);
         cursor: pointer;
     }
+
     .friend_chat_arrow:hover {
         background-color: #fff;
         color: #007ac2;
     }
-    .glo_chat_btn
-    {
+
+    .glo_chat_btn {
         position: fixed;
         right: 15px;
         cursor: pointer;
@@ -260,25 +264,27 @@
         font-size: 30px;
         transition: .1s all;
     }
-    .glo_chat_btn_hide
-    {
+
+    .glo_chat_btn_hide {
         right: -100%;
     }
-    .glo_chat_btn:hover
-    {
+
+    .glo_chat_btn:hover {
         background: #9b8a30;
     }
-    .glo_chat_btn i{
+
+    .glo_chat_btn i {
 
     }
-    .chat_scroll::-webkit-scrollbar
-    {
+
+    .chat_scroll::-webkit-scrollbar {
         border: solid thin #ccc;
     }
-    .chat_scroll::-webkit-scrollbar-thumb
-    {
+
+    .chat_scroll::-webkit-scrollbar-thumb {
         background-color: rgb(9, 98, 148);
     }
+
     .chatlist_mainbox {
         position: fixed;
         transition: .5s all;
@@ -296,34 +302,35 @@
         padding: 5px 0px;
         background: #fff;
     }
-    .chat_sidebar_show
-    {
+
+    .chat_sidebar_show {
         right: 0;
     }
 </style>
+
+
 <script type="text/javascript">
-   /* function Initilise_emoji() {
-        $('.chat-popup').each(function () {
-            var check_emoji_initialize = $(this).find('.chatbot_emoji').next().attr('class');
-            if (check_emoji_initialize.indexOf('chatbot_emoji') != -1) {
-                $(this).find('.emojionearea').remove();
-                // $(this).find('.chatbot_emoji').show();
-                $(this).find(".chatbot_emoji").text('');
-                $(this).find(".chatbot_emoji").emojioneArea({
-                    pickerPosition: "top"
-                });
-            } else {
-                $(this).find(".chatbot_emoji").text('');
-                $(this).find(".chatbot_emoji").emojioneArea({
-                    pickerPosition: "top"
-                });
-            }
-        });
-    }*/
+    //    function Initilise_emoji() {
+    //        $('.chat-popup').each(function () {
+    //            var check_emoji_initialize = $(this).find('.chatbot_emoji').next().attr('class');
+    //            if (check_emoji_initialize.indexOf('chatbot_emoji') != -1) {
+    //                $(this).find('.emojionearea').remove();
+    //                // $(this).find('.chatbot_emoji').show();
+    //                $(this).find(".chatbot_emoji").text('');
+    //                $(this).find(".chatbot_emoji").emojioneArea({
+    //                    pickerPosition: "top"
+    //                });
+    //            } else {
+    //                $(this).find(".chatbot_emoji").text('');
+    //                $(this).find(".chatbot_emoji").emojioneArea({
+    //                    pickerPosition: "top"
+    //                });
+    //            }
+    //        });
+    //    }
     function Initilise_emoji() {
         $('.chatbot_emoji').each(function () {
-            if ($(this).parent().find('.emojionearea').length<1)
-            {
+            if ($(this).parent().find('.emojionearea').length < 1) {
                 $(this).text('');
                 $(this).emojioneArea({
                     pickerPosition: "top",
@@ -489,60 +496,19 @@
 </script>
 <div class="chatlist_mainbox" id="friend_chat_list">
     <div class="friend_chat_arrow" onclick="HideLiveChatList();"><i class="mdi mdi-arrow-right-bold"></i></div>
-<div class="chat-sidebar chat_scroll style-scroll" >
-    <?php  $friendlist = \Illuminate\Support\Facades\DB::select("select u.id as fid, (select t.name from timelines t where t.id=u.timeline_id) as name,u.profile_pic,u.rc,u.email,u.header_colour,u.profession,u.profession_other,u.active from users u where u.id in (select f.friend_id from friends f where f.user_id=$user->id) or u.id in (select f.user_id from friends f where f.friend_id=$user->id)"); ?>
-    @foreach($friendlist as $friend)
-        <div class="sidebar-name">
-            <a onclick="register_popup('{{str_slug($friend->name)}}', '{{$friend->name}}');">
-                <img width="30" height="30" src="{{url('').'/'.$friend->profile_pic}}"/>
-                <div class="chatbot_name">{{$friend->name}}</div>
-                <div class="chat_status online"></div>
-            </a>
-        </div>
-    @endforeach
-    {{--<div class="sidebar-name">--}}
-    {{--<a onclick="register_popup('bijendra-sahu', 'Bijendra Sahu');">--}}
-    {{--<img width="30" height="30" src="images/Frount_userpic1.jpeg" />--}}
-    {{--<div class="chatbot_name">Bijendra Sahu</div>--}}
-    {{--<div class="chat_status online"></div>--}}
-    {{--</a>--}}
-    {{--</div>--}}
-    {{--<div class="sidebar-name">--}}
-    {{--<a onclick="register_popup('amit-sharma', 'Amit Sharma');">--}}
-    {{--<img width="30" height="30" src="images/Frount_userpic3.jpeg" />--}}
-    {{--<div class="chatbot_name">Amit Sharma</div>--}}
-    {{--<div class="chat_status online"></div>--}}
-    {{--</a>--}}
-    {{--</div>--}}
-    {{--<div class="sidebar-name">--}}
-    {{--<a onclick="register_popup('juhi-soni', 'Juhi Soni');">--}}
-    {{--<img width="30" height="30" src="images/Frount_userpic2.jpeg" />--}}
-    {{--<div class="chatbot_name">Juhi Soni</div>--}}
-    {{--<div class="chat_status online"></div>--}}
-    {{--</a>--}}
-    {{--</div>--}}
-    {{--<div class="sidebar-name">--}}
-    {{--<a href="javascript:register_popup('himani-koacher', 'Himani koacher');">--}}
-    {{--<img width="30" height="30" src="images/Frount_userpic1.jpeg" />--}}
-    {{--<div class="chatbot_name">Himani Koacher</div>--}}
-    {{--<div class="chat_status online"></div>--}}
-    {{--</a>--}}
-    {{--</div>--}}
-    {{--<div class="sidebar-name">--}}
-    {{--<a onclick="register_popup('nikita-shukla', 'Nikita Shukla');">--}}
-    {{--<img width="30" height="30" src="images/Male_default.png" />--}}
-    {{--<div class="chatbot_name">Nikita Shukla</div>--}}
-    {{--<div class="chat_status online"></div>--}}
-    {{--</a>--}}
-    {{--</div>--}}
-    {{--<div class="sidebar-name">--}}
-    {{--<a href="javascript:register_popup('vatsala-bekhru', 'Vatsala Bekhru');">--}}
-    {{--<img width="30" height="30" src="images/Frount_userpic4.jpeg" />--}}
-    {{--<div class="chatbot_name">Vatsala Bekhru</div>--}}
-    {{--<div class="chat_status online"></div>--}}
-    {{--</a>--}}
-    {{--</div>--}}
-</div>
+    <div class="chat-sidebar chat_scroll style-scroll" id="frnd_chat_list">
+        {{--@php  $friendlist = \Illuminate\Support\Facades\DB::select("select u.id as fid, (select t.name from timelines t where t.id=u.timeline_id) as name,u.profile_pic,u.rc,u.email,u.header_colour,u.profession,u.profession_other,u.active from users u where u.id in (select f.friend_id from friends f where f.user_id=$user->id) or u.id in (select f.user_id from friends f where f.friend_id=$user->id)"); @endphp--}}
+        {{--@foreach($friendlist as $friend)--}}
+        {{--<div style="cursor: pointer;" class="sidebar-name start_chat" data-touserid="{{$friend->fid}}"--}}
+        {{--data-tousername="{{$friend->name}}">--}}
+        {{--<div>--}}
+        {{--<img width="30" height="30" src="{{url('').'/'.$friend->profile_pic}}"/>--}}
+        {{--<div class="chatbot_name">{{$friend->name}}</div>--}}
+        {{--<div class="chat_status online"></div>--}}
+        {{--</div>--}}
+        {{--</div>--}}
+        {{--@endforeach--}}
+    </div>
 </div>
 <div class="glo_chat_btn" onclick="ShowLiveChatList();">
     <i class="mdi mdi-wechat"></i>

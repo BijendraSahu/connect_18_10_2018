@@ -6,6 +6,7 @@ use App\Cities;
 use App\ContactUs;
 use App\Country;
 use App\FirebaseModel;
+use App\LoginDetail;
 use App\PHPMailer;
 use App\Timeline;
 use App\UserModel;
@@ -54,10 +55,20 @@ class LoginController extends Controller
                 $user->active = 1;
                 $user->save();
                 $timeline = Timeline::find($user->timeline_id);
-                $user = new UserModel();
-                $_SESSION["UID"] = $user::select('id')->where('email', $username)->get()->first()->id;
+                $user1 = new UserModel();
+                $_SESSION["UID"] = $user1::select('id')->where('email', $username)->get()->first()->id;
                 // This Session is used in making Payment
                 $_SESSION['user_timeline'] = $timeline;
+
+                /***********chat*************/
+                $_SESSION['user_id'] = $user->id;
+                $_SESSION['username'] = $user->username;
+                $loginDetails = new LoginDetail();
+                $loginDetails->user_id = $user->id;
+                $loginDetails->save();
+                $_SESSION['login_details_id'] = $loginDetails->login_details_id;
+                /***********chat*************/
+
                 return redirect('dashboard');
 //            return redirect('profile/' . str_slug($timeline->fname . " " . $timeline->lname));
             } else {

@@ -13,6 +13,10 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'testupload', 'addads', 'addpost', 'profileupload', 'post_comment', 'requestlist', 'addredeem', 'latest_dashboard_post', 'dashboard_post', 'requestlist', 'morepostload', 'gmbrs', 'atom_payment', 'success', 'failed', 'e_atom_payment', 'userpost', 'user_post', 'new_user_post',
-        'login', 'getregister', 'edit_profile', 'insert_user_address', 'update_user_address', 'insert_review', 'image-crop', 'confirm_checkout', 'save_affiliates', 'addpost2', 'post_video', 'editads', 'edit_post_comment', 'contact_us'
+        'login', 'getregister', 'edit_profile', 'insert_user_address', 'update_user_address', 'insert_review', 'image-crop', 'confirm_checkout', 'save_affiliates', 'addpost2', 'post_video', 'editads', 'edit_post_comment', 'contact_us',
+
+        'group_chat',
+        'insert_chat',
+        'login_submit'
     ];
 }
